@@ -14,6 +14,7 @@ const port = 80; // dev port
 module.exports = {
     publicPath: '/',
     outputDir: 'dist',
+    assetsDir: 'yao-ui',
     lintOnSave: process.env.NODE_ENV === 'development',
     // 打包时不生成.map文件 避免看到源码
     productionSourceMap: false,
