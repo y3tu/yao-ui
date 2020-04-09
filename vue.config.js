@@ -9,7 +9,7 @@ const name = settings.title; // page title
 // If your port is set to 80,
 // use administrator privileges to execute the command line.
 // For example, Mac: sudo npm run
-const port = 9527; // dev port
+const port = 80; // dev port
 
 module.exports = {
     publicPath: '/',
