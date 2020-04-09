@@ -12,9 +12,9 @@ const name = settings.title; // page title
 const port = 80; // dev port
 
 module.exports = {
-    publicPath: '/',
+    publicPath: '/yao-ui',
     outputDir: 'dist',
-    assetsDir: 'yao-ui',
+    assetsDir: 'static',
     lintOnSave: process.env.NODE_ENV === 'development',
     // 打包时不生成.map文件 避免看到源码
     productionSourceMap: false,
