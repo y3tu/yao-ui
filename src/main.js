@@ -19,6 +19,10 @@ import {isEmpty,isNotEmpty} from "./utils/my-validate"
 import dict from './components/Dict'
 import * as filters from './filters'
 
+//背景粒子效果
+import VueParticlesBg from "particles-bg-vue";
+Vue.use(VueParticlesBg);
+
 import {hasPermission, hasNoPermission, hasAnyPermission} from './utils/permissionDirect'
 
 const Plugins = [

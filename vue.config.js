@@ -12,7 +12,7 @@ const name = settings.title; // page title
 const port = 80; // dev port
 
 module.exports = {
-    publicPath: '/yao-ui',
+    publicPath: '/',
     outputDir: 'dist',
     assetsDir: 'static',
     lintOnSave: process.env.NODE_ENV === 'development',

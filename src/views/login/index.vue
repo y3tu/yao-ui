@@ -1,6 +1,9 @@
 <template>
 
     <div class="login-container">
+
+        <particles-bg type="cobweb" num=100 :bg="true" />
+
         <div class="login-info">
             <div class="title">Yao</div>
             <div class="sub-title">{{ $t('common.system') }}</div>
