@@ -6,9 +6,7 @@ function resolve(dir) {
 }
 
 const name = settings.title; // page title
-// If your port is set to 80,
-// use administrator privileges to execute the command line.
-// For example, Mac: sudo npm run
+
 const port = 80; // dev port
 
 module.exports = {
@@ -24,20 +22,9 @@ module.exports = {
         overlay: {
             warnings: false,
             errors: true
-        },
-        proxy: {
-            // change xxx-api/login => mock/login
-            // detail: https://cli.vuejs.org/config/#devserver-proxy
-            [process.env.VUE_APP_BASE_API]: {
-                target: 'http://localhost:8301/',
-                changeOrigin: true,
-                pathRewrite: {
-                    ['^' + process.env.VUE_APP_BASE_API]: ''
-                }
-            }
         }
-    },
 
+    },
 
     configureWebpack:{
         name: name,

@@ -58,7 +58,7 @@
                               style="width: 70%"
                               @keyup.enter.native="handleLogin"/>
                 </el-form-item>
-                <img :src="imageCode" alt="codeImage" class="code-image" @click="getCodeImage">
+                <img :src="imageCode" alt="code" class="code-image" @click="getCodeImage">
                 <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:14px;" @click.native.prevent="handleLogin">
                   {{ $t('login.logIn') }}
                 </el-button>
