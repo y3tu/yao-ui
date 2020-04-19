@@ -83,7 +83,7 @@
     import Tree from "./Tree"
 
     export default {
-        name: 'generatorMgr',
+        name: 'generator',
         mixins: [pageMixins],
         components: {Config, Table, Tree},
         data() {

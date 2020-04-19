@@ -45,8 +45,8 @@
                             <el-form-item :label="$t('table.resource.type')" prop="type">
                                 <el-radio-group style="width: 300px" v-model="resource.type" :disabled="resource.resourceId !== ''">
                                     <el-radio-button :label="2">目录</el-radio-button>
-                                    <el-radio-button :label="0">{{ $t('common.resource.menu') }}</el-radio-button>
-                                    <el-radio-button :label="1">{{ $t('common.resource.button') }}</el-radio-button>
+                                    <el-radio-button :label="0">菜单</el-radio-button>
+                                    <el-radio-button :label="1">按钮</el-radio-button>
                                 </el-radio-group>
                             </el-form-item>
                             <el-form-item :label="$t('table.resource.parentId')" prop="parentId">
@@ -61,12 +61,6 @@
                             </el-form-item>
                             <el-form-item :label="$t('table.resource.resourceName')" prop="resourceName">
                                 <el-input style="width: 500px" v-model="resource.resourceName"/>
-                            </el-form-item>
-                            <el-form-item v-show="resource.type === 0" label="外链菜单" prop="iframe">
-                                <el-radio-group v-model="resource.iframe" size="mini">
-                                    <el-radio-button :label="true">是</el-radio-button>
-                                    <el-radio-button :label="false">否</el-radio-button>
-                                </el-radio-group>
                             </el-form-item>
                             <el-form-item v-show="resource.type === 0" label="菜单缓存" prop="cache">
                                 <el-radio-group v-model="resource.cache" size="mini">
@@ -86,13 +80,23 @@
                                 </el-input>
                             </el-form-item>
                             <el-form-item v-show="resource.type !== 1" :label="$t('table.resource.component')" prop="component">
-                                <el-input v-model="resource.component"/>
+                                <el-autocomplete
+                                        style="width: 500px"
+                                        clearable
+                                        class="inline-input"
+                                        v-model="resource.component"
+                                        :fetch-suggestions="handlerComponentSuggestions"
+                                        placeholder="请选择或者输入组件">
+                                </el-autocomplete>
                             </el-form-item>
                             <el-form-item v-show="resource.type === 0" label="组件名称" prop="componentName">
                                 <el-input v-model="resource.componentName" placeholder="匹配组件内Name字段"/>
                             </el-form-item>
                             <el-form-item v-show="resource.type !== 1 " :label="$t('table.resource.path')" prop="path">
                                 <el-input v-model="resource.path"/>
+                            </el-form-item>
+                            <el-form-item v-show="resource.type === 0" label="iframe地址" prop="component">
+                                <el-input v-model="resource.iframe"/>
                             </el-form-item>
                             <el-form-item v-show="resource.type !== 2 " :label="$t('table.resource.permission')" prop="permission">
                                 <el-input v-model="resource.permission"/>
@@ -156,7 +160,10 @@
                     path: {max: 100, message: this.$t('rules.noMoreThan100'), trigger: 'blur'},
                     component: {max: 100, message: this.$t('rules.noMoreThan100'), trigger: 'blur'},
                     permission: {max: 50, message: this.$t('rules.noMoreThan50'), trigger: 'blur'}
-                }
+                },
+                componentSuggestions: [
+                    {"value": "Layout", "name": "Layout"},
+                    {"value": "Iframe", "name": "Iframe"}]
             }
         },
         mounted() {
@@ -180,7 +187,7 @@
                     type: 0,
                     orderNum: 0,
                     icon: '',
-                    iframe: false,
+                    iframe: '',
                     cache: false,
                     hidden: false
                 }
@@ -299,7 +306,18 @@
                 this.$refs.form.clearValidate();
                 this.$refs.form.resetFields();
                 this.resource = this.initResource()
-            }
+            },
+            handlerComponentSuggestions(queryString, cb) {
+                let components = this.componentSuggestions;
+                let results = queryString ? components.filter(this.createFilter(queryString)) : components;
+                // 调用 callback 返回建议列表的数据
+                cb(results);
+            },
+            createFilter(queryString) {
+                return (component) => {
+                    return (component.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
+                };
+            },
         }
     }
 </script>

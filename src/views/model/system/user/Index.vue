@@ -223,7 +223,7 @@
                 this.search()
             },
             exportExcel() {
-
+                this.$download('upms/user/export',{},`user_${new Date().getTime()}.xlsx`)
             },
             add() {
                 this.dialog.title = this.$t('common.add');

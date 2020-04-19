@@ -11,7 +11,10 @@
                 <el-input v-model="dataSourceConfig.name"/>
             </el-form-item>
             <el-form-item label="数据源类型" prop="type">
-                <el-input v-model="dataSourceConfig.type"/>
+                <el-select v-model="dataSourceConfig.type" placeholder="请选择" class="filter-item">
+                    <el-option value="mysql" label="mysql"/>
+                    <el-option value="oracle" label="oracle"/>
+                </el-select>
             </el-form-item>
             <el-form-item label="驱动" prop="driverClass">
                 <el-input v-model="dataSourceConfig.driverClass"/>
@@ -23,7 +26,7 @@
                 <el-input v-model="dataSourceConfig.username"/>
             </el-form-item>
             <el-form-item label="登录密码" prop="password">
-                <el-input v-model="dataSourceConfig.password"/>
+                <el-input v-model="dataSourceConfig.password" show-password/>
             </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">

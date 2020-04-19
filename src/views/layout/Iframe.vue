@@ -3,7 +3,7 @@
         <el-row>
             <el-col>
                 <el-card>
-                    <Divider style="margin-top:-10px;margin-bottom:0px;"/>
+                    <el-divider style="margin-top:-10px;margin-bottom:0px;"/>
                     <el-row>
                         <div v-loading="loading" style="position:relative;">
                             <iframe
@@ -24,7 +24,8 @@
 
 <script>
     export default {
-        name: "iframe",
+
+        name: "Iframe",
         data() {
             return {
                 loading: false,
@@ -37,7 +38,7 @@
         computed: {},
         methods: {
             initUrl() {
-                let url = this.$route.meta.url;
+                let url = this.$route.meta.iframe;
                 if (url !== null && url !== undefined) {
                     this.url = url;
                     this.go = url;

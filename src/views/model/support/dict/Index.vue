@@ -143,6 +143,7 @@
     import dictData from './DictData'
 
     export default {
+        name: 'dict',
         components: {dictData},
         mixins: [page],
         data() {

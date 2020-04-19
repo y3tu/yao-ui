@@ -48,7 +48,7 @@ const constRouter = [
                 path: 'dashboard',
                 component: () => import('@/views/dashboard/index'),
                 name: 'Dashboard',
-                meta: {title: 'dashboard', icon: 'dashboard', affix: true}
+                meta: {title: '首页', icon: 'dashboard', affix: true}
             }
         ]
     },
@@ -62,7 +62,7 @@ const constRouter = [
                 path: 'index',
                 component: () => import('@/views/profile/index'),
                 name: 'Profile',
-                meta: {title: 'profile', icon: 'user', noCache: true}
+                meta: {title: '个人中心', icon: 'user', noCache: true}
             }
         ]
     },
@@ -180,7 +180,7 @@ function filterAsyncRouter(routes) {
                     if (component === 'Layout'||isEmpty(component)) {
                         return import('@/views/layout')
                     } else if (component === 'Iframe'||iframe===true) {
-                        return import('@/views/layout/iFrame')
+                        return import('@/views/layout/Iframe')
                     } else {
                         componentPath = component;
                         return import(`@/views/${componentPath}.vue`)
@@ -191,7 +191,8 @@ function filterAsyncRouter(routes) {
                     icon: icon,
                     title: resourceName,
                     noCache: cache !== true,
-                    url: path
+                    url: path,
+                    iframe: iframe
                 },
                 hidden: hidden,
                 icon: icon,

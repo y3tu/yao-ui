@@ -39,7 +39,7 @@
                     <span>{{ scope.row.driverClass }}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="数据库类型" align="center" min-width="60px">
+            <el-table-column label="数据库类型" align="center" min-width="80px">
                 <template slot-scope="scope">
                     <span>{{ scope.row.type }}</span>
                 </template>
@@ -52,11 +52,6 @@
             <el-table-column label="登录用户名" align="center" min-width="100px">
                 <template slot-scope="scope">
                     <span>{{ scope.row.username }}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="登录密码" :show-overflow-tooltip="true" align="center" min-width="100px">
-                <template slot-scope="scope">
-                    <span>{{ scope.row.password }}</span>
                 </template>
             </el-table-column>
             <el-table-column label="创建时间" prop="createTime" align="center" min-width="180px" sortable="custom">

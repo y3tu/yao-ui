@@ -20,7 +20,7 @@
 
 <style scoped>
     .sorry {
-        height: 500px;
+        height: 800px;
         display: flex;
         flex-direction: column;
         align-items: center;
