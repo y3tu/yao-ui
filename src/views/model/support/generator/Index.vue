@@ -25,9 +25,9 @@
                 </template>
             </el-table-column>
 
-            <el-table-column :show-overflow-tooltip="true" prop="name" label="表名"/>
+            <el-table-column :show-overflow-tooltip="true" align="center" prop="name" label="表名"/>
 
-            <el-table-column :show-overflow-tooltip="true" prop="remarks" label="备注">
+            <el-table-column :show-overflow-tooltip="true" align="center" prop="remarks" label="备注">
                 <template slot-scope="scope">
                     <el-popover trigger="hover" placement="left">
                         <p>{{tableData[scope.$index].remarks}}</p>
@@ -38,21 +38,28 @@
                 </template>
             </el-table-column>
 
-            <el-table-column label="操作" width="280px" align="center">
+            <el-table-column label="操作" width="300px" align="center" fixed="right">
                 <template slot-scope="scope">
-                    <el-row>
-                        <el-col :span="4">
-                            <el-button size="mini" style="margin-right: 2px" type="text">
+                    <el-row :gutter="10">
+                        <el-col :span="6">
+                            <el-button type="primary" size="mini" round>
                                 <router-link :to="'/support/generator/preview?tableName=' + scope.row.name+'&dataSourceConfigId='+dataSourceConfigId">
                                     预览
                                 </router-link>
                             </el-button>
                         </el-col>
-                        <el-col :span="10">
-                            <Table :name="scope.row.name" :remarks="scope.row.remarks" :data-source-config-id="dataSourceConfigId"/>
+                        <el-col :span="6">
+                            <el-button type="success" size="mini" round @click="toDownload(scope.row.tableName)">下载</el-button>
                         </el-col>
-                        <el-col :span="10">
-                            <Tree :name="scope.row.name" :remarks="scope.row.remarks" :data-source-config-id="dataSourceConfigId"/>
+                        <el-col :span="6">
+                            <el-button type="info" size="mini" round>
+                                <router-link :to="'/support/generator/config?tableName=' + scope.row.tableName+'&dataSourceConfigId='+dataSourceConfigId">
+                                    编辑
+                                </router-link>
+                            </el-button>
+                        </el-col>
+                        <el-col :span="6">
+                            <el-button type="warning" size="mini" round @click="toGen(scope.row.tableName)">生成</el-button>
                         </el-col>
                     </el-row>
                 </template>

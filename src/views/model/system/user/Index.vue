@@ -5,6 +5,19 @@
                       @keyup.enter.native="search"/>
             <el-input v-model="page.entity.departmentName" :placeholder="$t('table.user.department')" class="filter-item search-item"
                       @keyup.enter.native="search"/>
+            <el-select
+                    v-model="page.entity.status"
+                    clearable
+                    placeholder="状态"
+                    class="filter-item search-item"
+                    style="width: 90px"
+                    @change="search">
+                <el-option
+                        v-for="item in dict.user_status"
+                        :key="item.key"
+                        :label="item.label"
+                        :value="item.value"/>
+            </el-select>
             <el-date-picker
                     v-model="page.params.timeRange"
                     :range-separator="null"
@@ -129,6 +142,8 @@
         name: 'UserManage',
         mixins: [page],
         components: {UserEdit, UserView},
+        // 数据字典
+        dicts: ['用户状态'],
         filters: {
             sexFilter(status) {
                 const map = {
@@ -172,6 +187,7 @@
             })
         },
         mounted() {
+            console.log(this);
         },
         methods: {
             transSex(sex) {
@@ -223,7 +239,7 @@
                 this.search()
             },
             exportExcel() {
-                this.$download('upms/user/export',{},`user_${new Date().getTime()}.xlsx`)
+                this.$download('upms/user/export', {}, `user_${new Date().getTime()}.xlsx`)
             },
             add() {
                 this.dialog.title = this.$t('common.add');

@@ -20,7 +20,7 @@ export function getTableColumn(data) {
  * 获取代码生成配置
  */
 export function getGeneratorConfig() {
-    return request.get('support/common/generator/getGeneratorConfig');
+    return request.postData('support/common/generator/getGeneratorConfig',data);
 }
 
 /**

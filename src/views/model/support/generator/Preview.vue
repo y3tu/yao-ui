@@ -11,7 +11,7 @@
     import {genPreview} from "./Api";
 
     export default {
-        name: 'Preview',
+        name: 'GeneratorPreview',
         components: { Java },
         data() {
             return {

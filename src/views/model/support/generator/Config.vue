@@ -184,7 +184,7 @@
             this.dataSourceConfigId=this.$route.query.dataSourceConfigId;
             this.$nextTick(() => {
                 get(this.tableName).then(data => {
-                    this.form = data
+                    this.form = data;
                     this.form.cover = this.form.cover.toString()
                 });
                 getDicts().then(data => {
