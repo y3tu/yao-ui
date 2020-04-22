@@ -53,7 +53,7 @@
                         </el-col>
                         <el-col :span="6">
                             <el-button type="info" size="mini" round>
-                                <router-link :to="'/support/generator/config?tableName=' + scope.row.tableName+'&dataSourceConfigId='+dataSourceConfigId">
+                                <router-link :to="'/support/generator/config?tableName=' + scope.row.name+'&dataSourceConfigId='+dataSourceConfigId">
                                     编辑
                                 </router-link>
                             </el-button>

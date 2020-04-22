@@ -10,7 +10,6 @@ export function getTables(data) {
 
 /**
  * 获取表的字段
- * @param tableName
  */
 export function getTableColumn(data) {
     return request.get('support/common/generator/getTableColumn', data);
@@ -19,13 +18,12 @@ export function getTableColumn(data) {
 /**
  * 获取代码生成配置
  */
-export function getGeneratorConfig() {
-    return request.postData('support/common/generator/getGeneratorConfig',data);
+export function getGenConfig(data) {
+    return request.postData('support/common/generator/getGenConfig',data);
 }
 
 /**
  * 获取数据源配置
- * @returns {*}
  */
 export function getDataSourceConfig() {
     return request.get('support/common/dataSourceConfig/getAll');
@@ -34,8 +32,12 @@ export function getDataSourceConfig() {
 /**
  * 更新代码生成配置
  */
-export function updateGeneratorConfig(data) {
-    return request.put('support/common/generator/updateGeneratorConfig', data)
+export function saveGenConfig(data) {
+    return request.put('support/common/generator/saveGenConfig', data)
+}
+
+export function saveColumnConfig(data) {
+    return request.put('support/common/generator/saveColumnConfig', data)
 }
 
 export function genPreview(data) {

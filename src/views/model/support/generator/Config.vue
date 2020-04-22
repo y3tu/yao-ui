@@ -94,29 +94,44 @@
 
             <el-col>
                 <el-card class="box-card" shadow="never">
+                    <div slot="header" class="clearfix">
+                        <span class="role-span">生成配置</span>
+                        <el-button
+                                :loading="configLoading"
+                                icon="el-icon-check"
+                                size="mini"
+                                style="float: right; padding: 6px 9px"
+                                type="primary"
+                                @click="doSubmit"
+                        >保存</el-button>
+                    </div>
                     <el-form ref="form" :model="form" :rules="rules" size="small" label-width="78px">
                         <el-form-item label="作者名称" prop="author">
-                            <el-input v-model="form.author" style="width: 40%"/>
+                            <el-input v-model="form.author" style="width: 40%" />
                             <span style="color: #C0C0C0;margin-left: 10px;">类上面的作者名称</span>
                         </el-form-item>
                         <el-form-item label="模块名称" prop="moduleName">
-                            <el-input v-model="form.moduleName" style="width: 40%"/>
+                            <el-input v-model="form.moduleName" style="width: 40%" />
                             <span style="color: #C0C0C0;margin-left: 10px;">模块的名称，请选择项目中已存在的模块</span>
                         </el-form-item>
                         <el-form-item label="至于包下" prop="pack">
-                            <el-input v-model="form.pack" style="width: 40%"/>
+                            <el-input v-model="form.pack" style="width: 40%" />
                             <span style="color: #C0C0C0;margin-left: 10px;">项目包的名称，生成的代码放到哪个包里面</span>
                         </el-form-item>
                         <el-form-item label="接口名称" prop="apiAlias">
-                            <el-input v-model="form.apiAlias" style="width: 40%"/>
+                            <el-input v-model="form.apiAlias" style="width: 40%" />
                             <span style="color: #C0C0C0;margin-left: 10px;">接口的名称，用于控制器与接口文档中</span>
                         </el-form-item>
                         <el-form-item label="前端路径" prop="path">
-                            <el-input v-model="form.path" style="width: 40%"/>
+                            <el-input v-model="form.path" style="width: 40%" />
                             <span style="color: #C0C0C0;margin-left: 10px;">输入views文件夹下的目录，不存在即创建</span>
                         </el-form-item>
+                        <!--            <el-form-item label="接口目录">-->
+                        <!--              <el-input v-model="form.apiPath" style="width: 40%" />-->
+                        <!--              <span style="color: #C0C0C0;margin-left: 10px;">Api存放路径[src/api]，为空则自动生成路径</span>-->
+                        <!--            </el-form-item>-->
                         <el-form-item label="去表前缀" prop="prefix">
-                            <el-input v-model="form.prefix" placeholder="默认不去除表前缀" style="width: 40%"/>
+                            <el-input v-model="form.prefix" placeholder="默认不去除表前缀" style="width: 40%" />
                             <span style="color: #C0C0C0;margin-left: 10px;">默认不去除表前缀，可自定义</span>
                         </el-form-item>
                         <el-form-item label="是否覆盖" prop="cover">
@@ -134,12 +149,16 @@
 </template>
 
 <script>
+
+    import {getGenConfig} from './Api'
+
     export default {
         name: 'GeneratorConfig',
         data() {
             return {
                 tableName:'',
                 dataSourceConfigId:'',
+                loading:false,
                 genZipLoading: false,
                 genPreviewLoading: false,
                 tableHeight: 550,
@@ -183,13 +202,17 @@
             this.tableName = this.$route.query.tableName;
             this.dataSourceConfigId=this.$route.query.dataSourceConfigId;
             this.$nextTick(() => {
-                get(this.tableName).then(data => {
-                    this.form = data;
-                    this.form.cover = this.form.cover.toString()
+                getGenConfig({
+                    dsId:this.dataSourceConfigId,
+                    tableName:this.tableName
+                }).then(data => {
+
+                    this.form = data.data.genConfig;
+                    //this.form.cover = this.form.cover.toString()
                 });
-                getDicts().then(data => {
-                    this.dicts = data
-                })
+                // getDicts().then(data => {
+                //     this.dicts = data
+                // })
             })
         },
         methods: {
