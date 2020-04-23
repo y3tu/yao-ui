@@ -9,13 +9,13 @@
             <el-button class="filter-item" type="warning" plain @click="reset">
                 {{ $t('table.reset') }}
             </el-button>
-            <el-dropdown v-has-any-permission="['user:create','user:delete','user:reset','user:export']" trigger="click" class="filter-item">
+            <el-dropdown v-has-any-permission="['dataSource:create','dataSource:delete','dataSource:reset','dataSource:export']" trigger="click" class="filter-item">
                 <el-button>
                     {{ $t('table.more') }}<i class="el-icon-arrow-down el-icon--right"/>
                 </el-button>
                 <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item v-has-permission="['dataSourceConfig:create']" @click.native="create">{{ $t('table.add') }}</el-dropdown-item>
-                    <el-dropdown-item v-has-permission="['dataSourceConfig:delete']" @click.native="batchDelete">{{ $t('table.delete') }}</el-dropdown-item>
+                    <el-dropdown-item v-has-permission="['dataSource:create']" @click.native="create">{{ $t('table.add') }}</el-dropdown-item>
+                    <el-dropdown-item v-has-permission="['dataSource:delete']" @click.native="batchDelete">{{ $t('table.delete') }}</el-dropdown-item>
                 </el-dropdown-menu>
             </el-dropdown>
         </div>
@@ -66,10 +66,10 @@
             </el-table-column>
             <el-table-column :label="$t('table.operation')" align="center" min-width="150px" class-name="small-padding fixed-width">
                 <template slot-scope="{row}">
-                    <i v-hasPermission="['dataSourceConfig:test']" class="el-icon-connection table-operation" style="color: #87d068;" @click="test(row)"/>
-                    <i v-hasPermission="['dataSourceConfig:update']" class="el-icon-setting table-operation" style="color: #2db7f5;" @click="edit(row)"/>
-                    <i v-hasPermission="['dataSourceConfig:delete']" class="el-icon-delete table-operation" style="color: #f50;" @click="singleDelete(row)"/>
-                    <el-link v-has-no-permission="['user:view','user:update','user:delete']" class="no-perm">
+                    <i v-hasPermission="['dataSource:test']" class="el-icon-connection table-operation" style="color: #87d068;" @click="test(row)"/>
+                    <i v-hasPermission="['dataSource:update']" class="el-icon-setting table-operation" style="color: #2db7f5;" @click="edit(row)"/>
+                    <i v-hasPermission="['dataSource:delete']" class="el-icon-delete table-operation" style="color: #f50;" @click="singleDelete(row)"/>
+                    <el-link v-has-no-permission="['dataSource:view','dataSource:update','dataSource:delete']" class="no-perm">
                         {{ $t('tips.noPermission') }}
                     </el-link>
                 </template>
@@ -99,7 +99,7 @@
     import Edit from './Edit'
 
     export default {
-        name: 'dataSourceConfig',
+        name: 'dataSource',
         mixins: [pageMixins],
         components: {Edit},
         data() {
@@ -122,7 +122,7 @@
                 this.findPage();
             },
             findPageInit() {
-                this.pageUrl = 'support/common/dataSourceConfig/page';
+                this.pageUrl = 'support/common/dataSource/page';
                 return true;
             },
             search() {
@@ -164,7 +164,7 @@
                 })
             },
             delete(ids) {
-                this.$delete(`support/common/dataSourceConfig/delete/${ids}`).then(() => {
+                this.$delete(`support/common/dataSource/delete/${ids}`).then(() => {
                     this.$message({
                         message: this.$t('tips.deleteSuccess'),
                         type: 'success'
@@ -173,7 +173,7 @@
                 })
             },
             edit(row) {
-                this.$refs.edit.setDataSourceConfig(row);
+                this.$refs.edit.setDataSource(row);
                 this.dialog.title = this.$t('common.edit');
                 this.dialog.isVisible = true
             },
@@ -188,7 +188,7 @@
             },
             //测试连接
             test(row) {
-                this.$get('support/common/dataSourceConfig/testConnect/' + row.id).then(res => {
+                this.$get('support/common/dataSource/testConnect/' + row.id).then(res => {
                     this.$message({
                         message: '连接成功！',
                         type: 'success'

@@ -24,7 +24,7 @@
             this.height = document.documentElement.clientHeight - 180 + 'px';
             let data = {
                 tableName:this.$route.query.tableName,
-                dataSourceConfigId:this.$route.query.dataSourceConfigId
+                dsId:this.$route.query.dsId
             };
             genPreview(data).then(data => {
                 this.data = data

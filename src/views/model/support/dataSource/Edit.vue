@@ -6,27 +6,27 @@
             :close-on-click-modal="false"
             :close-on-press-escape="false"
             :visible.sync="isVisible">
-        <el-form ref="form" :model="dataSourceConfig" :rules="rules" label-position="right" label-width="120px">
+        <el-form ref="form" :model="dataSource" :rules="rules" label-position="right" label-width="120px">
             <el-form-item label="数据源名称" prop="name">
-                <el-input v-model="dataSourceConfig.name"/>
+                <el-input v-model="dataSource.name"/>
             </el-form-item>
             <el-form-item label="数据源类型" prop="type">
-                <el-select v-model="dataSourceConfig.type" placeholder="请选择" class="filter-item">
+                <el-select v-model="dataSource.type" placeholder="请选择" class="filter-item">
                     <el-option value="mysql" label="mysql"/>
                     <el-option value="oracle" label="oracle"/>
                 </el-select>
             </el-form-item>
             <el-form-item label="驱动" prop="driverClass">
-                <el-input v-model="dataSourceConfig.driverClass"/>
+                <el-input v-model="dataSource.driverClass"/>
             </el-form-item>
             <el-form-item label="数据源连接Url" prop="jdbcUrl">
-                <el-input v-model="dataSourceConfig.jdbcUrl" />
+                <el-input v-model="dataSource.jdbcUrl" />
             </el-form-item>
             <el-form-item label="登录用户名" prop="username">
-                <el-input v-model="dataSourceConfig.username"/>
+                <el-input v-model="dataSource.username"/>
             </el-form-item>
             <el-form-item label="登录密码" prop="password">
-                <el-input v-model="dataSourceConfig.password" show-password/>
+                <el-input v-model="dataSource.password" show-password/>
             </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -42,7 +42,7 @@
 
 <script>
     export default {
-        name:'dataSourceConfigEdit',
+        name:'dataSourceEdit',
         props: {
             dialogVisible: {
                 type: Boolean,
@@ -55,7 +55,7 @@
         },
         data(){
             return{
-                dataSourceConfig:this.initDataSourceConfig(),
+                dataSource:this.initDataSource(),
                 screenWidth: 0,
                 width: this.initWidth(),
                 buttonLoading:false,
@@ -89,7 +89,7 @@
             }
         },
         methods: {
-            initDataSourceConfig(){
+            initDataSource(){
                 return {
                     id: '',
                     name: '',
@@ -110,8 +110,8 @@
                     return '800px'
                 }
             },
-            setDataSourceConfig(val) {
-                this.dataSourceConfig = {...val}
+            setDataSource(val) {
+                this.dataSource = {...val}
             },
             close() {
                 this.$emit('close')
@@ -119,15 +119,15 @@
             reset() {
                 this.$refs.form.clearValidate();
                 this.$refs.form.resetFields();
-                this.dataSourceConfig=this.initDataSourceConfig();
+                this.dataSource=this.initDataSource();
             },
             submitForm(){
                 this.$refs.form.validate((valid) => {
                     if (valid) {
                         this.buttonLoading = true;
-                        if (!this.dataSourceConfig.id) {
+                        if (!this.dataSource.id) {
                             // create
-                            this.$post('support/common/dataSourceConfig/create', {...this.dataSourceConfig}).then(() => {
+                            this.$post('support/common/dataSource/create', {...this.dataSource}).then(() => {
                                 this.buttonLoading = false;
                                 this.isVisible = false;
                                 this.$message({
@@ -140,8 +140,8 @@
                             });
                         }else {
                             // update
-                            this.dataSourceConfig.createTime = this.dataSourceConfig.modifyTime  = null;
-                            this.$put('support/common/dataSourceConfig/update', {...this.dataSourceConfig}).then(() => {
+                            this.dataSource.createTime = this.dataSource.modifyTime  = null;
+                            this.$put('support/common/dataSource/update', {...this.dataSource}).then(() => {
                                 this.buttonLoading = false;
                                 this.isVisible = false;
                                 this.$message({

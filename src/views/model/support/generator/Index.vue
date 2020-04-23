@@ -4,8 +4,8 @@
 
             <el-autocomplete
                     clearable
-                    v-model="dataSourceConfig"
-                    :fetch-suggestions="queryDataSourceConfig"
+                    v-model="dataSource"
+                    :fetch-suggestions="queryDataSource"
                     placeholder="请选择数据源"
                     class="filter-item search-item"
                     @select="handleSelect"/>
@@ -29,12 +29,7 @@
 
             <el-table-column :show-overflow-tooltip="true" align="center" prop="remarks" label="备注">
                 <template slot-scope="scope">
-                    <el-popover trigger="hover" placement="left">
-                        <p>{{tableData[scope.$index].remarks}}</p>
-                        <div slot="reference" class="name-wrapper">
-                            <el-input v-model="tableData[scope.$index].remarks" class="edit-input" style="width: 300px"/>
-                        </div>
-                    </el-popover>
+                    <el-input v-model="tableData[scope.$index].remarks" class="edit-input" style="width: 300px"/>
                 </template>
             </el-table-column>
 
@@ -43,7 +38,7 @@
                     <el-row :gutter="10">
                         <el-col :span="6">
                             <el-button type="primary" size="mini" round>
-                                <router-link :to="'/support/generator/preview?tableName=' + scope.row.name+'&dataSourceConfigId='+dataSourceConfigId">
+                                <router-link :to="'/support/generator/preview?tableName=' + scope.row.name+'&dsId='+dsId">
                                     预览
                                 </router-link>
                             </el-button>
@@ -53,7 +48,7 @@
                         </el-col>
                         <el-col :span="6">
                             <el-button type="info" size="mini" round>
-                                <router-link :to="'/support/generator/config?tableName=' + scope.row.name+'&dataSourceConfigId='+dataSourceConfigId">
+                                <router-link :to="'/support/generator/config?tableName=' + scope.row.name+'&dsId='+dsId">
                                     编辑
                                 </router-link>
                             </el-button>
@@ -83,7 +78,7 @@
 
 <script>
     import pageMixins from '@/mixins/page'
-    import {getTables, getGeneratorConfig, getDataSourceConfig} from './Api'
+    import {getTables, getDataSource} from './Api'
     import {Message} from "element-ui";
     import Config from './Config'
     import Table from "./Table";
@@ -101,8 +96,8 @@
                 currentPage: 1, // 当前页码
                 total: 20, // 总条数
                 pageSize: 10, // 每页的数据条数
-                dataSourceConfig: '',
-                dataSourceConfigId: ''
+                dataSource: '',
+                dsId: ''
             }
 
         },
@@ -115,7 +110,7 @@
             init() {
             },
             search() {
-                if (this.$isEmpty(this.dataSourceConfigId)) {
+                if (this.$isEmpty(this.dsId)) {
                     Message({
                         message: '请选择数据源',
                         type: 'warning',
@@ -125,7 +120,7 @@
                 }
                 this.pageLoading = true;
                 getTables({
-                    "dataSourceConfigId": this.dataSourceConfigId
+                    "dsId": this.dsId
                 }).then(res => {
                     this.tableData = res.data;
                     let list = this.tableData.filter((item, index) =>
@@ -150,11 +145,11 @@
                 this.currentPage = val;
                 this.search();
             },
-            async queryDataSourceConfig(queryString, cb) {
-                await getDataSourceConfig().then(res => {
+            async queryDataSource(queryString, cb) {
+                await getDataSource().then(res => {
                     let data = res.data;
-                    data.forEach(dataSourceConfig => {
-                        dataSourceConfig.value = dataSourceConfig.name;
+                    data.forEach(dataSource => {
+                        dataSource.value = dataSource.name;
                     });
                     let result = data ? data.filter(this.createFilter(queryString)) : data;
                     // 调用 callback 返回建议列表的数据
@@ -166,12 +161,12 @@
                 });
             },
             createFilter(queryString) {
-                return (dataSourceConfig) => {
-                    return (dataSourceConfig.name.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
+                return (dataSource) => {
+                    return (dataSource.name.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
                 };
             },
             handleSelect(val) {
-                this.dataSourceConfigId = val.id;
+                this.dsId = val.id;
             }
         }
 

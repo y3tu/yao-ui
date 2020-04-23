@@ -25,8 +25,8 @@ export function getGenConfig(data) {
 /**
  * 获取数据源配置
  */
-export function getDataSourceConfig() {
-    return request.get('support/common/dataSourceConfig/getAll');
+export function getDataSource() {
+    return request.get('support/common/dataSource/getAll');
 }
 
 /**
