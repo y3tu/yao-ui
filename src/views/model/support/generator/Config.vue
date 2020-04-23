@@ -6,20 +6,19 @@
                     <div slot="header" class="clearfix">
                         <span>字段配置：{{tableName}}</span>
                         <el-button
-                                :loading="genZipLoading"
+                                :loading="saveColumnLoading"
                                 icon="el-icon-s-promotion"
                                 size="mini"
                                 style="float: right; padding: 6px 9px;"
                                 type="success"
-                                @click="toGenZip">保存&生成
+                                @click="saveColumn">保存
                         </el-button>
                         <el-button
-                                :loading="genPreviewLoading"
                                 icon="el-icon-check"
                                 size="mini"
                                 style="float: right; padding: 6px 9px;margin-right: 9px"
                                 type="primary"
-                                @click="toGenPreview">预览
+                                @click="toPreview">预览
                         </el-button>
                     </div>
                     <el-form size="small" label-width="90px">
@@ -97,12 +96,12 @@
                     <div slot="header" class="clearfix">
                         <span class="role-span">生成配置</span>
                         <el-button
-                                :loading="genConfigLoading"
+                                :loading="saveGenLoading"
                                 icon="el-icon-check"
                                 size="mini"
                                 style="float: right; padding: 6px 9px"
                                 type="primary"
-                                @click="saveGenConfig">保存
+                                @click="saveGen">保存
                         </el-button>
                     </div>
                     <el-form ref="form" :model="form" :rules="rules" size="small" label-width="100px">
@@ -146,7 +145,7 @@
 
 <script>
 
-    import {getGenConfig} from './Api'
+    import {getGenConfig,saveGenConfig,saveColumnConfig} from './Api'
 
     export default {
         name: 'GeneratorConfig',
@@ -155,9 +154,8 @@
                 tableName: '',
                 dsId: '',
                 columnLoading: false,
-                genZipLoading: false,
-                genPreviewLoading: false,
-                genConfigLoading:false,
+                saveColumnLoading: false,
+                saveGenLoading:false,
                 tableHeight: 550,
                 dicts: [],
                 columnConfigList: [],
@@ -211,25 +209,50 @@
                     this.columnConfigList = res.data.columnConfigList;
                     //this.form.cover = this.form.cover.toString()
                     this.columnLoading = false;
+                }).catch(err=>{
+                    this.columnLoading = false;
                 });
-                this.columnLoading = false;
                 // getDicts().then(data => {
                 //     this.dicts = data
                 // })
             })
         },
         methods: {
-            toGenZip() {
-
-            }
-            ,
-            toGenPreview() {
+            //保存字段配置
+            saveColumn() {
+                this.saveColumnLoading = true;
+                this.columnConfigList.forEach(columnConfig=>{
+                    columnConfig.tableName = this.tableName;
+                    columnConfig.dsId = this.dsId;
+                });
+                saveColumnConfig(this.columnConfigList).then(res => {
+                    this.$message({
+                        message: '保存成功',
+                        type: 'success'
+                    });
+                    this.saveColumnLoading = false;
+                }).catch(err => {
+                    this.saveColumnLoading = false;
+                })
+            },
+            //保存基本生成配置
+            saveGen(){
+                this.saveGenLoading = true;
+                this.form.tableName = this.tableName;
+                this.form.dsId = this.dsId;
+                saveGenConfig(this.form).then(res => {
+                    this.$message({
+                        message: '保存成功',
+                        type: 'success'
+                    });
+                    this.saveGenLoading = false;
+                }).catch(err => {
+                    this.saveGenLoading = false;
+                })
+            },
+            toPreview() {
 
             },
-
-            saveGenConfig(){
-
-            }
         }
     }
 </script>

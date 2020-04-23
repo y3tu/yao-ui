@@ -33,11 +33,11 @@ export function getDataSource() {
  * 更新代码生成配置
  */
 export function saveGenConfig(data) {
-    return request.put('support/common/generator/saveGenConfig', data)
+    return request.postData('support/common/generator/saveGenConfig', data)
 }
 
 export function saveColumnConfig(data) {
-    return request.put('support/common/generator/saveColumnConfig', data)
+    return request.postData('support/common/generator/saveColumnConfig', data)
 }
 
 export function genPreview(data) {

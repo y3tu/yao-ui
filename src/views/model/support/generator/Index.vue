@@ -44,7 +44,7 @@
                             </el-button>
                         </el-col>
                         <el-col :span="6">
-                            <el-button type="success" size="mini" round @click="toDownload(scope.row.tableName)">下载</el-button>
+                            <el-button type="success" size="mini" round @click="toDownload(scope.row.name,dsId)">下载</el-button>
                         </el-col>
                         <el-col :span="6">
                             <el-button type="info" size="mini" round>
@@ -167,7 +167,16 @@
             },
             handleSelect(val) {
                 this.dsId = val.id;
+            },
+            toDownload(tableName,dsId){
+                let obj = {
+                    tableName:tableName,
+                    dsId:dsId
+                };
+                this.$download('support/common/generator/genZip',obj,'代码.zip');
+                this.$message('正在处理，请稍等！');
             }
+
         }
 
     }

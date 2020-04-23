@@ -17,7 +17,7 @@
             return {
                 data: null,
                 height: '',
-                activeName: 'Entity'
+                activeName: 'Entity.java'
             }
         },
         created() {
@@ -26,8 +26,8 @@
                 tableName:this.$route.query.tableName,
                 dsId:this.$route.query.dsId
             };
-            genPreview(data).then(data => {
-                this.data = data
+            genPreview(data).then(res => {
+                this.data = res.data
             }).catch(() => {
                 this.$router.go(-1)
             })
