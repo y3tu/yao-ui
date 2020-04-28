@@ -41,7 +41,7 @@
                         <span>{{ resource.resourceId === '' ? this.$t('common.add') : this.$t('common.edit') }}</span>
                     </div>
                     <div>
-                        <el-form :inline="true" ref="form" :model="resource" :rules="rules" label-position="right" label-width="100px">
+                        <el-form :inline="true" ref="form" :model="resource" :rules="rules" label-position="right" label-width="200px">
                             <el-form-item :label="$t('table.resource.type')" prop="type">
                                 <el-radio-group style="width: 300px" v-model="resource.type" :disabled="resource.resourceId !== ''">
                                     <el-radio-button :label="2">目录</el-radio-button>

@@ -24,7 +24,22 @@ export function updateDictData(data) {
     return request.put('support/dict/updateDictData',data);
 }
 
-export function getDataByDictName(name) {
-    return request.get('support/dict/getDataByDictName/'+name);
+export function saveDictSql(data) {
+    return request.post('support/dict/saveDictSql',data);
 }
+
+export function getDictDataByDictName(name) {
+    return request.get('support/dict/getDictDataByDictName/'+name);
+}
+
+export function getDictData(code) {
+    return request.get('support/dict/getDictData/'+code);
+}
+
+export function getDictSqlByDictId(dictId) {
+    return request.get('support/dict/getDictSqlByDictId/'+dictId);
+}
+
+
+
 

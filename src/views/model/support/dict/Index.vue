@@ -100,7 +100,8 @@
                 </el-card>
             </el-col>
             <el-col :xs="24" :sm="24" :md="14" :lg="14" :xl="14">
-                <dict-data ref="dictData"/>
+                <dict-sql ref="dictSql" v-if="isDictSql"/>
+                <dict-data ref="dictData" v-else/>
             </el-col>
         </el-row>
 
@@ -141,10 +142,11 @@
     import {copyObj} from '@/utils'
 
     import dictData from './DictData'
+    import dictSql from './DictSql'
 
     export default {
         name: 'dict',
-        components: {dictData},
+        components: {dictData, dictSql},
         mixins: [page],
         data() {
             return {
@@ -159,7 +161,8 @@
                 submitLoading: false,
                 delLoading: false,
                 dictId: '',
-                dictName: ''
+                dictName: '',
+                isDictSql: false
             }
         },
         created() {
@@ -197,9 +200,15 @@
             },
             handleCurrentChange(val) {
                 if (val) {
-                    this.$refs.dictData.dictName = val.name;
-                    this.$refs.dictData.dictId = val.id;
-                    this.$refs.dictData.init()
+                    if (val.type === 0) {
+                        this.isDictSql = false;
+                        this.$refs.dictData.dictName = val.name;
+                        this.$refs.dictData.dictId = val.id;
+                        this.$refs.dictData.init()
+                    } else {
+                        this.isDictSql = true;
+                        this.$refs.dictSql.dictId = val.id;
+                    }
                 }
             },
             doEdit(row) {
@@ -258,7 +267,6 @@
                 this.form = {};
                 this.$refs['form'].resetFields();
             }
-
         }
     }
 </script>

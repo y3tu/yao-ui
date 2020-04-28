@@ -1,6 +1,7 @@
 'use strict';
 const settings = require('./src/settings.js');
 const path = require('path');
+
 function resolve(dir) {
     return path.join(__dirname, dir)
 }
@@ -26,11 +27,12 @@ module.exports = {
 
     },
 
-    configureWebpack:{
+    configureWebpack: {
         name: name,
         resolve: {
             alias: {
-                '@': resolve('src')
+                '@': resolve('src'),
+                '@crud': resolve('src/components/Crud')
             }
         }
     },
@@ -61,8 +63,7 @@ module.exports = {
             .tap(options => {
                 options.compilerOptions.preserveWhitespace = true;
                 return options
-            })
-            .end()
+            }).end()
     }
 };
 
