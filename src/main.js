@@ -15,8 +15,7 @@ import './icons' //图标
 import './utils/error-log' //错误日志
 import request from '@/utils/request'
 import {isEmpty,isNotEmpty} from "./utils/my-validate"
-// 数据字典
-import dict from './components/Dict'
+
 import * as filters from './filters'
 
 //背景粒子效果
@@ -24,18 +23,19 @@ import VueParticlesBg from "particles-bg-vue";
 Vue.use(VueParticlesBg);
 
 import {hasPermission, hasNoPermission, hasAnyPermission} from './utils/permissionDirect'
+import {dict} from './utils/dictDirect'
 
 const Plugins = [
     hasPermission,
     hasNoPermission,
-    hasAnyPermission
+    hasAnyPermission,
+    dict
 ];
 
 Plugins.map((plugin) => {
     Vue.use(plugin)
 });
 
-Vue.use(dict);
 
 Vue.use(Element, {
     i18n: (key, value) => i18n.t(key, value)

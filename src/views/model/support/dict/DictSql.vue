@@ -13,10 +13,11 @@
         </div>
         <el-form ref="form" :model="form" :rules="rules" size="small" label-width="100px">
             <el-form-item label="数据源" prop="dsId">
-                <el-input v-model="form.dsId" style="width: 40%"/>
+                <el-select v-model="form.dsId" placeholder="请选择" v-dict="'DATA_SOURCE'">
+                </el-select>
             </el-form-item>
             <el-form-item label="SQL" prop="sqlText">
-                <el-input v-model="form.sqlText" style="width: 40%"/>
+                <el-input v-model="form.sqlText" type="textarea" :rows="10" style="width: 40%"/>
             </el-form-item>
             <el-form-item label="条件字段" prop="whereColumn">
                 <el-input v-model="form.whereColumn" style="width: 40%"/>
@@ -44,13 +45,13 @@
 
 <script>
 
-    import {getDictSqlByDictId,saveDictSql} from './Api'
+    import {getDictSql, saveDictSql} from './Api'
 
     export default {
         data() {
             return {
                 saveLoading: false,
-                dictId:'',
+                dictId: '',
                 form: {
                     dsId: '',
                     sqlText: '',
@@ -72,25 +73,36 @@
         methods: {
             created() {
                 this.$nextTick(() => {
-                    if(this.$isNotEmpty(this.dictId)){
-                        getDictSqlByDictId(this.dictId).then(res=>{
-                            this.form = res.data;
-                        })
-                    }
+                    this.init();
                 })
             },
+            init(){
+                if (this.$isNotEmpty(this.dictId)) {
+                    getDictSql(this.dictId).then(res => {
+                        if(this.$isNotEmpty(res.data)){
+                            delete res.data.createTime;
+                            delete res.data.updateTime
+                            this.form = res.data;
+                        }
+                    })
+                }
+            },
             doSave() {
-                this.saveLoading = true;
-                this.form.dictId = this.dictId;
-                saveDictSql(this.form).then(res=>{
-                    this.saveLoading = false;
-                    this.$notify({
-                        title: '保存成功',
-                        type: 'success',
-                        duration: 2500
-                    });
-                }).catch(err=>{
-                    this.saveLoading = false;
+                this.$refs['form'].validate((valid) => {
+                    if (valid) {
+                        this.saveLoading = true;
+                        this.form.dictId = this.dictId;
+                        saveDictSql(this.form).then(res => {
+                            this.saveLoading = false;
+                            this.$notify({
+                                title: '保存成功',
+                                type: 'success',
+                                duration: 2500
+                            });
+                        }).catch(err => {
+                            this.saveLoading = false;
+                        })
+                    }
                 })
             }
         }

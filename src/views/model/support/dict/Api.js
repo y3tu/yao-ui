@@ -36,8 +36,8 @@ export function getDictData(code) {
     return request.get('support/dict/getDictData/'+code);
 }
 
-export function getDictSqlByDictId(dictId) {
-    return request.get('support/dict/getDictSqlByDictId/'+dictId);
+export function getDictSql(dictId) {
+    return request.get('support/dict/getDictSql/'+dictId);
 }
 
 

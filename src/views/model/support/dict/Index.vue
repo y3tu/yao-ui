@@ -100,8 +100,8 @@
                 </el-card>
             </el-col>
             <el-col :xs="24" :sm="24" :md="14" :lg="14" :xl="14">
-                <dict-sql ref="dictSql" v-if="isDictSql"/>
-                <dict-data ref="dictData" v-else/>
+                <dict-sql ref="dictSql" v-show="isDictSql"/>
+                <dict-data ref="dictData" v-show="!isDictSql"/>
             </el-col>
         </el-row>
 
@@ -208,6 +208,7 @@
                     } else {
                         this.isDictSql = true;
                         this.$refs.dictSql.dictId = val.id;
+                        this.$refs.dictSql.init()
                     }
                 }
             },
