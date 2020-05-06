@@ -23,7 +23,8 @@ import VueParticlesBg from "particles-bg-vue";
 Vue.use(VueParticlesBg);
 
 import {hasPermission, hasNoPermission, hasAnyPermission} from './utils/permissionDirect'
-import {dict} from './utils/dictDirect'
+// 数据字典
+import dict from './components/Dict'
 
 const Plugins = [
     hasPermission,

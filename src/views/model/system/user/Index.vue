@@ -15,7 +15,7 @@
                 <el-option
                         v-for="item in dict.user_status"
                         :key="item.key"
-                        :label="item.label"
+                        :label="item.name"
                         :value="item.value"/>
             </el-select>
             <el-date-picker
@@ -143,7 +143,7 @@
         mixins: [page],
         components: {UserEdit, UserView},
         // 数据字典
-        dicts: ['用户状态'],
+        dicts: ['user_status'],
         filters: {
             sexFilter(status) {
                 const map = {

@@ -6,7 +6,7 @@ const install = function (Vue) {
             if (this.$options.dicts instanceof Array) {
                 const dict = {
                     dict: {},
-                    label: {}
+                    name: {}
                 };
                 return {
                     dict
@@ -14,7 +14,7 @@ const install = function (Vue) {
             }
             return {}
         },
-        create() {
+        created() {
             if (this.$options.dicts instanceof Array) {
                 new Dict(this.dict).init(this.$options.dicts, () => {
                     this.$nextTick(() => {
@@ -22,7 +22,11 @@ const install = function (Vue) {
                     })
                 })
             }
+        },
+        methods: {
+
         }
+
     })
 };
 

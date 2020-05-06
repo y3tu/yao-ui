@@ -13,16 +13,16 @@ export default class Dict {
         const ps = [];
         codes.forEach(code=>{
             Vue.set(this.dict.dict, code, {});
-            Vue.set(this.dict.label, code, {});
-            Vue.set(this.dict, code, []);
+            Vue.set(this.dict.name, code, {});
+            Vue.set(this.dict, code, [])
 
             ps.push(getDictData(code).then(res=>{
                 let dictDataArr = res.data;
-                this.dict[code].splice(0,0,...dictDataArr);
+                this.dict[code].splice(0, 0, ...dictDataArr);
                 dictDataArr.forEach(dictData=>{
-                    Vue.set(this.dict.dict[code],dictData.value,dictData);
-                    Vue.set(this.dict.label[code], dictData.value, dictData.name)
-                })
+                    Vue.set(this.dict.dict[code], dictData.value, dictData);
+                    Vue.set(this.dict.name[code], dictData.value, dictData.name)
+                });
             }))
         });
         await Promise.all(ps);

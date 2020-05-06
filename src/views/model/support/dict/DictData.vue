@@ -26,6 +26,12 @@
                 <el-table-column prop="name" label="字典名称"/>
                 <el-table-column prop="value" label="字典值"/>
                 <el-table-column prop="sort" label="排序"/>
+                <el-table-column prop="status" label="状态">
+                    <template slot-scope="scope">
+                        <span>{{ dict.name['DATA_STATUS'][scope.row.status] }}</span>
+                    </template>
+                </el-table-column>
+
                 <el-table-column label="操作" width="130px" align="center">
                     <template slot-scope="scope">
                         <el-row :gutter="20">
@@ -74,6 +80,15 @@
                     <el-input v-model.number="form.sort"/>
                 </el-form-item>
 
+                <el-form-item label="状态" prop="status">
+                    <el-radio-group v-model="form.status">
+                        <el-radio v-for="item in dict.DATA_STATUS"
+                                  :key="item.value"
+                                  :label="item.value">{{item.name}}
+                        </el-radio>
+                    </el-radio-group>
+                </el-form-item>
+
             </el-form>
             <div slot="footer" class="dialog-footer">
                 <el-button type="text" @click="cancel">取消</el-button>
@@ -92,6 +107,7 @@
     export default {
 
         mixins: [page],
+        dicts: ['DATA_STATUS'],
         created() {
             this.$nextTick(() => {
                 this.init();
@@ -144,6 +160,7 @@
                 this.isAdd = false;
                 this.form.dictId = this.dictId;
                 this.form = copyObj(row);
+                this.form.status = this.form.status+"";
             },
             doAdd() {
                 this.isAdd = true;
