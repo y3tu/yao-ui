@@ -30,7 +30,7 @@
                                 <el-input
                                         v-model="page.entity.name"
                                         clearable
-                                        style="width: 110px">
+                                        style="width: 100px">
                                 </el-input>
                             </el-form-item>
 

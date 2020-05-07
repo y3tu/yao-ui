@@ -1,14 +1,17 @@
 <template>
     <div class="app-container">
         <div class="filter-container">
-
             <el-autocomplete
                     clearable
-                    v-model="dataSource"
+                    v-model="dataSourceName"
                     :fetch-suggestions="queryDataSource"
                     placeholder="请选择数据源"
                     class="filter-item search-item"
-                    @select="handleSelect"/>
+                    @select="handleSelect">
+                <template slot-scope="{ item }">
+                    <div>{{ item.name }}</div>
+                </template>
+            </el-autocomplete>
             <el-input clearable v-model="tableName" placeholder="请输入表名" style="width:200px" class="filter-item search-item" @keyup.enter.native="search"/>
             <el-button class="filter-item" size="mini" type="success" icon="el-icon-search" @click="search">搜索</el-button>
         </div>
@@ -78,7 +81,7 @@
 
 <script>
     import pageMixins from '@/mixins/page'
-    import {getTables, getDataSource} from './Api'
+    import {getTables} from './Api'
     import {Message} from "element-ui";
     import Config from './Config'
     import Table from "./Table";
@@ -88,6 +91,7 @@
         name: 'generator',
         mixins: [pageMixins],
         components: {Config, Table, Tree},
+        dicts:['DATA_SOURCE'],
         data() {
             return {
                 tableName: '',
@@ -96,7 +100,7 @@
                 currentPage: 1, // 当前页码
                 total: 20, // 总条数
                 pageSize: 10, // 每页的数据条数
-                dataSource: '',
+                dataSourceName: '',
                 dsId: ''
             }
 
@@ -146,19 +150,10 @@
                 this.search();
             },
             async queryDataSource(queryString, cb) {
-                await getDataSource().then(res => {
-                    let data = res.data;
-                    data.forEach(dataSource => {
-                        dataSource.value = dataSource.name;
-                    });
-                    let result = data ? data.filter(this.createFilter(queryString)) : data;
-                    // 调用 callback 返回建议列表的数据
-                    clearTimeout(this.timeout);
-                    this.timeout = setTimeout(() => {
-                        cb(result);
-                    }, 1000 * Math.random());
-
-                });
+                let dataSources = this.dict['DATA_SOURCE'];
+                let result = queryString ? dataSources.filter(this.createFilter(queryString)) : dataSources;
+                // 调用 callback 返回建议列表的数据
+                cb(result);
             },
             createFilter(queryString) {
                 return (dataSource) => {
@@ -166,7 +161,8 @@
                 };
             },
             handleSelect(val) {
-                this.dsId = val.id;
+                this.dsId = val.value;
+                this.dataSourceName = val.name;
             },
             toDownload(tableName,dsId){
                 let obj = {

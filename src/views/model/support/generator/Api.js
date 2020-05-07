@@ -23,13 +23,6 @@ export function getGenConfig(data) {
 }
 
 /**
- * 获取数据源配置
- */
-export function getDataSource() {
-    return request.get('support/common/dataSource/getAll');
-}
-
-/**
  * 更新代码生成配置
  */
 export function saveGenConfig(data) {
