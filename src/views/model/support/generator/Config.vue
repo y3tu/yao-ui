@@ -17,8 +17,10 @@
                                 icon="el-icon-check"
                                 size="mini"
                                 style="float: right; padding: 6px 9px;margin-right: 9px"
-                                type="primary"
-                                @click="toPreview">预览
+                                type="primary">
+                            <router-link :to="'/support/generator/preview?tableName=' + tableName+'&dsId='+dsId">
+                                预览
+                            </router-link>
                         </el-button>
                     </div>
                     <el-form size="small" label-width="90px">
@@ -104,7 +106,7 @@
                                 @click="saveGen">保存
                         </el-button>
                     </div>
-                    <el-form ref="form" :model="form" :rules="rules" size="small" label-width="100px">
+                    <el-form ref="form" :model="form" :rules="rules" size="small" label-width="120px">
                         <el-form-item label="作者名称" prop="author">
                             <el-input v-model="form.author" style="width: 40%"/>
                             <span style="color: #C0C0C0;margin-left: 10px;">类上面的作者名称</span>
@@ -117,24 +119,13 @@
                             <el-input v-model="form.pack" style="width: 40%"/>
                             <span style="color: #C0C0C0;margin-left: 10px;">项目包的名称，生成的代码放到哪个包里面</span>
                         </el-form-item>
-                        <el-form-item label="接口名称" prop="apiAlias">
-                            <el-input v-model="form.apiAlias" style="width: 40%"/>
-                            <span style="color: #C0C0C0;margin-left: 10px;">接口的名称，用于控制器与接口文档中</span>
-                        </el-form-item>
-                        <el-form-item label="前端路径" prop="path">
-                            <el-input v-model="form.path" style="width: 40%"/>
-                            <span style="color: #C0C0C0;margin-left: 10px;">输入views文件夹下的目录，不存在即创建</span>
+                        <el-form-item label="服务请求路径" prop="apiPath">
+                            <el-input v-model="form.apiPath" style="width: 40%"/>
+                            <span style="color: #C0C0C0;margin-left: 10px;">服务的请求路径</span>
                         </el-form-item>
                         <el-form-item label="去表前缀" prop="prefix">
                             <el-input v-model="form.prefix" placeholder="默认不去除表前缀" style="width: 40%"/>
                             <span style="color: #C0C0C0;margin-left: 10px;">默认不去除表前缀，可自定义</span>
-                        </el-form-item>
-                        <el-form-item label="是否覆盖" prop="cover">
-                            <el-radio-group v-model="form.cover" size="mini" style="width: 40%">
-                                <el-radio-button label="true">是</el-radio-button>
-                                <el-radio-button label="false">否</el-radio-button>
-                            </el-radio-group>
-                            <span style="color: #C0C0C0;margin-left: 10px;">谨防误操作，请慎重选择</span>
                         </el-form-item>
                     </el-form>
                 </el-card>
@@ -164,12 +155,9 @@
                     tableName: '',
                     author: '',
                     pack: '',
-                    path: '',
                     moduleName: '',
-                    cover: 'false',
                     apiPath: '',
                     prefix: '',
-                    apiAlias: null
                 },
                 rules: {
                     author: [
@@ -181,15 +169,9 @@
                     moduleName: [
                         {required: true, message: '包路径不能为空', trigger: 'blur'}
                     ],
-                    path: [
-                        {required: true, message: '前端路径不能为空', trigger: 'blur'}
+                    apiPath: [
+                        {required: true, message: '服务请求路径不能为空', trigger: 'blur'}
                     ],
-                    apiAlias: [
-                        {required: true, message: '接口名称不能为空', trigger: 'blur'}
-                    ],
-                    cover: [
-                        {required: true, message: '不能为空', trigger: 'blur'}
-                    ]
                 }
             }
         },
@@ -249,9 +231,6 @@
                 }).catch(err => {
                     this.saveGenLoading = false;
                 })
-            },
-            toPreview() {
-
             },
         }
     }

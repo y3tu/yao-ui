@@ -38,26 +38,25 @@
 
             <el-table-column label="操作" width="300px" align="center" fixed="right">
                 <template slot-scope="scope">
-                    <el-row :gutter="10">
-                        <el-col :span="6">
+                    <el-row :gutter="3">
+                        <el-col :span="8">
                             <el-button type="primary" size="mini" round>
                                 <router-link :to="'/support/generator/preview?tableName=' + scope.row.name+'&dsId='+dsId">
-                                    预览
+                                    预览<i class="el-icon-view el-icon--right"></i>
                                 </router-link>
                             </el-button>
                         </el-col>
-                        <el-col :span="6">
-                            <el-button type="success" size="mini" round @click="toDownload(scope.row.name,dsId)">下载</el-button>
-                        </el-col>
-                        <el-col :span="6">
-                            <el-button type="info" size="mini" round>
+                        <el-col :span="8">
+                            <el-button type="warning" size="mini" round>
                                 <router-link :to="'/support/generator/config?tableName=' + scope.row.name+'&dsId='+dsId">
-                                    编辑
+                                    编辑<i class="el-icon-edit el-icon--right"></i>
                                 </router-link>
                             </el-button>
                         </el-col>
-                        <el-col :span="6">
-                            <el-button type="warning" size="mini" round @click="toGen(scope.row.tableName)">生成</el-button>
+                        <el-col :span="8">
+                            <el-button type="success" size="mini" round @click="toDownload(scope.row.name,dsId)">
+                                下载<i class="el-icon-download el-icon--right"></i>
+                            </el-button>
                         </el-col>
                     </el-row>
                 </template>
@@ -84,14 +83,12 @@
     import {getTables} from './Api'
     import {Message} from "element-ui";
     import Config from './Config'
-    import Table from "./Table";
-    import Tree from "./Tree"
 
     export default {
         name: 'generator',
         mixins: [pageMixins],
-        components: {Config, Table, Tree},
-        dicts:['DATA_SOURCE'],
+        components: {Config},
+        dicts: ['DATA_SOURCE'],
         data() {
             return {
                 tableName: '',
@@ -164,12 +161,12 @@
                 this.dsId = val.value;
                 this.dataSourceName = val.name;
             },
-            toDownload(tableName,dsId){
+            toDownload(tableName, dsId) {
                 let obj = {
-                    tableName:tableName,
-                    dsId:dsId
+                    tableName: tableName,
+                    dsId: dsId
                 };
-                this.$download('support/common/generator/genZip',obj,'代码.zip');
+                this.$download('support/common/generator/genZip', obj, '代码.zip');
                 this.$message('正在处理，请稍等！');
             }
 

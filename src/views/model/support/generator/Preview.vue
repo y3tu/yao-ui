@@ -20,6 +20,14 @@
                 activeName: 'Entity.java'
             }
         },
+        computed: {
+            visitedViews() {
+                return this.$store.state.tagsView.visitedViews
+            },
+            routes() {
+                return this.$store.state.account.routes
+            }
+        },
         created() {
             this.height = document.documentElement.clientHeight - 180 + 'px';
             let data = {
@@ -29,6 +37,8 @@
             genPreview(data).then(res => {
                 this.data = res.data
             }).catch(() => {
+                //预览异常 关闭当前预览页面 跳回上一个页面
+                this.$store.dispatch('tagsView/delView',  this.$route)
                 this.$router.go(-1)
             })
         }

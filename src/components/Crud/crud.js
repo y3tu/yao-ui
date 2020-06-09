@@ -130,7 +130,7 @@ function CRUD(options) {
             return new Promise((resolve, reject) => {
                 crud.loading = true;
                 // 请求数据
-                crud.vms[0].$page(crud.url, crud.getQueryParams()).then(data => {
+                crud.vms[0].vm.$page(crud.url, crud.getQueryParams()).then(data => {
                     crud.page.total = data.totalElements;
                     crud.data = data.content;
                     crud.resetDataStatus();

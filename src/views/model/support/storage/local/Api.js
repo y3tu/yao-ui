@@ -1,27 +1,20 @@
 import request from '@/utils/request'
 
+
+export function page(data) {
+    return request.postData('support/file/localStorage/page',data);
+}
+
 export function add(data) {
-    return request({
-        url: 'api/localStorage',
-        method: 'post',
-        data
-    })
+    return request.postData('support/file/localStorage/create',data);
 }
 
 export function del(ids) {
-    return request({
-        url: 'api/localStorage/',
-        method: 'delete',
-        data: ids
-    })
+    return request.deleteData('support/file/localStorage/delete',ids);
 }
 
 export function edit(data) {
-    return request({
-        url: 'api/localStorage',
-        method: 'put',
-        data
-    })
+    return request.putData('support/file/localStorage/update',data);
 }
 
 export default { add, edit, del }
