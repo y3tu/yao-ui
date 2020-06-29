@@ -116,7 +116,7 @@
                 return `${time}, ${this.user.username}, ${welcomeArr[index]}`
             },
             initIndexData: function() {
-                this.$get('upms/user/index').then((r) => {
+                this.$get('base/user/index').then((r) => {
                     const data = r.data;
                     this.todayIp = data.todayIp;
                     this.totalVisit = data.totalVisitCount;

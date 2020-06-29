@@ -222,7 +222,7 @@
                 this.findPage();
             },
             findPageInit() {
-                this.pageUrl = 'upms/user/page';
+                this.pageUrl = 'base/user/page';
                 return true;
             },
             search() {
@@ -239,7 +239,7 @@
                 this.search()
             },
             exportExcel() {
-                this.$download('upms/user/export', {}, `user_${new Date().getTime()}.xlsx`)
+                this.$download('base/user/export', {}, `user_${new Date().getTime()}.xlsx`)
             },
             add() {
                 this.dialog.title = this.$t('common.add');
@@ -262,7 +262,7 @@
                     this.selection.forEach((u) => {
                         userNames.push(u.username)
                     });
-                    this.$put('upms/user/password/reset', {
+                    this.$put('base/user/password/reset', {
                         usernames: userNames.join(',')
                     }).then(() => {
                         this.$message({
@@ -319,7 +319,7 @@
             },
             delete(userIds) {
                 this.loading = true;
-                this.$delete(`upms/user/delByIds/${userIds}`).then(() => {
+                this.$delete(`base/user/delByIds/${userIds}`).then(() => {
                     this.$message({
                         message: this.$t('tips.deleteSuccess'),
                         type: 'success'

@@ -86,7 +86,7 @@
                 }
                 // 将用户输入的密码this.password与数据库用户密码对比
                 let flag = false;
-                this.$get('upms/user/checkPassword', {password: this.password}).then(
+                this.$get('base/user/checkPassword', {password: this.password}).then(
                     res => {
                         if (res.data) {
                             this.unlock();

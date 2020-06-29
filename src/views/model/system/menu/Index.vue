@@ -171,7 +171,7 @@
         },
         methods: {
             initResourceTree() {
-                this.$get('upms/resource/getResourceTree').then((r) => {
+                this.$get('base/resource/getResourceTree').then((r) => {
                     this.resourceTree = r.data;
                 })
             },
@@ -193,7 +193,7 @@
                 }
             },
             exportExcel() {
-                this.$download('upms/resource/excel', {
+                this.$download('base/resource/excel', {
                     resourceName: this.resourceName
                 }, `resource_${new Date().getTime()}.xlsx`)
             },
@@ -238,7 +238,7 @@
                         this.resource.createTime = this.resource.modifyTime = null;
 
                         if (this.resource.resourceId) {
-                            this.$put('upms/resource/update', {...this.resource}).then(() => {
+                            this.$put('base/resource/update', {...this.resource}).then(() => {
                                 this.buttonLoading = false;
                                 this.$message({
                                     message: this.$t('tips.updateSuccess'),
@@ -249,7 +249,7 @@
                                 this.buttonLoading = false;
                             });
                         } else {
-                            this.$post('upms/resource/create', {...this.resource}).then(() => {
+                            this.$post('base/resource/create', {...this.resource}).then(() => {
                                 this.buttonLoading = false;
                                 this.$message({
                                     message: this.$t('tips.createSuccess'),
@@ -290,7 +290,7 @@
                         type: 'warning'
                     }).then(() => {
                         this.resource.resourceIds = checked.join(',');
-                        this.$delete(`upms/resource/delete/${this.resource.resourceIds}`).then(() => {
+                        this.$delete(`base/resource/delete/${this.resource.resourceIds}`).then(() => {
                             this.$message({
                                 message: this.$t('tips.deleteSuccess'),
                                 type: 'success'

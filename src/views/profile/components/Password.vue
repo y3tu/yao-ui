@@ -28,7 +28,7 @@ export default {
         oldPassword: [
           { required: true, message: this.$t('rules.require'), trigger: 'blur' },
           { validator: (rule, value, callback) => {
-            this.$get('upms/user/checkPassword', {
+            this.$get('base/user/checkPassword', {
               password: value
             }).then((r) => {
               if (r.data) {
@@ -63,7 +63,7 @@ export default {
       this.$refs.form.validate((valid) => {
         if (valid) {
           this.buttonLoading = true
-          this.$put('upms/user/password', {
+          this.$put('base/user/password', {
             password: this.p.newPassword
           }).then(() => {
             this.buttonLoading = false

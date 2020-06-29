@@ -75,7 +75,7 @@
                                     callback(this.$t('rules.mobile'))
                                 }
                                 if (!this.user.userId) {
-                                    this.$get(`upms/user/checkMobile/${value}`).then((r) => {
+                                    this.$get(`base/user/checkMobile/${value}`).then((r) => {
                                         if (!r.data) {
                                             callback(this.$t('rules.mobileExist'))
                                         } else {
@@ -102,7 +102,7 @@
                         this.buttonLoading = true;
                         const temp = {...this.user};
                         temp.lastLoginTime = temp.modifyTime = temp.createTime = null;
-                        this.$put('upms/user/profile', {...temp}).then(() => {
+                        this.$put('base/user/profile', {...temp}).then(() => {
                             this.buttonLoading = false;
                             this.$message({
                                 message: this.$t('tips.updateSuccess'),
@@ -125,7 +125,7 @@
                 this.change = true
             },
             initDepartment() {
-                this.$get('upms/department/tree').then((r) => {
+                this.$get('base/department/tree').then((r) => {
                     this.department = r.data;
                 }).catch((error) => {
                     console.error(error);

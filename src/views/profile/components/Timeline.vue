@@ -25,7 +25,7 @@ export default {
   },
   methods: {
     getTimeLine() {
-      this.$get('upms/loginLog/currentUser').then((r) => {
+      this.$get('base/loginLog/currentUser').then((r) => {
         this.timeline = r.data
       })
     }

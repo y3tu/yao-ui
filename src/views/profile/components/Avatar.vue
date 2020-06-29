@@ -106,7 +106,7 @@ export default {
         return
       }
       this.updating = true;
-      this.$put('upms/user/avatar', { avatar }).then(() => {
+      this.$put('base/user/avatar', { avatar }).then(() => {
         this.$emit('success', avatar);
         this.updating = false
       }).catch((r) => {

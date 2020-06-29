@@ -119,7 +119,7 @@
                 }
             },
             initDepartmentTree() {
-                this.$get('upms/department/tree').then((r) => {
+                this.$get('base/department/tree').then((r) => {
                     this.departmentTree = r.data
                 })
             },
@@ -160,7 +160,7 @@
                         type: 'warning'
                     }).then(() => {
                         this.department.departmentIds = checked.join(',');
-                        this.$delete(`upms/department/delByIds/${this.department.departmentIds}`).then(() => {
+                        this.$delete(`base/department/delByIds/${this.department.departmentIds}`).then(() => {
                             this.$message({
                                 message: this.$t('tips.deleteSuccess'),
                                 type: 'success'
@@ -186,7 +186,7 @@
                         this.buttonLoading = true;
                         this.department.createTime = this.department.modifyTime = null;
                         if (this.department.departmentId) {
-                            this.$put('upms/department/update', {...this.department}).then(() => {
+                            this.$put('base/department/update', {...this.department}).then(() => {
                                 this.buttonLoading = false;
                                 this.$message({
                                     message: this.$t('tips.updateSuccess'),
@@ -197,7 +197,7 @@
                                 this.buttonLoading = false;
                             });
                         } else {
-                            this.$post('upms/department/create', {...this.department}).then(() => {
+                            this.$post('base/department/create', {...this.department}).then(() => {
                                 this.buttonLoading = false;
                                 this.$message({
                                     message: this.$t('tips.createSuccess'),

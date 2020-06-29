@@ -146,7 +146,7 @@
                         {
                             validator: (rule, value, callback) => {
                                 if (!this.role.roleId) {
-                                    this.$get(`upms/role/check/${value}`).then((r) => {
+                                    this.$get(`base/role/check/${value}`).then((r) => {
                                         if (!r.data) {
                                             callback(this.$t('rules.roleNameExist'))
                                         } else {
@@ -181,7 +181,7 @@
                 this.findPage();
             },
             findPageInit() {
-                this.pageUrl = 'upms/role/page';
+                this.pageUrl = 'base/role/page';
                 return true
             },
             search() {
@@ -197,7 +197,7 @@
                 }
             },
             initMenuTree() {
-                this.$get('upms/resource/getResourceTree').then((r) => {
+                this.$get('base/resource/getResourceTree').then((r) => {
                     this.permsTree = r.data
                 });
             },
@@ -246,7 +246,7 @@
             },
             delete(roleIds) {
                 this.loading = true;
-                this.$delete(`upms/role/delete/${roleIds}`).then(() => {
+                this.$delete(`base/role/delete/${roleIds}`).then(() => {
                     this.$message({
                         message: this.$t('tips.deleteSuccess'),
                         type: 'success'
@@ -261,7 +261,7 @@
                         if (this.role.roleId) {
                             this.role.resourceIds = this.$refs.permsTree.getCheckedKeys().join(',');
                             this.role.createTime = this.role.modifyTime = null;
-                            this.$put('upms/role/update', {...this.role}).then(() => {
+                            this.$put('base/role/update', {...this.role}).then(() => {
                                 this.buttonLoading = false;
                                 this.$message({
                                     message: this.$t('tips.updateSuccess'),
@@ -273,7 +273,7 @@
                             })
                         } else {
                             this.role.resourceIds = this.$refs.permsTree.getCheckedKeys().join(',');
-                            this.$post('upms/role/create', {...this.role}).then(() => {
+                            this.$post('base/role/create', {...this.role}).then(() => {
                                 this.buttonLoading = false;
                                 this.$message({
                                     message: this.$t('tips.createSuccess'),

@@ -105,7 +105,7 @@
                         {
                             validator: (rule, value, callback) => {
                                 if (!this.user.userId) {
-                                    this.$get(`upms/user/checkUsername/${value}`).then((r) => {
+                                    this.$get(`base/user/checkUsername/${value}`).then((r) => {
                                         if (!r.data) {
                                             callback(this.$t('rules.usernameExist'))
                                         } else {
@@ -127,7 +127,7 @@
                                     callback(this.$t('rules.mobile'))
                                 }
                                 if (!this.user.userId) {
-                                    this.$get(`upms/user/checkMobile/${value}`).then((r) => {
+                                    this.$get(`base/user/checkMobile/${value}`).then((r) => {
                                         if (!r.data) {
                                             callback(this.$t('rules.mobileExist'))
                                         } else {
@@ -190,7 +190,7 @@
                 }
             },
             initDepartment() {
-                this.$get('upms/department/tree').then((r) => {
+                this.$get('base/department/tree').then((r) => {
                     this.departments = r.data;
                 }).catch((error) => {
                     console.error(error);
@@ -201,7 +201,7 @@
                 })
             },
             initRoles() {
-                this.$get('upms/role/options').then((r) => {
+                this.$get('base/role/options').then((r) => {
                     this.roles = r.data
                 }).catch((error) => {
                     console.error(error);
@@ -225,7 +225,7 @@
                             // create
                             let roleIdOld = this.user.roleId;
                             this.user.roleId = this.user.roleId.join(',');
-                            this.$post('upms/user/create', {...this.user}).then(() => {
+                            this.$post('base/user/create', {...this.user}).then(() => {
                                 this.buttonLoading = false;
                                 this.isVisible = false;
                                 this.$message({
@@ -241,7 +241,7 @@
                             // update
                             let roleIdOld = this.user.roleId;
                             this.user.createTime = this.user.modifyTime = this.user.lastLoginTime = null;
-                            this.$put('upms/user/update', {...this.user}).then(() => {
+                            this.$put('base/user/update', {...this.user}).then(() => {
                                 this.buttonLoading = false;
                                 this.isVisible = false;
                                 this.$message({

@@ -117,7 +117,7 @@ router.beforeEach((to, from, next) => {
         const userRouter = db.get('USER_ROUTER');
         if (token.length && user) {
             if (isEmpty(userRouter)) {
-                request.get(`upms/resource/getUserRouter/${user.username}`).then((res) => {
+                request.get(`base/resource/getUserRouter/${user.username}`).then((res) => {
                     const permissions = res.data.permissions;
                     store.commit('account/setPermissions', permissions);
                     let asyncRouter = res.data.routes;

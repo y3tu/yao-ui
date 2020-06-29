@@ -508,7 +508,7 @@
             },
             //登录成功更新登录时间
             loginSuccessCallback() {
-                this.$get('upms/user/success').catch((e) => {
+                this.$get('base/user/success').catch((e) => {
                     console.log(e)
                 })
             }
