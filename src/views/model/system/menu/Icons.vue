@@ -1,12 +1,11 @@
 <template>
   <el-dialog
-    :title="$t('table.menu.icon')"
+    :title="$t('table.resource.icon')"
     :width="width"
     top="50px"
     :close-on-click-modal="false"
     :close-on-press-escape="false"
-    :visible.sync="isVisible"
-  >
+    :visible.sync="isVisible">
     <el-tabs v-model="activeName" style="margin-top: -1rem;">
       <el-tab-pane :label="$t('common.tab.common')" name="first">
         <ul>

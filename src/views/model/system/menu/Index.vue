@@ -41,69 +41,96 @@
                         <span>{{ resource.resourceId === '' ? this.$t('common.add') : this.$t('common.edit') }}</span>
                     </div>
                     <div>
-                        <el-form :inline="true" ref="form" :model="resource" :rules="rules" label-position="right" label-width="200px">
-                            <el-form-item :label="$t('table.resource.type')" prop="type">
-                                <el-radio-group style="width: 300px" v-model="resource.type" :disabled="resource.resourceId !== ''">
-                                    <el-radio-button :label="2">目录</el-radio-button>
-                                    <el-radio-button :label="0">菜单</el-radio-button>
-                                    <el-radio-button :label="1">按钮</el-radio-button>
-                                </el-radio-group>
-                            </el-form-item>
-                            <el-form-item :label="$t('table.resource.parentId')" prop="parentId">
-                                <treeselect
-                                        v-model="resource.parentId"
-                                        :normalizer="treeSelectNormalizer"
-                                        :multiple="false"
-                                        :options="resourceTree"
-                                        :clear-value-text="$t('common.clear')"
-                                        placeholder=" "
-                                        style="width:500px"/>
-                            </el-form-item>
-                            <el-form-item :label="$t('table.resource.resourceName')" prop="resourceName">
-                                <el-input style="width: 500px" v-model="resource.resourceName"/>
-                            </el-form-item>
-                            <el-form-item v-show="resource.type === 0" label="菜单缓存" prop="cache">
-                                <el-radio-group v-model="resource.cache" size="mini">
-                                    <el-radio-button :label="true">是</el-radio-button>
-                                    <el-radio-button :label="false">否</el-radio-button>
-                                </el-radio-group>
-                            </el-form-item>
-                            <el-form-item v-show="resource.type === 0" label="菜单隐藏" prop="hidden">
-                                <el-radio-group v-model="resource.hidden" size="mini">
-                                    <el-radio-button :label="true">是</el-radio-button>
-                                    <el-radio-button :label="false">否</el-radio-button>
-                                </el-radio-group>
-                            </el-form-item>
-                            <el-form-item v-show="resource.type !== 1" :label="$t('table.resource.icon')" prop="icon">
-                                <el-input v-model="resource.icon" style="width: 500px">
-                                    <el-button slot="append" icon="el-icon-brush" style="padding-left: 0;" @click="chooseIcons"/>
-                                </el-input>
-                            </el-form-item>
-                            <el-form-item v-show="resource.type !== 1" :label="$t('table.resource.component')" prop="component">
-                                <el-autocomplete
-                                        style="width: 500px"
-                                        clearable
-                                        class="inline-input"
-                                        v-model="resource.component"
-                                        :fetch-suggestions="handlerComponentSuggestions"
-                                        placeholder="请选择或者输入组件">
-                                </el-autocomplete>
-                            </el-form-item>
-                            <el-form-item v-show="resource.type === 0" label="组件名称" prop="componentName">
-                                <el-input v-model="resource.componentName" placeholder="匹配组件内Name字段"/>
-                            </el-form-item>
-                            <el-form-item v-show="resource.type !== 1 " :label="$t('table.resource.path')" prop="path">
-                                <el-input v-model="resource.path"/>
-                            </el-form-item>
-                            <el-form-item v-show="resource.type === 0" label="iframe地址" prop="component">
-                                <el-input v-model="resource.iframe"/>
-                            </el-form-item>
-                            <el-form-item v-show="resource.type !== 2 " :label="$t('table.resource.permission')" prop="permission">
-                                <el-input v-model="resource.permission"/>
-                            </el-form-item>
-                            <el-form-item v-show="resource.type !== 1" :label="$t('table.resource.orderNum')" prop="orderNum">
-                                <el-input-number v-model="resource.orderNum" :min="0" :max="100" @change="handleNumChange"/>
-                            </el-form-item>
+                        <el-form ref="form" :model="resource" :rules="rules" label-position="right" label-width="200px">
+                            <el-row>
+                                <el-col>
+                                    <el-form-item :label="$t('table.resource.type')" prop="type">
+                                        <el-radio-group style="width: 300px" v-model="resource.type" :disabled="resource.resourceId !== ''">
+                                            <el-radio-button :label="2">目录</el-radio-button>
+                                            <el-radio-button :label="0">菜单</el-radio-button>
+                                            <el-radio-button :label="1">按钮</el-radio-button>
+                                        </el-radio-group>
+                                    </el-form-item>
+                                </el-col>
+                                <el-col>
+                                    <el-form-item :label="$t('table.resource.parentId')" prop="parentId">
+                                        <treeselect
+                                                v-model="resource.parentId"
+                                                :normalizer="treeSelectNormalizer"
+                                                :multiple="false"
+                                                :options="resourceTree"
+                                                :clear-value-text="$t('common.clear')"
+                                                placeholder=" "
+                                                style="width:500px"/>
+                                    </el-form-item>
+                                </el-col>
+                                <el-col>
+                                    <el-form-item :label="$t('table.resource.resourceName')" prop="resourceName">
+                                        <el-input style="width: 500px" v-model="resource.resourceName"/>
+                                    </el-form-item>
+                                </el-col>
+                                <el-col>
+                                    <el-form-item v-show="resource.type === 0" label="菜单缓存" prop="cache">
+                                        <el-radio-group v-model="resource.cache" size="mini">
+                                            <el-radio-button :label="true">是</el-radio-button>
+                                            <el-radio-button :label="false">否</el-radio-button>
+                                        </el-radio-group>
+                                    </el-form-item>
+                                </el-col>
+                                <el-col>
+                                    <el-form-item v-show="resource.type === 0" label="菜单隐藏" prop="hidden">
+                                        <el-radio-group v-model="resource.hidden" size="mini">
+                                            <el-radio-button :label="true">是</el-radio-button>
+                                            <el-radio-button :label="false">否</el-radio-button>
+                                        </el-radio-group>
+                                    </el-form-item>
+                                </el-col>
+                                <el-col>
+                                    <el-form-item v-show="resource.type !== 1" :label="$t('table.resource.icon')" prop="icon">
+                                        <el-input v-model="resource.icon" style="width: 500px">
+                                            <el-button slot="append" icon="el-icon-brush" style="padding-left: 0;" @click="chooseIcons"/>
+                                        </el-input>
+                                    </el-form-item>
+                                </el-col>
+                                <el-col>
+                                    <el-form-item v-show="resource.type !== 1" :label="$t('table.resource.component')" prop="component">
+                                        <el-autocomplete
+                                                style="width: 500px"
+                                                clearable
+                                                class="inline-input"
+                                                v-model="resource.component"
+                                                :fetch-suggestions="handlerComponentSuggestions"
+                                                placeholder="请选择或者输入组件">
+                                        </el-autocomplete>
+                                    </el-form-item>
+                                </el-col>
+                                <el-col>
+                                    <el-form-item v-show="resource.type === 0" label="组件名称" prop="componentName">
+                                        <el-input v-model="resource.componentName" placeholder="匹配组件内Name字段"/>
+                                    </el-form-item>
+                                </el-col>
+                                <el-col>
+                                    <el-form-item v-show="resource.type !== 1 " :label="$t('table.resource.path')" prop="path">
+                                        <el-input v-model="resource.path"/>
+                                    </el-form-item>
+                                </el-col>
+                                <el-col>
+                                    <el-form-item v-show="resource.type === 0" label="iframe地址" prop="component">
+                                        <el-input v-model="resource.iframe"/>
+                                    </el-form-item>
+                                </el-col>
+                                <el-col>
+                                    <el-form-item v-show="resource.type !== 2 " :label="$t('table.resource.permission')" prop="permission">
+                                        <el-input v-model="resource.permission"/>
+                                    </el-form-item>
+                                </el-col>
+                                <el-col>
+                                    <el-form-item v-show="resource.type !== 1" :label="$t('table.resource.orderNum')" prop="orderNum">
+                                        <el-input-number v-model="resource.orderNum" :min="0" :max="100" @change="handleNumChange"/>
+                                    </el-form-item>
+                                </el-col>
+                            </el-row>
+
                         </el-form>
                     </div>
                 </el-card>

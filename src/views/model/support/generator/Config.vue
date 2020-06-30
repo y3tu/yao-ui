@@ -136,7 +136,7 @@
 
 <script>
 
-    import {getGenConfig,saveGenConfig,saveColumnConfig} from './Api'
+    import {getGenConfig, saveGenConfig, saveColumnConfig} from './Api'
 
     export default {
         name: 'GeneratorConfig',
@@ -146,7 +146,7 @@
                 dsId: '',
                 columnLoading: false,
                 saveColumnLoading: false,
-                saveGenLoading:false,
+                saveGenLoading: false,
                 tableHeight: 550,
                 dicts: [],
                 columnConfigList: [],
@@ -176,34 +176,37 @@
             }
         },
         created() {
-            this.tableHeight = document.documentElement.clientHeight - 385;
-            this.tableName = this.$route.query.tableName;
-            this.dsId = this.$route.query.dsId;
-            this.$nextTick(() => {
-                this.columnLoading = true;
-                getGenConfig({
-                    dsId: this.dsId,
-                    tableName: this.tableName
-                }).then(res => {
-                    if(this.$isNotEmpty(res.data.genConfig)){
-                        this.form = res.data.genConfig;
-                    }
-                    this.columnConfigList = res.data.columnConfigList;
-                    //this.form.cover = this.form.cover.toString()
-                    this.columnLoading = false;
-                }).catch(err=>{
-                    this.columnLoading = false;
-                });
-                // getDicts().then(data => {
-                //     this.dicts = data
-                // })
-            })
+            this.initData();
         },
         methods: {
+            initData() {
+                this.tableHeight = document.documentElement.clientHeight - 385;
+                this.tableName = this.$route.query.tableName;
+                this.dsId = this.$route.query.dsId;
+                this.$nextTick(() => {
+                    this.columnLoading = true;
+                    getGenConfig({
+                        dsId: this.dsId,
+                        tableName: this.tableName
+                    }).then(res => {
+                        if (this.$isNotEmpty(res.data.genConfig)) {
+                            this.form = res.data.genConfig;
+                        }
+                        this.columnConfigList = res.data.columnConfigList;
+                        //this.form.cover = this.form.cover.toString()
+                        this.columnLoading = false;
+                    }).catch(err => {
+                        this.columnLoading = false;
+                    });
+                    // getDicts().then(data => {
+                    //     this.dicts = data
+                    // })
+                })
+            },
             //保存字段配置
             saveColumn() {
                 this.saveColumnLoading = true;
-                this.columnConfigList.forEach(columnConfig=>{
+                this.columnConfigList.forEach(columnConfig => {
                     columnConfig.tableName = this.tableName;
                     columnConfig.dsId = this.dsId;
                 });
@@ -213,12 +216,14 @@
                         type: 'success'
                     });
                     this.saveColumnLoading = false;
+                    //保存后重新刷新数据防止数据重复
+                    this.initData();
                 }).catch(err => {
                     this.saveColumnLoading = false;
                 })
             },
             //保存基本生成配置
-            saveGen(){
+            saveGen() {
                 this.saveGenLoading = true;
                 this.form.tableName = this.tableName;
                 this.form.dsId = this.dsId;
@@ -228,6 +233,8 @@
                         type: 'success'
                     });
                     this.saveGenLoading = false;
+                    //保存后重新刷新数据防止数据重复
+                    this.initData();
                 }).catch(err => {
                     this.saveGenLoading = false;
                 })
