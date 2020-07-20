@@ -74,7 +74,7 @@
                     <span>{{ parseTime(scope.row.createTime) }}</span>
                 </template>
             </el-table-column>
-            <el-table-column v-permission="['admin','author:edit','author:del']" label="操作" width="150px" align="center">
+            <el-table-column v-has-permission="['admin','author:edit','author:del']" label="操作" width="150px" align="center">
                 <template slot-scope="scope">
                     <udOperation
                             :data="scope.row"
@@ -86,7 +86,6 @@
         <!--分页组件-->
         <pagination/>
     </div>
-    </div>
 </template>
 
 <script>
@@ -96,22 +95,22 @@
     import crudOperation from '@crud/CRUD.operation'
     import udOperation from '@crud/UD.operation'
     import pagination from '@crud/Pagination'
-    import crudFile from "../../support/storage/local/Api";
 
     const defaultForm = {
-        id: null,
-        userId: null,
-        inviteCode: null,
-        penName: null,
-        telPhone: null,
-        chatAccount: null,
-        email: null,
-        workDirection: null,
-        status: null,
-        createTime: null
-    }
+        id: '',
+        userId: '',
+        inviteCode: '',
+        penName: '',
+        telPhone: '',
+        chatAccount: '',
+        email: '',
+        workDirection: '',
+        status: '',
+        createTime: ''
+    };
     // crud交由presenter持有
-    const defaultCrud = CRUD({title: '作者', url: 'support/file/localStorage/page', crudMethod: {...crudAuthor}});
+    const defaultCrud = CRUD({title: '作者', url: 'support/book/author/page', crudMethod: {...crudAuthor}});
+
     export default {
         name: 'Author',
         components: {pagination, crudOperation, rrOperation, udOperation},

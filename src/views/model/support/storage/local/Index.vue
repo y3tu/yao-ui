@@ -168,7 +168,7 @@
                     title: msg.message,
                     type: 'error',
                     duration: 2500
-                })
+                });
                 this.loading = false
             }
         }
