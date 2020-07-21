@@ -124,9 +124,12 @@
                     this.allColumnsSelected = true;
                     return
                 }
-                for (const key in this.crud.props.tableColumns) {
-                    this.crud.props.tableColumns[key].visible = val
-                }
+                this.crud.props.tableColumns.forEach(column => {
+                    if (!column.visible) {
+                        column.visible = true
+                        this.updateColumnVisible(column)
+                    }
+                })
                 this.allColumnsSelected = val;
                 this.allColumnsSelectedIndeterminate = false
             },
@@ -146,6 +149,23 @@
                 }
                 this.allColumnsSelected = selectedCount === totalCount;
                 this.allColumnsSelectedIndeterminate = selectedCount !== totalCount && selectedCount !== 0
+                this.updateColumnVisible(item)
+            },
+            updateColumnVisible(item) {
+                const table = this.crud.props.table;
+                const vm = table.$children.find(e => e.prop === item.property);
+                const columnConfig = vm.columnConfig;
+                if (item.visible) {
+                    let columnIndex = -1
+                    // 找出合适的插入点
+                    table.store.states.columns.find(e => {
+                        columnIndex++
+                        return e.__index !== undefined && e.__index > columnConfig.__index
+                    })
+                    vm.owner.store.commit('insertColumn', columnConfig, columnIndex, null)
+                } else {
+                    vm.owner.store.commit('removeColumn', columnConfig, null)
+                }
             },
             toggleSearch() {
                 this.crud.props.searchToggle = !this.crud.props.searchToggle

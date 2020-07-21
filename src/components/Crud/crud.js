@@ -16,6 +16,8 @@ function CRUD(options) {
         url: '',
         // 表格数据
         data: [],
+        //数据的主键字段 用于查找主键删除数据
+        dataKey:'',
         // 选择项
         selections: [],
         // 待查询的对象
@@ -168,7 +170,7 @@ function CRUD(options) {
                 return
             }
             crud.status.edit = CRUD.STATUS.PREPARED;
-            crud.getDataStatus(data.id).edit = CRUD.STATUS.PREPARED;
+            crud.getDataStatus(data[crud.dataKey]).edit = CRUD.STATUS.PREPARED;
             callVmHook(crud, CRUD.HOOK.afterToEdit, crud.form);
             callVmHook(crud, CRUD.HOOK.afterToCU, crud.form)
         },
@@ -177,7 +179,7 @@ function CRUD(options) {
          * @param {*} data 数据项
          */
         toDelete(data) {
-            crud.getDataStatus(data.id).delete = CRUD.STATUS.PREPARED
+            crud.getDataStatus(data[crud.dataKey]).delete = CRUD.STATUS.PREPARED
         },
         /**
          * 取消删除
@@ -187,7 +189,7 @@ function CRUD(options) {
             if (!callVmHook(crud, CRUD.HOOK.beforeDeleteCancel, data)) {
                 return
             }
-            crud.getDataStatus(data.id).delete = CRUD.STATUS.NORMAL;
+            crud.getDataStatus(data[crud.dataKey]).delete = CRUD.STATUS.NORMAL;
             callVmHook(crud, CRUD.HOOK.afterDeleteCancel, data)
         },
         /**
@@ -207,7 +209,7 @@ function CRUD(options) {
                     return
                 }
                 crud.status.edit = CRUD.STATUS.NORMAL;
-                crud.getDataStatus(crud.form.id).edit = CRUD.STATUS.NORMAL
+                crud.getDataStatus(crud.form[crud.dataKey]).edit = CRUD.STATUS.NORMAL
             }
             crud.resetForm();
             if (addStatus === CRUD.STATUS.PREPARED) {
@@ -271,7 +273,7 @@ function CRUD(options) {
             crud.status.edit = CRUD.STATUS.PROCESSING;
             crud.crudMethod.edit(crud.form).then(() => {
                 crud.status.edit = CRUD.STATUS.NORMAL;
-                crud.getDataStatus(crud.form.id).edit = CRUD.STATUS.NORMAL;
+                crud.getDataStatus(crud.form[crud.dataKey]).edit = CRUD.STATUS.NORMAL;
                 crud.editSuccessNotify();
                 crud.resetForm();
                 callVmHook(crud, CRUD.HOOK.afterSubmit);
@@ -292,11 +294,11 @@ function CRUD(options) {
             if (data instanceof Array) {
                 delAll = true;
                 data.forEach(val => {
-                    ids.push(val.id)
+                    ids.push(val[crud.dataKey])
                 })
             } else {
-                ids.push(data.id);
-                dataStatus = crud.getDataStatus(data.id)
+                ids.push(data[crud.dataKey]);
+                dataStatus = crud.getDataStatus(data[crud.dataKey])
             }
             if (!callVmHook(crud, CRUD.HOOK.beforeDelete, data)) {
                 return
@@ -368,10 +370,15 @@ function CRUD(options) {
          * @param {Boolean} toQuery 重置后进行查询操作
          */
         resetQuery(toQuery = true) {
-            const defaultQuery = JSON.parse(JSON.stringify(crud.defaultQuery));
-            const query = crud.query;
-            Object.keys(query).forEach(key => {
-                query[key] = defaultQuery[key]
+            const defaultEntity = JSON.parse(JSON.stringify(crud.defaultEntity));
+            const defaultParams = JSON.parse(JSON.stringify(crud.defaultParams));
+            const entity = crud.entity;
+            const params = crud.params;
+            Object.keys(entity).forEach(key => {
+                entity[key] = defaultEntity[key]
+            });
+            Object.keys(params).forEach(key => {
+                params[key] = defaultParams[key]
             });
             if (toQuery) {
                 crud.toQuery()
@@ -400,7 +407,7 @@ function CRUD(options) {
 
             function resetStatus(datas) {
                 datas.forEach(e => {
-                    dataStatus[e.id] = {
+                    dataStatus[e[crud.dataKey]] = {
                         delete: 0,
                         edit: 0
                     };
@@ -414,10 +421,9 @@ function CRUD(options) {
         },
         /**
          * 获取数据状态
-         * @param {Number | String} id 数据项id
          */
-        getDataStatus(id) {
-            return crud.dataStatus[id]
+        getDataStatus(key) {
+            return crud.dataStatus[key]
         },
         /**
          * 用于树形表格多选, 选中所有
@@ -492,7 +498,8 @@ function CRUD(options) {
     Object.assign(crud, methods);
     // 记录初始默认的查询参数，后续重置查询时使用
     Object.assign(crud, {
-        defaultQuery: JSON.parse(JSON.stringify(data.entity)),
+        defaultEntity: JSON.parse(JSON.stringify(data.entity)),
+        defaultParams: JSON.parse(JSON.stringify(data.params)),
         // 预留4位存储：组件 主页、头部、分页、表单，调试查看也方便找
         vms: Array(4),
         /**
