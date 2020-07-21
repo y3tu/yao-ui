@@ -19,7 +19,7 @@ function CRUD(options) {
         // 选择项
         selections: [],
         // 待查询的对象
-        query: {},
+        entity: {},
         // 查询数据的参数
         params: {},
         // Form 表单
@@ -35,7 +35,7 @@ function CRUD(options) {
         crudMethod: {
             add: (form) => {
             },
-            delete: (id) => {
+            del: (id) => {
             },
             edit: (form) => {
             },
@@ -88,7 +88,7 @@ function CRUD(options) {
         },
         page: {
             // 页码
-            page: 0,
+            page: 1,
             // 每页数据条数
             size: 10,
             // 总数据条数
@@ -130,9 +130,10 @@ function CRUD(options) {
             return new Promise((resolve, reject) => {
                 crud.loading = true;
                 // 请求数据
-                crud.vms[0].vm.$page(crud.url, crud.getQueryParams()).then(data => {
-                    crud.page.total = data.totalElements;
-                    crud.data = data.content;
+                crud.vms[0].vm.$page(crud.url, crud.getQueryParams()).then(res => {
+                    let data = res.data;
+                    crud.page.total = data.total;
+                    crud.data = data.records;
                     crud.resetDataStatus();
                     // time 毫秒后显示表格
                     setTimeout(() => {
@@ -334,11 +335,11 @@ function CRUD(options) {
          */
         getQueryParams: function () {
             return {
-                page: crud.page.page - 1,
+                current: crud.page.page ,
                 size: crud.page.size,
                 sort: crud.sort,
-                ...crud.query,
-                ...crud.params
+                entity: crud.entity,
+                params: crud.params
             }
         },
         // 当前页改变
@@ -408,7 +409,6 @@ function CRUD(options) {
                     }
                 })
             }
-
             resetStatus(crud.data);
             crud.dataStatus = dataStatus
         },
@@ -492,7 +492,7 @@ function CRUD(options) {
     Object.assign(crud, methods);
     // 记录初始默认的查询参数，后续重置查询时使用
     Object.assign(crud, {
-        defaultQuery: JSON.parse(JSON.stringify(data.query)),
+        defaultQuery: JSON.parse(JSON.stringify(data.entity)),
         // 预留4位存储：组件 主页、头部、分页、表单，调试查看也方便找
         vms: Array(4),
         /**

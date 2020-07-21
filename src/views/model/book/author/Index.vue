@@ -5,18 +5,8 @@
             <!--如果想在工具栏加入更多按钮，可以使用插槽方式， slot = 'left' or 'right'-->
             <div v-if="crud.props.searchToggle">
                 <!-- 搜索 -->
-                <el-input v-model="query.blurry" clearable size="small" placeholder="输入内容模糊搜索" style="width: 200px" class="filter-item"
+                <el-input v-model="crud.entity.penName" clearable size="small" placeholder="请输入笔名" style="width: 200px" class="filter-item"
                           @keyup.enter.native="crud.toQuery"/>
-                <el-date-picker
-                        v-model="query.createTime"
-                        :default-time="['00:00:00','23:59:59']"
-                        type="daterange"
-                        range-separator=":"
-                        size="small"
-                        class="date-item"
-                        value-format="yyyy-MM-dd HH:mm:ss"
-                        start-placeholder="开始日期"
-                        end-placeholder="结束日期"/>
                 <rrOperation :crud="crud"/>
             </div>
         </div>
@@ -58,28 +48,34 @@
             </div>
         </el-dialog>
         <!--表格渲染-->
-        <el-table ref="table" v-loading="crud.loading" :data="crud.data" size="small" style="width: 100%;" @selection-change="crud.selectionChangeHandler">
+        <el-table ref="table" border v-loading="crud.loading" :data="crud.data" size="small" style="width: 100%;" @selection-change="crud.selectionChangeHandler">
             <el-table-column type="selection" width="55"/>
-            <el-table-column prop="id" label="主键"/>
             <el-table-column prop="userId" label="用户ID"/>
             <el-table-column prop="inviteCode" label="邀请码"/>
             <el-table-column prop="penName" label="笔名"/>
             <el-table-column prop="telPhone" label="手机号码"/>
             <el-table-column prop="chatAccount" label="QQ或微信账号"/>
             <el-table-column prop="email" label="电子邮箱"/>
-            <el-table-column prop="workDirection" label="作品方向，0：男频，1：女频"/>
-            <el-table-column prop="status" label="0：正常，1：封禁"/>
-            <el-table-column prop="createTime" label="创建时间">
+            <el-table-column prop="workDirection" label="作品方向">
+                <template slot-scope="scope">
+                    <span>{{scope.row.workDirection===0?'男频':'女频'}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column prop="status" label="状态">
+                <template slot-scope="scope">
+                    <span>{{scope.row.status===0?'正常':'封禁'}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column prop="createTime" label="创建时间" width="200">
                 <template slot-scope="scope">
                     <span>{{ parseTime(scope.row.createTime) }}</span>
                 </template>
             </el-table-column>
-            <el-table-column v-has-permission="['admin','author:edit','author:del']" label="操作" width="150px" align="center">
+            <el-table-column v-has-permission="['author:update','author:delete']" label="操作" width="150px" align="center">
                 <template slot-scope="scope">
                     <udOperation
                             :data="scope.row"
-                            :permission="permission"
-                    />
+                            :permission="permission"/>
                 </template>
             </el-table-column>
         </el-table>
@@ -97,16 +93,16 @@
     import pagination from '@crud/Pagination'
 
     const defaultForm = {
-        id: '',
-        userId: '',
-        inviteCode: '',
-        penName: '',
-        telPhone: '',
-        chatAccount: '',
-        email: '',
-        workDirection: '',
-        status: '',
-        createTime: ''
+        id: null,
+        userId: null,
+        inviteCode: null,
+        penName: null,
+        telPhone: null,
+        chatAccount: null,
+        email: null,
+        workDirection: null,
+        status: null,
+        createTime: null
     };
     // crud交由presenter持有
     const defaultCrud = CRUD({title: '作者', url: 'support/book/author/page', crudMethod: {...crudAuthor}});
@@ -118,9 +114,9 @@
         data() {
             return {
                 permission: {
-                    add: ['author:add'],
-                    edit: ['author:edit'],
-                    del: ['author:del']
+                    add: ['author:create'],
+                    edit: ['author:update'],
+                    del: ['author:delete']
                 },
                 rules: {
                     inviteCode: [
