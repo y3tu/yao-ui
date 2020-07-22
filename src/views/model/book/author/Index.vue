@@ -72,7 +72,7 @@
                     <span>{{ parseTime(scope.row.createTime) }}</span>
                 </template>
             </el-table-column>
-            <el-table-column v-has-permission="['author:update','author:delete']" label="操作" width="150px" align="center">
+            <el-table-column v-has-permission="['author:update','author:delete']" prop="control" label="操作" width="150px" align="center">
                 <template slot-scope="scope">
                     <udOperation
                             :data="scope.row"
@@ -104,13 +104,14 @@
         status: 0,
         createTime: null
     };
-    // crud交由presenter持有
-    const defaultCrud = CRUD({title: '作者', url: 'support/book/author/page', dataKey: 'userId', crudMethod: {...crudAuthor}});
 
     export default {
         name: 'Author',
         components: {pagination, crudOperation, rrOperation, udOperation},
-        mixins: [presenter(defaultCrud), header(), form(defaultForm), crud()],
+        cruds() {
+            return CRUD({title: '作者', url: 'support/book/author/page', idField: 'userId', crudMethod: {...crudAuthor}});
+        },
+        mixins: [presenter(), header(), form(defaultForm), crud()],
         data() {
             return {
                 permission: {
