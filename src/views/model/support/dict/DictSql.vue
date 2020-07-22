@@ -77,10 +77,7 @@
                 rules: {
                     dsId: [
                         {required: true, message: '数据源不能为空', trigger: 'blur'}
-                    ],
-                    sqlText: [
-                        {required: true, message: 'SQL不能为空', trigger: 'blur'}
-                    ],
+                    ]
                 }
             }
         },
@@ -110,6 +107,16 @@
                             delete res.data.updateTime;
                             this.form = res.data;
                             this.sqlEditor.setValue(this.form.sqlText);
+                        }else {
+                            this.form = {
+                                dsId: '',
+                                sqlText: '',
+                                whereColumn: '',
+                                maxRows: 99,
+                                description: '',
+                                status: 0
+                            };
+                            this.sqlEditor.setValue('');
                         }
                     })
                 }

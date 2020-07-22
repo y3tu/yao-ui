@@ -167,7 +167,7 @@
                         {required: true, message: '包路径不能为空', trigger: 'blur'}
                     ],
                     moduleName: [
-                        {required: true, message: '包路径不能为空', trigger: 'blur'}
+                        {required: true, message: '模块不能为空', trigger: 'blur'}
                     ],
                     apiPath: [
                         {required: true, message: '服务请求路径不能为空', trigger: 'blur'}

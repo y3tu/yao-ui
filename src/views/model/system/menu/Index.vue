@@ -41,7 +41,7 @@
                         <span>{{ resource.resourceId === '' ? this.$t('common.add') : this.$t('common.edit') }}</span>
                     </div>
                     <div>
-                        <el-form ref="form" :model="resource" :rules="rules" label-position="right" label-width="200px">
+                        <el-form ref="form" :model="resource" :rules="rules" label-position="right" label-width="200px" style="min-height: 600px">
                             <el-row>
                                 <el-col>
                                     <el-form-item :label="$t('table.resource.type')" prop="type">
