@@ -6,7 +6,7 @@
             <div v-if="crud.props.searchToggle">
                 <!-- 搜索 -->
                 <label class="el-form-item-label">小说分类</label>
-                <el-select v-model="crud.entity.catId" placeholder="请选择">
+                <el-select v-model="crud.entity.catId" placeholder="请选择" class="filter-item">
                     <el-option
                             v-for="item in dict.BOOK_CATEGORY"
                             :key="item.value"
@@ -15,11 +15,19 @@
                     </el-option>
                 </el-select>
                 <label class="el-form-item-label">小说名</label>
-                <el-input v-model="crud.entity.bookName" clearable placeholder="爬取的小说名" style="width: 185px;" class="filter-item"
+                <el-input v-model="crud.entity.bookName" clearable placeholder="小说名" style="width: 185px;" class="filter-item"
                           @keyup.enter.native="crud.toQuery"/>
                 <label class="el-form-item-label">作者名</label>
-                <el-input v-model="crud.entity.authorName" clearable placeholder="爬取的小说作者名" style="width: 185px;" class="filter-item"
+                <el-input v-model="crud.entity.authorName" clearable placeholder="作者名" style="width: 185px;" class="filter-item"
                           @keyup.enter.native="crud.toQuery"/>
+
+                <label class="el-form-item-label">状态</label>
+                <el-select v-model="crud.entity.taskStatus" placeholder="请选择" class="filter-item">
+                    <el-option label="成功" value="1"/>
+                    <el-option label="待执行" value="2"/>
+                    <el-option label="执行中" value="3"/>
+                    <el-option label="失败" value="0"/>
+                </el-select>
                 <rrOperation :crud="crud"/>
             </div>
             <crudOperation :permission="permission"/>
@@ -63,7 +71,13 @@
             </div>
         </el-dialog>
         <!--表格渲染-->
-        <el-table ref="table" v-loading="crud.loading" :data="crud.data" size="small" style="width: 100%;" @selection-change="crud.selectionChangeHandler">
+        <el-table ref="table"
+                  v-loading="crud.loading"
+                  :data="crud.data"
+                  size="small"
+                  style="width: 100%;"
+                  @selection-change="crud.selectionChangeHandler"
+                  :row-class-name="tableRowClassName">>
             <el-table-column type="selection" width="55"/>
             <el-table-column prop="sourceId" label="爬虫源ID"/>
             <el-table-column prop="sourceName" label="爬虫源名"/>
@@ -75,19 +89,27 @@
             </el-table-column>
             <el-table-column prop="bookName" label="爬取的小说名"/>
             <el-table-column prop="authorName" label="爬取的小说作者名"/>
-            <el-table-column prop="taskStatus" label="任务状态" :formatter="taskStatusFormatter"/>
+            <el-table-column prop="taskStatus" label="任务状态">
+                <template slot-scope="{row}">
+                    <span v-if="row.taskStatus===3"><i class="el-icon-loading"></i> 执行中</span>
+                    <span v-if="row.taskStatus===0">失败</span>
+                    <span v-if="row.taskStatus===1">成功</span>
+                    <span v-if="row.taskStatus===2">待执行</span>
+                </template>
+            </el-table-column>
             <el-table-column prop="excCount" label="已经执行次数"/>
-            <el-table-column prop="createTime" label="创建时间">
+            <el-table-column prop="createTime" label="创建时间" width="150px">
                 <template slot-scope="scope">
                     <span>{{ parseTime(scope.row.createTime) }}</span>
                 </template>
             </el-table-column>
-            <el-table-column v-has-permission="['crawlSingleTask:update','crawlSingleTask:delete']" label="操作" width="150px" align="center">
+            <el-table-column v-has-permission="['crawlSingleTask:update','crawlSingleTask:delete']" label="操作" width="200px" align="center">
                 <template slot-scope="scope">
                     <udOperation
                             :data="scope.row"
-                            :permission="permission"
-                    />
+                            :permission="permission">
+                        <el-button slot="right" size="mini" type="primary" icon="el-icon-refresh" @click="resetTask(scope.row)"/>
+                    </udOperation>
                 </template>
             </el-table-column>
         </el-table>
@@ -97,7 +119,7 @@
 </template>
 
 <script>
-    import crudCrawlSingleTask from './Api.js'
+    import crudCrawlSingleTask, {resetTask as resetTaskApi} from './Api.js'
     import CRUD, {presenter, header, form, crud} from '@crud/crud'
     import rrOperation from '@crud/RR.operation'
     import crudOperation from '@crud/CRUD.operation'
@@ -164,28 +186,48 @@
             sourceChange(value) {
                 this.crud.form.sourceName = this.dict.name['crawl_source'][value];
             },
-            taskStatusFormatter(row, column) {
-                let str = '';
-                switch (row.taskStatus) {
-                    case 0:
-                        str = '失败';
-                        break;
-                    case 1:
-                        str = '成功';
-                        break;
-                    case 2:
-                        str = '未执行';
-                        break;
-                    case 3:
-                        str = '执行中';
-                        break
+            resetTask(row) {
+                resetTaskApi({
+                    id: row.id
+                }).then(res => {
+                    this.crud.refresh();
+                    this.$notify({
+                        title: '重置任务成功！',
+                        type: 'success',
+                        duration: 2500
+                    });
+                })
+            },
+            tableRowClassName({row, rowIndex}) {
+                if (row.taskStatus === 0) {
+                    return 'error-row';
+                } else if (row.taskStatus === 1) {
+                    return 'success-row';
+                } else if (row.taskStatus === 3) {
+                    return 'warning-row';
+                } else if (row.taskStatus === 2) {
+                    return 'wait-row';
                 }
-                return str;
-            }
+                return '';
+            },
         }
     }
 </script>
 
-<style scoped>
+<style>
+    .el-table .warning-row {
+        background: oldlace;
+    }
 
+    .el-table .success-row {
+        background: #f0f9eb;
+    }
+
+    .el-table .error-row {
+        background: #FFD0A4;
+    }
+
+    .el-table .wait-row {
+        background: #b9cee5;
+    }
 </style>

@@ -130,8 +130,8 @@
             dialogFullscreenToggle() {
                 this.dialogFullscreen = !this.dialogFullscreen;
                 if (this.crawlRuleRows === 10) {
-                    this.crawlRuleRows = 30;
-                } else if (this.crawlRuleRows === 30) {
+                    this.crawlRuleRows = 25;
+                } else if (this.crawlRuleRows === 25) {
                     this.crawlRuleRows = 10;
                 }
             }
