@@ -335,7 +335,7 @@ function CRUD(options) {
          */
         doExport() {
             crud.downloadLoading = true;
-            crud.crudMethod.download(crud.getQueryParams(),crud.title + '数据.xlsx').then(result => {
+            crud.crudMethod.download(crud.getQueryParams(), crud.title + '数据.xlsx').then(result => {
                 crud.downloadLoading = false
             }).catch(() => {
                 crud.downloadLoading = false
@@ -510,15 +510,17 @@ function CRUD(options) {
                 const lazyTreeNodeMap = table.store.states.lazyTreeNodeMap;
                 const children = lazyTreeNodeMap[row.id];
                 row.children = children;
-                children.forEach(ele => {
-                    const id = crud.getDataId(ele);
-                    if (that.dataStatus[id] === undefined) {
-                        that.dataStatus[id] = {
-                            delete: 0,
-                            edit: 0
+                if (children != undefined) {
+                    children.forEach(ele => {
+                        const id = crud.getDataId(ele);
+                        if (that.dataStatus[id] === undefined) {
+                            that.dataStatus[id] = {
+                                delete: 0,
+                                edit: 0
+                            }
                         }
-                    }
-                })
+                    })
+                }
             })
         }
     };
