@@ -4,35 +4,25 @@
         <div class="head-container">
             <div v-if="crud.props.searchToggle">
                 <!-- 搜索 -->
-                <el-input v-model="crud.entity.blurry" clearable size="small" placeholder="输入内容模糊搜索" style="width: 200px" class="filter-item"
-                          @keyup.enter.native="crud.toQuery"/>
-                <el-date-picker
-                        v-model="crud.entity.createTime"
-                        :default-time="['00:00:00','23:59:59']"
-                        type="daterange"
-                        range-separator=":"
-                        size="small"
-                        class="date-item"
-                        value-format="yyyy-MM-dd HH:mm:ss"
-                        start-placeholder="开始日期"
-                        end-placeholder="结束日期"/>
-                <rrOperation :crud="crud"/>
+                <el-input v-model="crud.params.blurry" clearable size="small" placeholder="输入内容模糊搜索" style="width: 200px;" class="filter-item" @keyup.enter.native="crud.toQuery"/>
+                <date-range-picker v-model="crud.params.createTime" class="date-item"/>
+                <rrOperation/>
             </div>
             <crudOperation :permission="permission">
+                <!-- 新增 -->
                 <el-button
                         slot="left"
-                        v-hasPermission="['storage:add']"
+                        v-has-permission="['admin','storage:add']"
                         class="filter-item"
                         size="mini"
                         type="primary"
                         icon="el-icon-upload"
-                        @click="crud.toAdd">
-                    上传
+                        @click="crud.toAdd"
+                >上传
                 </el-button>
             </crudOperation>
         </div>
         <!--表单组件-->
-
         <el-dialog append-to-body :close-on-click-modal="false" :before-close="crud.cancelCU" :visible.sync="crud.status.cu > 0" :title="crud.status.add ? '文件上传' : '编辑文件'"
                    width="500px">
             <el-form ref="form" :model="form" size="small" label-width="80px">
@@ -49,8 +39,9 @@
                             :headers="headers"
                             :on-success="handleSuccess"
                             :on-error="handleError"
-                            :action="fileUploadApi + '?name=' + form.name">
-                        <div class="my-upload"><i class="el-icon-upload"/> 添加文件</div>
+                            :action="fileUploadApi + '?name=' + form.name"
+                    >
+                        <div class="eladmin-upload"><i class="el-icon-upload"/> 添加文件</div>
                         <div slot="tip" class="el-upload__tip">可上传任意格式文件，且不超过100M</div>
                     </el-upload>
                 </el-form-item>
@@ -61,17 +52,17 @@
                 <el-button v-else :loading="crud.status.cu === 2" type="primary" @click="crud.submitCU">确认</el-button>
             </div>
         </el-dialog>
-
         <!--表格渲染-->
-        <el-table ref="table" v-loading="crud.loading" :data="crud.data" style="width:100%" @selection-change="crud.selectionChangeHandler">
+        <el-table ref="table" v-loading="crud.loading" :data="crud.data" style="width: 100%;" @selection-change="crud.selectionChangeHandler">
             <el-table-column type="selection" width="55"/>
             <el-table-column prop="name" label="文件名">
                 <template slot-scope="scope">
-                    <el-popover :content="'file/' + scope.row.type + '/' + scope.row.realName"
-                                placement="top-start"
-                                title="路径"
-                                width="200"
-                                trigger="hover">
+                    <el-popover
+                            :content="'file/' + scope.row.type + '/' + scope.row.realName"
+                            placement="top-start"
+                            title="路径"
+                            width="200"
+                            trigger="hover">
                         <a slot="reference"
                            :href="baseApi + '/file/' + scope.row.type + '/' + scope.row.realName"
                            class="el-link--primary"
@@ -106,35 +97,44 @@
                 </template>
             </el-table-column>
         </el-table>
-
         <!--分页组件-->
         <pagination/>
     </div>
 </template>
 
 <script>
-
+    import {mapGetters} from 'vuex'
+    import {getToken} from '@/utils/auth'
+    import crudFile from './Api'
     import CRUD, {presenter, header, form, crud} from '@crud/crud'
     import rrOperation from '@crud/RR.operation'
     import crudOperation from '@crud/CRUD.operation'
     import pagination from '@crud/Pagination'
-    import crudFile from './Api'
+    import DateRangePicker from '@/components/DateRangePicker'
 
-    // crud交由presenter持有
-    const defaultCrud = CRUD({title: '文件', url: 'support/file/localStorage/page', crudMethod: {...crudFile}});
-    const defaultForm = {id: null, name: ''};
-
+    const defaultForm = {id: null, name: ''}
     export default {
-        name: 'local',
-        components: {pagination, crudOperation, rrOperation},
-        mixins: [presenter(defaultCrud), header(), form(defaultForm), crud()],
+        components: {pagination, crudOperation, rrOperation, DateRangePicker},
+        cruds() {
+            return CRUD({title: '文件', url: 'support/file/localStorage/page', crudMethod: {...crudFile}})
+        },
+        mixins: [presenter(), header(), form(defaultForm), crud()],
         data() {
             return {
+                delAllLoading: false,
+                loading: false,
+                headers: {'Authorization': getToken()},
                 permission: {
-                    edit: ['storage:edit'],
-                    del: ['storage:del']
+                    edit: ['storage:update'],
+                    del: ['storage:delete']
                 }
             }
+        },
+        computed: {
+            ...mapGetters([
+                'baseApi',
+                'fileUploadApi'
+            ])
         },
         created() {
             this.crud.optShow.add = false
@@ -168,14 +168,19 @@
                     title: msg.message,
                     type: 'error',
                     duration: 2500
-                });
+                })
                 this.loading = false
             }
         }
     }
-
 </script>
 
-<style>
+<style scoped>
+    ::v-deep .el-image__error, .el-image__placeholder {
+        background: none;
+    }
 
+    ::v-deep .el-image-viewer__wrapper {
+        top: 55px;
+    }
 </style>

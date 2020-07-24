@@ -52,10 +52,19 @@
                 <template slot-scope="props">
                     <el-form label-position="left" inline class="demo-table-expand">
                         <el-form-item label="小说封面">
-                            <span>{{ props.row.picUrl }}</span>
+                            <el-image
+                                    fit="cover"
+                                    lazy
+                                    style="width: 100px; height: 100px"
+                                    :src="props.row.picUrl"
+                                    :preview-src-list="[props.row.picUrl]">
+                                <div slot="error" class="image-slot">
+                                    <i class="el-icon-picture-outline"></i>
+                                </div>
+                            </el-image>
                         </el-form-item>
                         <el-form-item label="书籍描述">
-                            <span>{{ props.row.bookDesc }}</span>
+                            <span v-html="props.row.bookDesc"></span>
                         </el-form-item>
                         <el-form-item label="点击量">
                             <span>{{ props.row.visitCount }}</span>
@@ -81,28 +90,30 @@
                         <el-form-item label="最后一次的抓取时间">
                             <span>{{ parseTime(props.row.crawlLastTime) }}</span>
                         </el-form-item>
+                        <el-form-item label="是否收费">
+                            <span>{{ props.row.isVip }}</span>
+                        </el-form-item>
                     </el-form>
                 </template>
             </el-table-column>
             <el-table-column prop="workDirection" label="作品方向"/>
             <el-table-column prop="catName" label="分类名"/>
-            <el-table-column prop="bookName" label="小说名"/>
+            <el-table-column prop="bookName" label="小说名" width="150px"/>
             <el-table-column prop="authorName" label="作者名"/>
-            <el-table-column prop="score" label="评分，预留字段"/>
+            <el-table-column prop="score" label="评分"/>
             <el-table-column prop="bookStatus" label="书籍状态"/>
-            <el-table-column prop="isVip" label="是否收费"/>
             <el-table-column prop="status" label="状态"/>
-            <el-table-column prop="updateTime" label="更新时间">
+            <el-table-column prop="updateTime" label="更新时间" width="150px">
                 <template slot-scope="scope">
                     <span>{{ parseTime(scope.row.updateTime) }}</span>
                 </template>
             </el-table-column>
-            <el-table-column prop="createTime" label="创建时间">
+            <el-table-column prop="createTime" label="创建时间" width="150px">
                 <template slot-scope="scope">
                     <span>{{ parseTime(scope.row.createTime) }}</span>
                 </template>
             </el-table-column>
-            <el-table-column prop="crawlIsStop" label="是否已停止更新"/>
+            <el-table-column prop="crawlIsStop" label="是否停更"/>
             <el-table-column fixed="right"
                              v-has-permission="['book:update','book:delete']"
                              label="操作" width="150px" align="center">
@@ -201,16 +212,18 @@
 </script>
 
 <style>
-  .demo-table-expand {
-    font-size: 0;
-  }
-  .demo-table-expand label {
-    width: 150px;
-    color: #bf5924;
-  }
-  .demo-table-expand .el-form-item {
-    margin-right: 0;
-    margin-bottom: 0;
-    width: 50%;
-  }
+    .demo-table-expand {
+        font-size: 0;
+    }
+
+    .demo-table-expand label {
+        width: 150px;
+        color: #bf5924;
+    }
+
+    .demo-table-expand .el-form-item {
+        margin-right: 0;
+        margin-bottom: 0;
+        width: 50%;
+    }
 </style>
