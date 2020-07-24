@@ -9,7 +9,6 @@ import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 import {isEmpty, isNotEmpty} from "@/utils/my-validate";
 import {Message} from "element-ui";
-import bookRouter from './bookRouter'
 
 Vue.use(Router);
 
@@ -87,19 +86,12 @@ const constRouter = [
     }
 ];
 
-//加入书籍内容路由
-constRouter.push(...bookRouter);
-
 const router = new Router({
     scrollBehavior: () => ({y: 0}),
     routes: constRouter
 });
 
 const whiteList = ['/login'];
-//把书籍页加入白名单
-bookRouter.forEach(router=>{
-    whiteList.push(router.path);
-});
 
 // 导航守卫，渲染动态路由
 router.beforeEach((to, from, next) => {
