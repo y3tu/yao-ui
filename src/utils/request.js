@@ -5,6 +5,7 @@ import store from '@/store/index'
 import {getToken, getRefreshToken, getExpireTime} from '@/utils/auth'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
+import de from "element-ui/src/locale/lang/de";
 
 // 请求超时时间，10s
 const requestTimeOut = 10 * 1000;
@@ -16,7 +17,7 @@ const checkRegion = 5 * 60 * 1000;
 const messageDuration = 5 * 1000;
 
 // 系统全局请求对象
-const service = axios.create({
+export const service = axios.create({
     baseURL: process.env.VUE_APP_BASE_API,
     timeout: requestTimeOut,
     responseType: 'json',
@@ -115,6 +116,10 @@ service.interceptors.response.use(response => {
             return Promise.reject(error)
         }
 
+        if(error.response.data instanceof Blob){
+            return Promise.reject(error)
+        }
+
         const errorMessage = error.response.data === null ? '系统内部异常，请联系网站管理员' : error.response.data.message;
         switch (error.response.status) {
             case 404:
@@ -190,21 +195,21 @@ const request = {
             }
         })
     },
-    postData(url,params){
+    postData(url, params) {
         return service({
             url: url,
             method: 'post',
             data: params
         })
     },
-    putData(url,params){
+    putData(url, params) {
         return service({
             url: url,
             method: 'put',
             data: params
         })
     },
-    deleteData(url,params){
+    deleteData(url, params) {
         return service({
             url: url,
             method: 'delete',
@@ -280,6 +285,49 @@ const request = {
                 duration: messageDuration
             })
         })
+    },
+    downloadGet(url, fileName) {
+        NProgress.start();
+        return service.get(url, {
+            responseType: 'blob'
+        }).then((response) => {
+            //处理返回的文件流
+            let blob = new Blob([response], {type: 'application/octet-stream'});
+            if (window.navigator.msSaveOrOpenBlob) {// 兼容IE10
+                navigator.msSaveBlob(blob, fileName);
+            } else {// 其他非IE内核支持H5的浏览器
+                let url = window.URL.createObjectURL(blob);
+                let link = document.createElement('a');
+                link.style.display = 'none';
+                link.href = url;
+                link.setAttribute('download', fileName);
+                document.body.appendChild(link);
+                link.click()
+            }
+            NProgress.done()
+        }).catch((r) => {
+            console.error(r);
+            NProgress.done();
+            Message({
+                message: '下载失败,文件已删除或移动到其他位置，请检查！',
+                type: 'error',
+                duration: messageDuration
+            })
+        })
+    },
+    async previewImage(url) {
+        let imageUrl = '';
+        await service.get(url, {
+            responseType: 'blob'
+        }).then((response) => {
+            //处理返回的文件流
+            let blob = new Blob([response], {type: 'application/octet-stream'});
+            imageUrl = window.URL.createObjectURL(blob);
+        }).catch((r) => {
+            console.error(r);
+            NProgress.done();
+        });
+        return imageUrl;
     },
     upload(url, params) {
         return service.post(url, params, {
