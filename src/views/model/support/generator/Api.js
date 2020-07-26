@@ -9,13 +9,6 @@ export function getTables(data) {
 }
 
 /**
- * 获取表的字段
- */
-export function getTableColumn(data) {
-    return request.get('support/common/generator/getTableColumn', data);
-}
-
-/**
  * 获取代码生成配置
  */
 export function getGenConfig(data) {
@@ -36,6 +29,11 @@ export function saveColumnConfig(data) {
 export function genPreview(data) {
     return request.postData('support/common/generator/genPreview',data);
 }
+
+export function sync(data) {
+    return request.postData('support/common/generator/sync',data);
+}
+
 
 /**
  * 代码生成打包下载

@@ -22,9 +22,21 @@
                                 预览
                             </router-link>
                         </el-button>
+                        <el-tooltip class="item" effect="dark" content="数据库中表字段变动时使用该功能" placement="top-start">
+                            <el-button
+                                    :loading="syncLoading"
+                                    icon="el-icon-refresh"
+                                    size="mini"
+                                    style="float: right; padding: 6px 9px;"
+                                    type="info"
+                                    @click="sync"
+                            >同步
+                            </el-button>
+                        </el-tooltip>
                     </div>
                     <el-form size="small" label-width="90px">
-                        <el-table v-loading="columnLoading" :data="columnConfigList" :max-height="tableHeight" size="small" style="width: 100%;margin-bottom: 15px">
+                        <el-table v-loading="columnLoading" :data="columnConfigList" :max-height="tableHeight" size="small"
+                                  style="width: 100%;margin-bottom: 15px">
                             <el-table-column prop="columnName" label="字段名称"/>
                             <el-table-column prop="columnType" label="字段类型"/>
                             <el-table-column prop="remark" label="字段描述">
@@ -136,7 +148,7 @@
 
 <script>
 
-    import {getGenConfig, saveGenConfig, saveColumnConfig} from './Api'
+    import {getGenConfig, saveGenConfig, saveColumnConfig, sync} from './Api'
 
     export default {
         name: 'GeneratorConfig',
@@ -147,6 +159,7 @@
                 columnLoading: false,
                 saveColumnLoading: false,
                 saveGenLoading: false,
+                syncLoading: false,
                 tableHeight: 550,
                 dicts: [],
                 columnConfigList: [],
@@ -237,6 +250,22 @@
                     this.initData();
                 }).catch(err => {
                     this.saveGenLoading = false;
+                })
+            },
+            sync() {
+                this.syncLoading = true;
+                sync({
+                    dsId: this.dsId,
+                    tableName: this.tableName
+                }).then(() => {
+                    this.initData();
+                    this.$message({
+                        message: '保存成功',
+                        type: 'success'
+                    });
+                    this.syncLoading = false
+                }).then(() => {
+                    this.syncLoading = false
                 })
             },
         }

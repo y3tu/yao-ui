@@ -8,7 +8,7 @@ import 'nprogress/nprogress.css'
 import de from "element-ui/src/locale/lang/de";
 
 // 请求超时时间，10s
-const requestTimeOut = 10 * 1000;
+const requestTimeOut = 30 * 1000;
 // 成功状态
 const success = 200;
 // 更换令牌的时间区间
