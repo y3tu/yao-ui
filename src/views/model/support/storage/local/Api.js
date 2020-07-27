@@ -21,6 +21,10 @@ export function downloadBatch(data, fileName) {
     return request.download('support/file/localStorage/fileBatch', data,fileName);
 }
 
+export function upload(data,config) {
+    return request.upload('support/file/localStorage/upload', data,config);
+}
+
 
 export function previewImage(url) {
     return request.previewImage(url);

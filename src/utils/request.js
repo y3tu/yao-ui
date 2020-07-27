@@ -322,12 +322,14 @@ const request = {
         });
         return imageUrl;
     },
-    upload(url, params) {
-        return service.post(url, params, {
+    upload(url, params,config) {
+        let _config = {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
-        })
+        };
+        Object.assign(_config, config);
+        return service.post(url, params, _config);
     }
 };
 

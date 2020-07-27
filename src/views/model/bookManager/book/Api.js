@@ -20,4 +20,8 @@ export function download(data,fileName) {
   return request.download('support/book/book/export',data,fileName);
 }
 
+export function resetCrawlIsStop(bookId) {
+  return request.get(`support/book/book/resetCrawlIsStop/${bookId}`);
+}
+
 export default { add, edit, del, download}

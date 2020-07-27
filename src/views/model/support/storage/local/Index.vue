@@ -4,9 +4,19 @@
         <div class="head-container">
             <div v-if="crud.props.searchToggle">
                 <!-- 搜索 -->
-                <el-input v-model="crud.params.blurry" clearable size="small" placeholder="输入内容模糊搜索" style="width: 200px;" class="filter-item"
+                <label class="el-form-item-label">文件名</label>
+                <el-input v-model="crud.entity.name" clearable size="small" placeholder="输入文件名" style="width: 200px;" class="filter-item"
                           @keyup.enter.native="crud.toQuery"/>
-                <date-range-picker v-model="crud.params.createTime" class="date-item"/>
+                <label class="el-form-item-label">分类</label>
+                <el-select v-model="crud.entity.type" clearable size="small" style="width: 200px;" class="filter-item">
+                    <el-option key="图片" label="图片" value="图片"/>
+                    <el-option key="文档" label="文档" value="文档"/>
+                    <el-option key="音乐" label="音乐" value="音乐"/>
+                    <el-option key="视频" label="视频" value="视频"/>
+                    <el-option key="其他" label="其他" value="其他"/>
+                </el-select>
+                <label class="el-form-item-label">创建时间</label>
+                <date-range-picker v-model="crud.params.createTimeArr" class="date-item"/>
                 <rrOperation/>
             </div>
             <crudOperation :permission="permission">
@@ -48,6 +58,7 @@
                             :headers="headers"
                             :on-success="handleSuccess"
                             :on-error="handleError"
+                            :on-progress="handleProgress"
                             :action="fileUploadApi + '?name=' + form.name">
                         <div class="my-upload"><i class="el-icon-upload"/> 添加文件</div>
                         <div slot="tip" class="el-upload__tip">可上传任意格式文件，且不超过100M</div>
@@ -61,7 +72,7 @@
             </div>
         </el-dialog>
         <!--表格渲染-->
-        <el-table ref="table" v-loading="crud.loading" :data="crud.data" style="width: 100%;" @selection-change="crud.selectionChangeHandler">
+        <el-table ref="table" v-loading="crud.loading" size="mini" :data="crud.data" style="width: 100%;" @selection-change="crud.selectionChangeHandler">
             <el-table-column type="selection" width="55"/>
             <el-table-column prop="name" label="文件名">
                 <template slot-scope="scope">
@@ -83,17 +94,10 @@
                 </template>
             </el-table-column>
             <el-table-column prop="path" label="预览图">
-                <template slot-scope="{row}">
-                    <el-image
-                            :src="row.previewImageUrl"
-                            :preview-src-list="[row.previewImageUrl]"
-                            fit="contain"
-                            lazy
-                            class="el-avatar">
-                        <div slot="error">
-                            <i class="el-icon-document"/>
-                        </div>
-                    </el-image>
+                <template slot-scope="scope">
+                    <div v-viewer>
+                        <img :src="scope.row.previewImageUrl" width="40px" height="30px"/>
+                    </div>
                 </template>
             </el-table-column>
             <el-table-column prop="suffix" label="文件类型"/>
@@ -121,6 +125,12 @@
     import pagination from '@crud/Pagination'
     import DateRangePicker from '@/components/DateRangePicker'
     import Vue from "vue";
+
+    //element的el-image有时候加载不出图片 预览先使用v-viewer
+    import 'viewerjs/dist/viewer.css'
+    import Viewer from 'v-viewer'
+
+    Vue.use(Viewer);
 
     const defaultForm = {id: null, name: ''};
     export default {
@@ -153,7 +163,7 @@
         methods: {
             // 上传文件
             upload() {
-                this.$refs.upload.submit()
+                this.$refs.upload.submit();
             },
             beforeUpload(file) {
                 let isLt2M = true;
@@ -165,22 +175,21 @@
                 this.form.name = file.name;
                 return isLt2M
             },
-            beforeCrudRefresh() {
-                //刷新前设置图片预览url地址
-                this.crud.data.forEach(storage => {
-                    storage['previewImageUrl'] = '';
-                });
-            },
+
             afterCrudRefresh() {
                 if (this.crud.data) {
-                    this.crud.data.forEach((storage) => {
-                        if (storage.type === '图片') {
+                    for (let i = 0; i < this.crud.data.length; i++) {
+                        delete this.crud.data[i]['previewImageUrl'];
+                        if (this.crud.data[i].type === '图片' && this.crud.data[i].fileSizeByte < 10 * 1024 * 1024) {
+                            //只能预览小于5M的图片
                             //因为获取服务器图片需要验证token <img src='地址'/> 不能满足要求，所以在这另写查询图片url赋值给img标签
-                            previewImage(this.baseApi + '/support/file/localStorage/file/' + storage.storageId).then(res => {
-                                Vue.set(storage, 'previewImageUrl', res);
+                            previewImage(this.baseApi + '/support/file/localStorage/file/' + this.crud.data[i].storageId).then(res => {
+                                Vue.set(this.crud.data[i], 'previewImageUrl', res);
                             });
+                        } else {
+                            Vue.set(this.crud.data[i], 'previewImageUrl', require('@/assets/error.png'));
                         }
-                    });
+                    }
                 }
             },
             handleSuccess(response, file, fileList) {
@@ -200,6 +209,11 @@
                 });
                 this.loading = false
             },
+            handleProgress(e, file, fileList){
+                console.log(e);
+                console.log(file);
+                console.log(fileList);
+            },
             download(row) {
                 download(row.storageId, row.realName);
             },
@@ -218,7 +232,6 @@
                         duration: 2500
                     });
                 }
-
             }
         }
     }
