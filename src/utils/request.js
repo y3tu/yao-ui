@@ -5,7 +5,6 @@ import store from '@/store/index'
 import {getToken, getRefreshToken, getExpireTime} from '@/utils/auth'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
-import de from "element-ui/src/locale/lang/de";
 
 // 请求超时时间，10s
 const requestTimeOut = 30 * 1000;
@@ -255,12 +254,9 @@ const request = {
         return service.delete(`${url}${_params}`)
     },
     download(url, params, filename) {
-        NProgress.start();
         return service.post(url, params, {
-            // transformRequest: [(params) => {
-            //     return tansParams(params)
-            // }],
-            responseType: 'blob'
+            responseType: 'blob',
+            timeout: 600000
         }).then((response) => {
             //处理返回的文件流
             let blob = new Blob([response], {type: 'application/zip'});
@@ -275,10 +271,8 @@ const request = {
                 document.body.appendChild(link);
                 link.click()
             }
-            NProgress.done()
         }).catch((r) => {
             console.error(r);
-            NProgress.done();
             Message({
                 message: '下载失败',
                 type: 'error',
@@ -287,9 +281,9 @@ const request = {
         })
     },
     downloadGet(url, fileName) {
-        NProgress.start();
         return service.get(url, {
-            responseType: 'blob'
+            responseType: 'blob',
+            timeout: 600000,
         }).then((response) => {
             //处理返回的文件流
             let blob = new Blob([response], {type: 'application/octet-stream'});
@@ -304,10 +298,8 @@ const request = {
                 document.body.appendChild(link);
                 link.click()
             }
-            NProgress.done()
         }).catch((r) => {
             console.error(r);
-            NProgress.done();
             Message({
                 message: '下载失败,文件已删除或移动到其他位置，请检查！',
                 type: 'error',
@@ -318,7 +310,8 @@ const request = {
     async previewImage(url) {
         let imageUrl = '';
         await service.get(url, {
-            responseType: 'blob'
+            responseType: 'blob',
+            timeout: 600000,
         }).then((response) => {
             //处理返回的文件流
             let blob = new Blob([response], {type: 'application/octet-stream'});
