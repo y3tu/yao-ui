@@ -58,7 +58,6 @@
                             :headers="headers"
                             :on-success="handleSuccess"
                             :on-error="handleError"
-                            :on-progress="handleProgress"
                             :action="fileUploadApi + '?name=' + form.name">
                         <div class="my-upload"><i class="el-icon-upload"/> 添加文件</div>
                         <div slot="tip" class="el-upload__tip">可上传任意格式文件，且不超过100M</div>
@@ -208,11 +207,6 @@
                     duration: 2500
                 });
                 this.loading = false
-            },
-            handleProgress(e, file, fileList){
-                console.log(e);
-                console.log(file);
-                console.log(fileList);
             },
             download(row) {
                 download(row.storageId, row.realName);

@@ -202,7 +202,7 @@
         components: {LangSelect},
         data() {
             return {
-                codeUrl: `${process.env.VUE_APP_BASE_API}auth/captcha`,
+                codeUrl: `${process.env.VUE_APP_BASE_API}/auth/captcha`,
                 socialLoginUrl: socialLoginUrl,
                 authUser: null,
                 loading: false,
