@@ -22,9 +22,10 @@
                         icon="el-icon-upload"
                         @click="dialog = true">上传
                 </el-button>
-                <el-tooltip slot="right" class="item" effect="dark" content="使用同步功能需要在 https://sm.ms/login 中注册账号，并且在 application.yml 文件中修改 Secret Token" placement="top-start">
+                <el-tooltip slot="right" class="item" effect="dark" content="使用同步功能需要在 https://sm.ms/login 中注册账号，并且在 application.yml 文件中修改 Secret Token"
+                            placement="top-start">
                     <el-button
-                            v-has-permission=['picture:upload']
+                            v-has-permission="['picture:upload']"
                             class="filter-item"
                             size="mini"
                             type="success"
@@ -97,7 +98,18 @@
     import DateRangePicker from '@/components/DateRangePicker'
 
 
-    const defaultForm = {pictureId: null, fileName: null, md5code: null, fileSize: null, url: null, deleteUrl: null, height: null, width: null, username: null, createTime: null}
+    const defaultForm = {
+        pictureId: null,
+        fileName: null,
+        md5code: null,
+        fileSize: null,
+        url: null,
+        deleteUrl: null,
+        height: null,
+        width: null,
+        username: null,
+        createTime: null
+    };
     export default {
         name: 'Picture',
         components: {pagination, crudOperation, rrOperation, udOperation, DateRangePicker},
@@ -126,40 +138,40 @@
             ])
         },
         created() {
-            this.crud.optShow.add = false
-            this.crud.optShow.edit = false
+            this.crud.optShow.add = false;
+            this.crud.optShow.edit = false;
             this.crud.optShow.download = false
         },
         methods: {
             handleSuccess(response, file, fileList) {
-                const uid = file.uid
-                const id = response.id
+                const uid = file.uid;
+                const id = response.id;
                 this.pictures.push({uid, id})
             },
             handleBeforeRemove(file, fileList) {
                 for (let i = 0; i < this.pictures.length; i++) {
                     if (this.pictures[i].uid === file.uid) {
                         crudPicture.del(Array.of(this.pictures[i].id)).then(res => {
-                        })
+                        });
                         return true
                     }
                 }
             },
             handlePictureCardPreview(file) {
-                this.dialogImageUrl = file.url
+                this.dialogImageUrl = file.url;
                 this.dialogVisible = true
             },
             // 刷新列表数据
             doSubmit() {
-                this.fileList = []
-                this.dialogVisible = false
-                this.dialogImageUrl = ''
-                this.dialog = false
+                this.fileList = [];
+                this.dialogVisible = false;
+                this.dialogImageUrl = '';
+                this.dialog = false;
                 this.crud.toQuery()
             },
             // 监听上传失败
             handleError(e, file, fileList) {
-                const msg = JSON.parse(e.message)
+                const msg = JSON.parse(e.message);
                 this.$notify({
                     title: msg.message,
                     type: 'error',
@@ -167,11 +179,14 @@
                 })
             },
             sync() {
-                this.syncLoading = true
+                this.syncLoading = true;
                 crudPicture.sync().then(res => {
-                    this.crud.notify('同步成功', CRUD.NOTIFICATION_TYPE.SUCCESS)
-                    this.crud.toQuery()
+                    this.crud.notify('同步成功', CRUD.NOTIFICATION_TYPE.SUCCESS);
+                    this.crud.toQuery();
                     this.syncLoading = false
+                }).catch(err => {
+                    this.syncLoading = false;
+                    this.crud.notify('同步失败', CRUD.NOTIFICATION_TYPE.ERROR);
                 })
             }
         }
