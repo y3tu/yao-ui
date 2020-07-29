@@ -29,8 +29,7 @@
                                     size="mini"
                                     style="float: right; padding: 6px 9px;"
                                     type="info"
-                                    @click="sync"
-                            >同步
+                                    @click="sync">同步
                             </el-button>
                         </el-tooltip>
                     </div>
@@ -260,7 +259,7 @@
                 }).then(() => {
                     this.initData();
                     this.$message({
-                        message: '保存成功',
+                        message: '同步成功',
                         type: 'success'
                     });
                     this.syncLoading = false
