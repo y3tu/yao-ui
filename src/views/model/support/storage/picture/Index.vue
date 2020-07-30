@@ -59,7 +59,7 @@
         <!--表格渲染-->
         <el-table ref="table" v-loading="crud.loading" :data="crud.data" style="width: 100%;" @selection-change="crud.selectionChangeHandler">
             <el-table-column type="selection" width="55"/>
-            <el-table-column width="200" prop="filename" label="文件名"/>
+            <el-table-column show-overflow-tooltip width="200" prop="fileName" label="文件名"/>
             <el-table-column prop="username" label="上传者"/>
             <el-table-column ref="table" :show-overflow-tooltip="true" prop="url" label="缩略图">
                 <template slot-scope="{row}">
@@ -68,11 +68,10 @@
                             :preview-src-list="[row.url]"
                             fit="contain"
                             lazy
-                            class="el-avatar"
-                    />
+                            class="el-avatar"/>
                 </template>
             </el-table-column>
-            <el-table-column prop="size" label="文件大小"/>
+            <el-table-column prop="fileSize" label="文件大小"/>
             <el-table-column prop="height" label="高度"/>
             <el-table-column prop="width" label="宽度"/>
             <el-table-column prop="createTime" label="创建日期">
@@ -80,6 +79,12 @@
                     <span>{{ parseTime(scope.row.createTime) }}</span>
                 </template>
             </el-table-column>
+            <el-table-column prop="control" label="操作" width="150px" align="center">
+                <template slot-scope="scope">
+                    <el-button  size="mini" type="primary" icon="el-icon-copy-document" @click="handleClipboard(scope.row.url,$event)"/>
+                </template>
+            </el-table-column>
+
         </el-table>
         <!--分页组件-->
         <pagination/>
@@ -90,6 +95,7 @@
     import crudPicture from './Api.js'
     import {mapGetters} from 'vuex'
     import {getToken} from '@/utils/auth'
+    import clipboard from '@/utils/clipboard'
     import CRUD, {presenter, header, form, crud} from '@crud/crud'
     import rrOperation from '@crud/RR.operation'
     import crudOperation from '@crud/CRUD.operation'
@@ -188,6 +194,9 @@
                     this.syncLoading = false;
                     this.crud.notify('同步失败', CRUD.NOTIFICATION_TYPE.ERROR);
                 })
+            },
+            handleClipboard(text, event) {
+                clipboard(text, event)
             }
         }
     }
