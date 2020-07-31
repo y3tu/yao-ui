@@ -1,7 +1,6 @@
 #!/bin/sh
 echo 'build static resources'
 
-yum install -y nodejs
 npm install -g cnpm --registry=https://registry.npm.taobao.org
 npm install
 npm run build:prod
