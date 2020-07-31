@@ -179,8 +179,8 @@
                 if (this.crud.data) {
                     for (let i = 0; i < this.crud.data.length; i++) {
                         delete this.crud.data[i]['previewImageUrl'];
-                        if (this.crud.data[i].type === '图片' && this.crud.data[i].fileSizeByte < 10 * 1024 * 1024) {
-                            //只能预览小于5M的图片
+                        if (this.crud.data[i].type === '图片' && this.crud.data[i].fileSizeByte < 1 * 1024 * 1024) {
+                            //只能预览小于1M的图片
                             //因为获取服务器图片需要验证token <img src='地址'/> 不能满足要求，所以在这另写查询图片url赋值给img标签
                             previewImage(this.baseApi + '/support/file/localStorage/file/' + this.crud.data[i].storageId).then(res => {
                                 Vue.set(this.crud.data[i], 'previewImageUrl', res);
