@@ -1,9 +1,9 @@
 #!/bin/sh
 echo 'build static resources'
 
-#npm run build:prod
+npm run build:prod
 
-yarn run build:prod
+#yarn run build:prod
 # kill old container
 if docker ps | grep -i yao-ui
     then
