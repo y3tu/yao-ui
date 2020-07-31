@@ -22,7 +22,7 @@
                 </el-select>
             </el-form-item>
             <el-form-item label="SQL" prop="sqlText">
-                <textarea ref="sqlText"/>
+                <code-edit :value="form.sqlText" height="150px" theme="rubyblue" code-type="text/x-mysql" @change="sqlTextChange"/>
             </el-form-item>
             <el-form-item label="条件字段" prop="whereColumn">
                 <el-input v-model="form.whereColumn" style="width: 40%"/>
@@ -49,19 +49,14 @@
 </template>
 
 <script>
-    import CodeMirror from 'codemirror'
-    import 'codemirror/addon/lint/lint.css'
-    import 'codemirror/lib/codemirror.css'
-    import 'codemirror/theme/rubyblue.css'
-    import 'codemirror/mode/javascript/javascript'
-    import 'codemirror/addon/lint/lint'
-    import 'codemirror/addon/hint/sql-hint'
+    import CodeEdit from '@/components/CodeEdit/index'
 
     import {getDictSql, saveDictSql} from './Api'
 
     export default {
         // 数据字典
         dicts: ['DATA_SOURCE'],
+        components: {CodeEdit},
         data() {
             return {
                 saveLoading: false,
@@ -81,18 +76,6 @@
                 }
             }
         },
-        mounted() {
-            this.sqlEditor = CodeMirror.fromTextArea(this.$refs.sqlText, {
-                mode: 'text/x-mysql',
-                lint: true,
-                lineWrapping: true,
-                tabSize: 2,
-                cursorHeight: 0.9,
-                // 替换主题这里需修改名称
-                theme: 'rubyblue',
-            });
-            this.sqlEditor.setSize('auto','150px');
-        },
         methods: {
             created() {
                 this.$nextTick(() => {
@@ -106,8 +89,7 @@
                             delete res.data.createTime;
                             delete res.data.updateTime;
                             this.form = res.data;
-                            this.sqlEditor.setValue(this.form.sqlText);
-                        }else {
+                        } else {
                             this.form = {
                                 dsId: '',
                                 sqlText: '',
@@ -116,7 +98,6 @@
                                 description: '',
                                 status: 0
                             };
-                            this.sqlEditor.setValue('');
                         }
                     })
                 }
@@ -126,7 +107,6 @@
                     if (valid) {
                         this.saveLoading = true;
                         this.form.dictId = this.dictId;
-                        this.form.sqlText = this.sqlEditor.getValue();
                         saveDictSql(this.form).then(res => {
                             this.saveLoading = false;
                             this.$notify({
@@ -139,6 +119,9 @@
                         })
                     }
                 })
+            },
+            sqlTextChange(value) {
+                this.form.sqlText = value;
             }
         }
     }

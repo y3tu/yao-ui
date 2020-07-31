@@ -1,18 +1,18 @@
 <template>
     <el-tabs v-model="activeName" type="card">
         <el-tab-pane v-for="item in data" :key="item.name" :lazy="true" :label="item.name" :name="item.name">
-            <Java :value="item.content" :height="height"/>
+            <code-edit :value="item.content" :height="height" code-type="text/x-java"/>
         </el-tab-pane>
     </el-tabs>
 </template>
 
 <script>
-    import Java from '@/components/JavaEdit/index'
+    import CodeEdit from '@/components/CodeEdit/index'
     import {genPreview} from "./Api";
 
     export default {
         name: 'GeneratorPreview',
-        components: { Java },
+        components: { CodeEdit },
         data() {
             return {
                 data: null,

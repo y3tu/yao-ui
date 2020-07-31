@@ -9,7 +9,7 @@
             <template v-if="device!=='mobile'">
                 <search id="header-search" class="right-menu-item"/>
                 <screenfull id="screenfull" class="right-menu-item hover-effect"/>
-                <lock-screen class="right-menu-item" />
+                <lock-screen class="right-menu-item"/>
                 <lang-select class="right-menu-item hover-effect"/>
             </template>
 
@@ -71,7 +71,11 @@
                 return this.$store.state.setting.sidebar
             },
             avatar() {
-                return require(`@/assets/avatar/${this.$store.state.account.user.avatar}`)
+                if (this.$store.state.account.user.avatar.trim().startsWith('http')) {
+                    return this.$store.state.account.user.avatar;
+                } else {
+                    return require(`@/assets/avatar/${this.$store.state.account.user.avatar}`)
+                }
             },
             username() {
                 return this.$store.state.account.user.username

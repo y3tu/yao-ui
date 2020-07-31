@@ -11,6 +11,13 @@
     import 'codemirror/theme/idea.css'
     import 'codemirror/mode/clike/clike'
 
+    import 'codemirror/addon/lint/lint.css'
+    import 'codemirror/theme/rubyblue.css'
+    import 'codemirror/mode/javascript/javascript'
+    import 'codemirror/addon/lint/lint'
+    import 'codemirror/addon/hint/sql-hint'
+
+
     export default {
         props: {
             value: {
@@ -20,11 +27,24 @@
             height: {
                 type: String,
                 required: true
+            },
+            codeType:{
+                type: String,
+                required: true
+            },
+            theme: {
+                type: String,
+                default: 'idea'
+            },
+            readOnly:{
+                type: Boolean,
+                default: false
             }
         },
         data() {
             return {
-                editor: false
+                editor: false,
+                codeTypes:['text/x-java','text/x-mysql']
             }
         },
         watch: {
@@ -40,18 +60,22 @@
         },
         mounted() {
             this.editor = CodeMirror.fromTextArea(this.$refs.textarea, {
-                mode: 'text/x-java',
+                mode: this.codeType,
                 lineNumbers: true,
                 lint: true,
                 lineWrapping: true,
                 tabSize: 2,
                 cursorHeight: 0.9,
                 // 替换主题这里需修改名称
-                theme: 'idea',
-                readOnly: true
+                theme: this.theme,
+                readOnly: this.readOnly
             });
             this.editor.setSize('auto', this.height);
-            this.editor.setValue(this.value)
+            this.editor.setValue(this.value);
+            this.editor.on('change', cm => {
+                this.$emit('change', cm.getValue())
+                this.$emit('input', cm.getValue())
+            })
         },
         methods: {
             getValue() {

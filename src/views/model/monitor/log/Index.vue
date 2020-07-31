@@ -134,7 +134,7 @@
 </template>
 
 <script>
-    import Java from '@/components/JavaEdit/index'
+    import Java from '@/components/CodeEdit/index'
 
     import pageMixins from '@/mixins/page'
 
