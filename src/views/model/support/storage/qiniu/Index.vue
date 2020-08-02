@@ -1,7 +1,7 @@
 <template>
     <div class="app-container" style="padding: 8px;">
         <!--表单组件-->
-        <eForm ref="form" />
+        <eForm ref="form"/>
         <!-- 工具栏 -->
         <div class="head-container">
             <div v-if="crud.props.searchToggle">
@@ -25,8 +25,8 @@
                             size="mini"
                             type="success"
                             icon="el-icon-s-tools"
-                            @click="doConfig"
-                    >配置</el-button>
+                            @click="doConfig">配置
+                    </el-button>
                 </template>
             </crudOperation>
             <!-- 文件上传 -->
@@ -49,16 +49,17 @@
             </el-dialog>
             <!--表格渲染-->
             <el-table ref="table" v-loading="crud.loading" :data="crud.data" style="width: 100%;" @selection-change="crud.selectionChangeHandler">
-                <el-table-column type="selection" width="55" />
+                <el-table-column type="selection" width="55"/>
                 <el-table-column prop="name" :show-overflow-tooltip="true" label="文件名">
                     <template slot-scope="scope">
-                        <a href="JavaScript:" class="el-link el-link--primary" target="_self" type="primary" @click="download(scope.row.contentId)">{{ scope.row.name }}</a>
+                        <a href="JavaScript:" class="el-link el-link--primary" target="_self" type="primary" @click="download(scope.row.contentId)">{{
+                            scope.row.name }}</a>
                     </template>
                 </el-table-column>
-                <el-table-column :show-overflow-tooltip="true" prop="suffix" label="文件类型" @selection-change="crud.selectionChangeHandler" />
-                <el-table-column prop="bucket" label="空间名称" />
-                <el-table-column prop="size" label="文件大小" />
-                <el-table-column prop="type" label="空间类型" />
+                <el-table-column :show-overflow-tooltip="true" prop="suffix" label="文件类型" @selection-change="crud.selectionChangeHandler"/>
+                <el-table-column prop="bucket" label="空间名称"/>
+                <el-table-column prop="size" label="文件大小"/>
+                <el-table-column prop="type" label="空间类型"/>
                 <el-table-column prop="updateTime" label="创建日期">
                     <template slot-scope="scope">
                         <span>{{ parseTime(scope.row.updateTime) }}</span>
@@ -66,26 +67,26 @@
                 </el-table-column>
             </el-table>
             <!--分页组件-->
-            <pagination />
+            <pagination/>
         </div>
     </div>
 </template>
 
 <script>
     import crudQiNiu from './Api'
-    import { mapGetters } from 'vuex'
-    import { getToken } from '@/utils/auth'
+    import {mapGetters} from 'vuex'
+    import {getToken} from '@/utils/auth'
     import eForm from './Form'
-    import CRUD, { presenter, header, crud } from '@crud/crud'
+    import CRUD, {presenter, header, crud} from '@crud/crud'
     import rrOperation from '@crud/RR.operation'
     import crudOperation from '@crud/CRUD.operation'
     import pagination from '@crud/Pagination'
     import DateRangePicker from '@/components/DateRangePicker'
 
     export default {
-        components: { eForm, pagination, crudOperation, rrOperation, DateRangePicker },
+        components: {eForm, pagination, crudOperation, rrOperation, DateRangePicker},
         cruds() {
-            return CRUD({ title: '七牛云文件', url: 'support/file/qiniu/page', crudMethod: { ...crudQiNiu }})
+            return CRUD({title: '七牛云文件', url: 'support/file/qiniu/page', crudMethod: {...crudQiNiu}})
         },
         mixins: [presenter(), header(), crud()],
         data() {
@@ -131,12 +132,13 @@
             handleSuccess(response, file, fileList) {
                 const uid = file.uid;
                 const id = response.id;
-                this.files.push({ uid, id })
+                this.files.push({uid, id})
             },
             handleBeforeRemove(file, fileList) {
                 for (let i = 0; i < this.files.length; i++) {
                     if (this.files[i].uid === file.uid) {
-                        crudQiNiu.del([this.files[i].id]).then(res => {});
+                        crudQiNiu.del([this.files[i].id]).then(res => {
+                        });
                         return true
                     }
                 }

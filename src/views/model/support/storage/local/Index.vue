@@ -92,13 +92,6 @@
                     </el-popover>
                 </template>
             </el-table-column>
-            <el-table-column prop="path" label="预览图">
-                <template slot-scope="scope">
-                    <div v-viewer>
-                        <img :src="scope.row.previewImageUrl" width="40px" height="30px"/>
-                    </div>
-                </template>
-            </el-table-column>
             <el-table-column prop="suffix" label="文件类型"/>
             <el-table-column prop="type" label="类别"/>
             <el-table-column prop="fileSize" label="大小"/>
@@ -117,17 +110,13 @@
 <script>
     import {mapGetters} from 'vuex'
     import {getToken} from '@/utils/auth'
-    import crudFile, {previewImage, download, downloadBatch} from './Api'
+    import crudFile, { download, downloadBatch} from './Api'
     import CRUD, {presenter, header, form, crud} from '@crud/crud'
     import rrOperation from '@crud/RR.operation'
     import crudOperation from '@crud/CRUD.operation'
     import pagination from '@crud/Pagination'
     import DateRangePicker from '@/components/DateRangePicker'
     import Vue from "vue";
-
-    //element的el-image有时候加载不出图片 预览先使用v-viewer
-    import 'viewerjs/dist/viewer.css'
-    import Viewer from 'v-viewer'
 
     Vue.use(Viewer);
 
@@ -173,23 +162,6 @@
                 }
                 this.form.name = file.name;
                 return isLt2M
-            },
-
-            afterCrudRefresh() {
-                if (this.crud.data) {
-                    for (let i = 0; i < this.crud.data.length; i++) {
-                        delete this.crud.data[i]['previewImageUrl'];
-                        if (this.crud.data[i].type === '图片' && this.crud.data[i].fileSizeByte < 1 * 1024 * 1024) {
-                            //只能预览小于1M的图片
-                            //因为获取服务器图片需要验证token <img src='地址'/> 不能满足要求，所以在这另写查询图片url赋值给img标签
-                            previewImage(this.baseApi + '/support/file/localStorage/file/' + this.crud.data[i].storageId).then(res => {
-                                Vue.set(this.crud.data[i], 'previewImageUrl', res);
-                            });
-                        } else {
-                            Vue.set(this.crud.data[i], 'previewImageUrl', require('@/assets/error.png'));
-                        }
-                    }
-                }
             },
             handleSuccess(response, file, fileList) {
                 this.crud.notify('上传成功', CRUD.NOTIFICATION_TYPE.SUCCESS);

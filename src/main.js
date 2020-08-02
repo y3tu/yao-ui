@@ -38,6 +38,13 @@ Plugins.map((plugin) => {
 });
 
 
+import echarts from 'echarts'
+import 'echarts/lib/chart/map.js'
+import 'echarts/map/js/china.js'
+// 挂载全局
+Vue.prototype.$echarts = echarts;
+
+
 Vue.use(Element, {
     i18n: (key, value) => i18n.t(key, value)
 });

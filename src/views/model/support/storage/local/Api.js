@@ -25,9 +25,4 @@ export function upload(data,config) {
     return request.upload('support/file/localStorage/upload', data,config);
 }
 
-
-export function previewImage(url) {
-    return request.previewImage(url);
-}
-
 export default {edit, del}
