@@ -116,9 +116,6 @@
     import crudOperation from '@crud/CRUD.operation'
     import pagination from '@crud/Pagination'
     import DateRangePicker from '@/components/DateRangePicker'
-    import Vue from "vue";
-
-    Vue.use(Viewer);
 
     const defaultForm = {id: null, name: ''};
     export default {
