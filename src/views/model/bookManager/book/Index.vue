@@ -219,13 +219,6 @@
                         {required: true, message: '作者名不能为空', trigger: 'blur'}
                     ]
                 }
-                ,
-                queryTypeOptions: [
-                    {key: 'catId', display_name: '分类ID'},
-                    {key: 'bookName', display_name: '小说名'},
-                    {key: 'authorName', display_name: '作者名'},
-                    {key: 'status', display_name: '状态'}
-                ]
             }
         },
         methods: {
