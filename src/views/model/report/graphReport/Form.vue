@@ -7,21 +7,21 @@
             :fullscreen="true"
             width="80%"
             top="8vh">
-        <el-form v-loading="formLoading" ref="form" :model="crud.form" :rule="rules" size="small" label-width="110px" @keyup.enter.native="crud.submitCU">
+        <el-form v-loading="formLoading" ref="form" :model="form" :rule="rules" size="small" label-width="110px" @keyup.enter.native="crud.submitCU">
             <el-row :gutter="20">
                 <el-col :xs="24" :sm="12" :md="8" :lg="6">
                     <el-form-item label="图表名称" prop="name">
-                        <el-input v-model="crud.form.name" placeholder="图表名称" size="small"/>
+                        <el-input v-model="form.name" placeholder="图表名称" size="small"/>
                     </el-form-item>
                 </el-col>
                 <el-col :xs="24" :sm="12" :md="8" :lg="6">
                     <el-form-item label="编码" prop="code">
-                        <el-input v-model="crud.form.code" placeholder="编码"/>
+                        <el-input v-model="form.code" placeholder="编码"/>
                     </el-form-item>
                 </el-col>
                 <el-col :xs="24" :sm="12" :md="8" :lg="6">
                     <el-form-item label="展示模板" prop="displayTemplate">
-                        <el-select v-model="crud.form.displayTemplate" placeholder="请选择展示模板" clearable>
+                        <el-select v-model="form.displayTemplate" placeholder="请选择展示模板" clearable>
                             <el-option key="1" label="Tab风格" value="tab"/>
                             <el-option key="2" label="单排布局" value="single"/>
                             <el-option key="3" label="双排布局" value="double"/>
@@ -30,17 +30,17 @@
                 </el-col>
                 <el-col :xs="24" :sm="12" :md="8" :lg="6">
                     <el-form-item label="X轴字段" prop="xaxisField">
-                        <el-input v-model="crud.form.xaxisField" placeholder="X轴字段"/>
+                        <el-input v-model="form.xaxisField" placeholder="X轴字段"/>
                     </el-form-item>
                 </el-col>
                 <el-col :xs="24" :sm="12" :md="8" :lg="6">
                     <el-form-item label="Y轴字段" prop="yaxisField">
-                        <el-select v-model="crud.form.yaxisField" multiple allow-create filterable default-first-option placeholder="Y轴字段"/>
+                        <el-select v-model="form.yaxisField" multiple allow-create filterable default-first-option placeholder="Y轴字段"/>
                     </el-form-item>
                 </el-col>
                 <el-col :xs="24" :sm="12" :md="8" :lg="6">
                     <el-form-item label="数据类型" prop="dataType">
-                        <el-select v-model="crud.form.dataType" placeholder="请选择数据类型" clearable>
+                        <el-select v-model="form.dataType" placeholder="请选择数据类型" clearable>
                             <el-option key="1" label="SQL" value="SQL"/>
                             <el-option key="2" label="JSON" value="JSON"/>
                         </el-select>
@@ -48,7 +48,7 @@
                 </el-col>
                 <el-col v-if="crud.form.dataType==='SQL'" :xs="24" :sm="12" :md="8" :lg="6">
                     <el-form-item label="数据源" prop="dataType">
-                        <el-select v-model="crud.form.dsId" placeholder="数据源" clearable>
+                        <el-select v-model="form.dsId" placeholder="数据源" clearable>
                             <el-option v-for="item in dict.DATA_SOURCE"
                                        :key="item.id"
                                        :label="item.name"
@@ -59,7 +59,7 @@
                 </el-col>
                 <el-col :xs="24" :sm="12" :md="16" :lg="6">
                     <el-form-item label="图表类型" prop="chartType">
-                        <el-select v-model="crud.form.graphType" placeholder="请选择图表类型" clearable multiple>
+                        <el-select v-model="form.graphType" placeholder="请选择图表类型" clearable multiple>
                             <el-option key="1" label="柱状图" value="bar"/>
                             <el-option key="2" label="曲线图" value="line"/>
                             <el-option key="3" label="饼图" value="pie"/>
@@ -69,17 +69,17 @@
                 </el-col>
                 <el-col :xs="24" :sm="24" :md="24" :lg="24">
                     <el-form-item label="描述" prop="content">
-                        <el-input v-model="crud.form.content" placeholder="描述"/>
+                        <el-input v-model="form.content" placeholder="描述"/>
                     </el-form-item>
                 </el-col>
                 <el-col v-if="crud.form.dataType==='SQL'" :xs="24" :sm="24" :md="24" :lg="24">
                     <el-form-item label="查询SQL" prop="cgrSql">
-                        <code-edit v-model="crud.form.cgrSql" height="200" codeType="text/x-mysql"/>
+                        <code-edit v-model="form.cgrSql" height="200" codeType="text/x-mysql"/>
                     </el-form-item>
                 </el-col>
                 <el-col v-else :xs="24" :sm="24" :md="24" :lg="24">
                     <el-form-item label="数据JSON" prop="json">
-                        <code-edit v-model="crud.form.json" height="200"/>
+                        <code-edit v-model="form.json" height="200"/>
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -90,7 +90,7 @@
                     <el-button size="small" type="primary" icon="el-icon-plus" @click="add">新增</el-button>
                     <el-button v-show="dataListSelections.length > 0" size="small" type="primary" icon="el-icon-minus" @click="del">删除</el-button>
                 </div>
-                <el-table v-loading="dataListLoading" :data="crud.form.graphReportItemList" border style="width: 100%;"
+                <el-table v-loading="dataListLoading" :data="form.graphReportItemList" border style="width: 100%;"
                           @selection-change="dataListSelectionChangeHandle">
                     <el-table-column type="selection" header-align="center" align="center" width="50"/>
                     <el-table-column type="index" header-align="center" align="center" width="50"/>
@@ -158,20 +158,43 @@
 </template>
 
 <script>
-    import CodeEdit from '@/components/CodeEdit'
     import {getGraphReport} from "./Api";
+    import CodeEdit from '@/components/CodeEdit'
+    import {form} from '@crud/crud'
+
+    const defaultForm = {
+        id: 0,
+        name: '',
+        code: '',
+        xaxisField: '',
+        yaxisField: '',
+        yaxisText: 'yaxis_text',
+        displayTemplate: 'tab',
+        dataType: 'SQL',
+        graphType: ['bar'],
+        content: '',
+        cgrSql: '',
+        json: '',
+        graphReportItemList: [
+            {
+                fieldName: '',
+                fieldTxt: '',
+                orderNum: 1,
+                fieldType: '',
+                isShow: 'Y',
+                isTotal: 'N',
+                searchFlag: 'N',
+                dictCode: ''
+            }
+        ],
+    };
 
     export default {
         components: {
             CodeEdit
         },
+        mixins: [form(defaultForm)],
         dicts: ['DATA_SOURCE'],
-        props: {
-            crud: {
-                type: Object,
-                default: null
-            },
-        },
         data() {
             return {
                 dialog: false,

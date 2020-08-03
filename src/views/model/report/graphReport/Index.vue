@@ -1,7 +1,7 @@
 <template>
     <div class="app-container" style="padding: 8px;">
         <!--表单组件-->
-        <eForm crud-tag="form" :crud="this.crud"/>
+        <eForm/>
         <!--工具栏-->
         <div class="head-container">
             <div v-if="crud.props.searchToggle">
@@ -27,8 +27,7 @@
                 <template slot-scope="scope">
                     <udOperation
                             :data="scope.row"
-                            :permission="permission"
-                    />
+                            :permission="permission"/>
                 </template>
             </el-table-column>
         </el-table>
@@ -39,7 +38,7 @@
 
 <script>
     import crudGraphReportHead from './Api.js'
-    import CRUD, {presenter, header, form, crud} from '@crud/crud'
+    import CRUD, {presenter, header, crud} from '@crud/crud'
     import rrOperation from '@crud/RR.operation'
     import crudOperation from '@crud/CRUD.operation'
     import udOperation from '@crud/UD.operation'
@@ -47,36 +46,10 @@
 
     import eForm from './Form'
 
-    const defaultForm = {
-        id: 0,
-        name: '',
-        code: '',
-        xaxisField: '',
-        yaxisField: '',
-        yaxisText: 'yaxis_text',
-        displayTemplate: 'tab',
-        dataType: 'SQL',
-        graphType: ['bar'],
-        content: '',
-        cgrSql: '',
-        json: '',
-        graphReportItemList: [
-            {
-                fieldName: '',
-                fieldTxt: '',
-                orderNum: 1,
-                fieldType: '',
-                isShow: 'Y',
-                isTotal: 'N',
-                searchFlag: 'N',
-                dictCode: ''
-            }
-        ],
-    };
     export default {
         name: 'GraphReport',
-        components: {eForm,pagination, crudOperation, rrOperation, udOperation},
-        mixins: [presenter(), header(), form(defaultForm), crud()],
+        components: {eForm, pagination, crudOperation, rrOperation, udOperation},
+        mixins: [presenter(), header(), crud()],
         cruds() {
             return CRUD({
                 title: '图表配置',
