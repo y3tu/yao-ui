@@ -16,6 +16,10 @@ export function edit(data) {
   return request.putData('support/report/graphReport/update',data);
 }
 
+export function parseSql(data) {
+  return request.postData('support/report/graphReport/parseSql',data);
+}
+
 export function download(data,fileName) {
   return request.download('support/report/graphReport/export',data,fileName);
 }

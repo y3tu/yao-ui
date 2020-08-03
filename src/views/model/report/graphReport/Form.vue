@@ -7,11 +7,11 @@
             :fullscreen="true"
             width="80%"
             top="8vh">
-        <el-form v-loading="formLoading" ref="form" :model="form" :rule="rules" size="small" label-width="110px" @keyup.enter.native="crud.submitCU">
+        <el-form v-loading="formLoading" ref="form" :model="form" :rules="rules" size="small" label-width="110px" @keyup.enter.native="crud.submitCU">
             <el-row :gutter="20">
                 <el-col :xs="24" :sm="12" :md="8" :lg="6">
                     <el-form-item label="图表名称" prop="name">
-                        <el-input v-model="form.name" placeholder="图表名称" size="small"/>
+                        <el-input v-model="form.name" placeholder="图表名称"/>
                     </el-form-item>
                 </el-col>
                 <el-col :xs="24" :sm="12" :md="8" :lg="6">
@@ -21,7 +21,7 @@
                 </el-col>
                 <el-col :xs="24" :sm="12" :md="8" :lg="6">
                     <el-form-item label="展示模板" prop="displayTemplate">
-                        <el-select v-model="form.displayTemplate" placeholder="请选择展示模板" clearable>
+                        <el-select v-model="form.displayTemplate" placeholder="请选择展示模板" clearable style="width: 340px">
                             <el-option key="1" label="Tab风格" value="tab"/>
                             <el-option key="2" label="单排布局" value="single"/>
                             <el-option key="3" label="双排布局" value="double"/>
@@ -30,17 +30,27 @@
                 </el-col>
                 <el-col :xs="24" :sm="12" :md="8" :lg="6">
                     <el-form-item label="X轴字段" prop="xaxisField">
-                        <el-input v-model="form.xaxisField" placeholder="X轴字段"/>
+                        <el-select v-model="form.xaxisField" placeholder="X轴字段" clearable style="width: 340px">
+                            <el-option v-for="item in sqlColumns"
+                                       :key="item.columnName"
+                                       :label="item.columnName"
+                                       :value="item.columnName"/>
+                        </el-select>
                     </el-form-item>
                 </el-col>
                 <el-col :xs="24" :sm="12" :md="8" :lg="6">
                     <el-form-item label="Y轴字段" prop="yaxisField">
-                        <el-select v-model="form.yaxisField" multiple allow-create filterable default-first-option placeholder="Y轴字段"/>
+                        <el-select v-model="form.yaxisField" multiple allow-create filterable default-first-option placeholder="Y轴字段" style="width: 340px">
+                            <el-option v-for="item in sqlColumns"
+                                       :key="item.columnName"
+                                       :label="item.columnName"
+                                       :value="item.columnName"/>
+                        </el-select>
                     </el-form-item>
                 </el-col>
                 <el-col :xs="24" :sm="12" :md="8" :lg="6">
                     <el-form-item label="数据类型" prop="dataType">
-                        <el-select v-model="form.dataType" placeholder="请选择数据类型" clearable>
+                        <el-select v-model="form.dataType" placeholder="请选择数据类型" clearable style="width: 340px">
                             <el-option key="1" label="SQL" value="SQL"/>
                             <el-option key="2" label="JSON" value="JSON"/>
                         </el-select>
@@ -48,7 +58,7 @@
                 </el-col>
                 <el-col v-if="crud.form.dataType==='SQL'" :xs="24" :sm="12" :md="8" :lg="6">
                     <el-form-item label="数据源" prop="dataType">
-                        <el-select v-model="form.dsId" placeholder="数据源" clearable>
+                        <el-select v-model="form.dsId" placeholder="数据源" clearable style="width: 340px">
                             <el-option v-for="item in dict.DATA_SOURCE"
                                        :key="item.id"
                                        :label="item.name"
@@ -59,7 +69,7 @@
                 </el-col>
                 <el-col :xs="24" :sm="12" :md="16" :lg="6">
                     <el-form-item label="图表类型" prop="chartType">
-                        <el-select v-model="form.graphType" placeholder="请选择图表类型" clearable multiple>
+                        <el-select v-model="form.graphType" placeholder="请选择图表类型" clearable multiple style="width: 340px">
                             <el-option key="1" label="柱状图" value="bar"/>
                             <el-option key="2" label="曲线图" value="line"/>
                             <el-option key="3" label="饼图" value="pie"/>
@@ -72,9 +82,10 @@
                         <el-input v-model="form.content" placeholder="描述"/>
                     </el-form-item>
                 </el-col>
-                <el-col v-if="crud.form.dataType==='SQL'" :xs="24" :sm="24" :md="24" :lg="24">
+                <el-col v-if="form.dataType==='SQL'" :xs="24" :sm="24" :md="24" :lg="24">
                     <el-form-item label="查询SQL" prop="cgrSql">
                         <code-edit v-model="form.cgrSql" height="200" codeType="text/x-mysql"/>
+                        <el-button type="primary" icon="el-icon-info" @click="parseSql">解析SQL</el-button>
                     </el-form-item>
                 </el-col>
                 <el-col v-else :xs="24" :sm="24" :md="24" :lg="24">
@@ -91,6 +102,7 @@
                     <el-button v-show="dataListSelections.length > 0" size="small" type="primary" icon="el-icon-minus" @click="del">删除</el-button>
                 </div>
                 <el-table v-loading="dataListLoading" :data="form.graphReportItemList" border style="width: 100%;"
+                          :row-class-name="tableRowClassName"
                           @selection-change="dataListSelectionChangeHandle">
                     <el-table-column type="selection" header-align="center" align="center" width="50"/>
                     <el-table-column type="index" header-align="center" align="center" width="50"/>
@@ -112,10 +124,10 @@
                     <el-table-column prop="fieldType" header-align="center" align="center" label="字段类型">
                         <template slot-scope="scope">
                             <el-select v-model="scope.row.fieldType" size="small" placeholder="请选择" clearable>
-                                <el-option key="1" label="1" value="数值类型"/>
-                                <el-option key="2" label="2" value="日期类型"/>
-                                <el-option key="3" label="3" value="字符类型"/>
-                                <el-option key="4" label="4" value="长整型"/>
+                                <el-option key="1" label="数值类型" value="1"/>
+                                <el-option key="2" label="日期类型" value="2"/>
+                                <el-option key="3" label="字符类型" value="3"/>
+                                <el-option key="4" label="长整型" value="4"/>
                             </el-select>
                         </template>
                     </el-table-column>
@@ -137,8 +149,8 @@
                     <el-table-column prop="queryMode" header-align="center" align="center" label="查询模式">
                         <template slot-scope="scope">
                             <el-select v-model="scope.row.searchType" size="small" placeholder="请选择" clearable>
-                                <el-option key="1" label="1" value="单条件查询"/>
-                                <el-option key="2" label="2" value="范围查询"/>
+                                <el-option key="1" label="单条件查询" value="1"/>
+                                <el-option key="2" label="范围查询" value="2"/>
                             </el-select>
                         </template>
                     </el-table-column>
@@ -158,7 +170,7 @@
 </template>
 
 <script>
-    import {getGraphReport} from "./Api";
+    import {getGraphReport, parseSql} from "./Api";
     import CodeEdit from '@/components/CodeEdit'
     import {form} from '@crud/crud'
 
@@ -167,7 +179,7 @@
         name: '',
         code: '',
         xaxisField: '',
-        yaxisField: '',
+        yaxisField: [],
         yaxisText: 'yaxis_text',
         displayTemplate: 'tab',
         dataType: 'SQL',
@@ -175,6 +187,7 @@
         content: '',
         cgrSql: '',
         json: '',
+        dsId: '',
         graphReportItemList: [
             {
                 fieldName: '',
@@ -203,6 +216,18 @@
                     name: [
                         {required: true, message: '请输入名称', trigger: 'blur'}
                     ],
+                    code: [
+                        {required: true, message: '请输入编码', trigger: 'blur'}
+                    ],
+                    xaxisField: [
+                        {required: true, message: '请输入X轴字段', trigger: 'blur'}
+                    ],
+                    yaxisField: [
+                        {required: true, message: '请输入Y轴字段', trigger: 'blur'}
+                    ],
+                    dsId: [
+                        {required: true, message: '请选择数据源', trigger: 'blur'}
+                    ],
                 },
                 dataList: [ // 数据列表
                     {
@@ -216,6 +241,7 @@
                         dictCode: ''
                     }
                 ],
+                sqlColumns: [],//sql字段集合
                 dataListLoading: false, // 数据列表，loading状态
                 dataListSelections: [],// 数据列表，多选项
 
@@ -225,18 +251,13 @@
 
         },
         methods: {
-
-            // 多选
-            dataListSelectionChangeHandle(val) {
-                this.dataListSelections = val
-            },
             init(id) {
                 this.form.id = id || undefined
                 this.dialog = true;
                 this.$nextTick(() => {
                     this.$refs['form'].resetFields();
                     if (this.form.id) {
-                        this.formLoading = true
+                        this.formLoading = true;
                         getGraphReport(this.form.id).then((res) => {
                             this.formLoading = false;
                             if (res) {
@@ -251,7 +272,39 @@
                     }
                 })
             },
-
+            //解析SQL
+            parseSql() {
+                if (this.$isEmpty(this.form.dsId)) {
+                    this.$notify({
+                        title: '请先选择数据源',
+                        type: 'warning',
+                        duration: 2500
+                    });
+                    return;
+                }
+                if (this.$isEmpty(this.form.cgrSql)) {
+                    this.$notify({
+                        title: '请输入SQL语句',
+                        type: 'warning',
+                        duration: 2500
+                    });
+                    return;
+                }
+                parseSql({
+                    dsId: this.form.dsId,
+                    cgrSql: this.form.cgrSql
+                }).then(res => {
+                    let columns = res.data;
+                    columns.forEach(column => {
+                        this.sqlColumns.push(column);
+                    })
+                    this.$notify({
+                        title: '解析完成!',
+                        type: 'success',
+                        duration: 2500
+                    });
+                })
+            },
             add() {
                 this.form.graphReportItemList.push({
                     fieldName: '',
@@ -264,9 +317,31 @@
                     dictCode: ''
                 })
             },
-
+            // 添加索引
+            tableRowClassName(row, index) {
+                // 给每条数据添加一个索引
+                row.row.index = row.rowIndex
+            },
+            // 多选
+            dataListSelectionChangeHandle(val) {
+                this.dataListSelections = val
+            },
             del() {
-                console.log(this.dataListSelections)
+                //拿到选中的数据
+                let val = this.dataListSelections;
+                //如果选中数据存在
+                if (val) {
+                    //将选中数据遍历
+                    val.forEach((val, index) => {
+                        //遍历源数据
+                        this.form.graphReportItemList.forEach((v, i) => {
+                            //如果选中数据和源数据的某一条唯一标识符相等，删除对应的源数据
+                            if (val.index === v.index) {
+                                this.form.graphReportItemList.splice(i, 1)
+                            }
+                        })
+                    })
+                }
             }
         }
     }
