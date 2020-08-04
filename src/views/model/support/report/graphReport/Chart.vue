@@ -1,6 +1,5 @@
 <template>
-    <div class="app-main-content">
-
+    <div class="app-container">
         <el-card class="box-card">
             <div slot="header" class="clearfix">
                 <span>{{dataForm.name}}</span>
@@ -51,6 +50,7 @@
     import {getChartsData} from "./Api";
 
     export default {
+        dicts:['GRAPH_TYPE'],
         computed: {
         },
         data() {
@@ -82,11 +82,10 @@
             },
             getEChartsData(id) {
                 this.dataListLoading = true;
-                getChartsData(id).then(data => {
-                    if (data && data.code === 0) {
-
-                        this.dataForm = data.data.info;
-                        this.chartData = data.data.data;
+                getChartsData(id).then(res => {
+                    if (res) {
+                        this.dataForm = res.data.info;
+                        this.chartData = res.data.data;
                         this.transform(this.dataForm.graphType)
                     } else {
                         this.$message.error(data.msg)
@@ -95,14 +94,13 @@
                 })
             },
             transform(graphType) {
-                //   this.transformGraph= dataDictionary.getDict('chartTypes')
-                const res = this.globalDictMap.get('chartTypes') || globalData['chartTypes'] || null;
-                if (res) {
+                let graphTypeDict = this.dict.GRAPH_TYPE;
+                if (graphTypeDict) {
                     // return res
-                    this.transformGraph = res;
+                    this.transformGraph = graphTypeDict;
                     for (let item in graphType) {
                         for (let i in this.transformGraph) {
-                            if (graphType[item] == this.transformGraph[i].value)
+                            if (graphType[item] === this.transformGraph[i].value)
                                 this.charGraphList[item] = this.transformGraph[i]
                         }
                     }
@@ -123,6 +121,7 @@
                         yData.push(this.chartData[index][yaxisField[0]])
                     }
                     for (let i in this.charGraphList) {
+                        debugger;
                         let charGraph = this.charGraphList[i];
                         let myChart = this.$echarts.init(document.getElementById(charGraph.value+"_echarts"));
                         let option = {
@@ -174,7 +173,7 @@
                                 },
                             }]
                         };
-                        if(charGraph.value=='pie'){
+                        if(charGraph.value==='pie'){
                             option = {
                                 title: {},
                                 tooltip: {
@@ -214,7 +213,7 @@
             //获取列表数据
             getDetailInfo(id) {
                 getChartsData(id).then(res => {
-                    if (res && res.code === 0) {
+                    if (res) {
                         this.tableHead = res.data
                     } else {
                         this.$message.error(res.msg)

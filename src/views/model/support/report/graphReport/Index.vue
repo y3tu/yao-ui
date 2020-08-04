@@ -23,11 +23,13 @@
             <el-table-column prop="cgrSql" label="查询数据SQL"/>
             <el-table-column prop="xaxisField" label="x轴数据字段"/>
             <el-table-column prop="yaxisText" label="y轴文字描述"/>
-            <el-table-column v-has-permission="['graphReport:update','graphReport:delete']" label="操作" width="150px" align="center">
+            <el-table-column v-has-permission="['graphReport:update','graphReport:delete']" label="操作" width="200px" align="center">
                 <template slot-scope="scope">
                     <udOperation
                             :data="scope.row"
-                            :permission="permission"/>
+                            :permission="permission">
+                        <el-button slot="right" v-has-permission="permission.edit"  size="mini" type="primary" icon="el-icon-s-tools" @click="testFunction(scope.row.id)"/>
+                    </udOperation>
                 </template>
             </el-table-column>
         </el-table>
@@ -72,6 +74,9 @@
             // 钩子：在获取表格数据之前执行，false 则代表不获取数据
             [CRUD.HOOK.beforeRefresh]() {
                 return true
+            },
+            testFunction(id){
+                this.$router.push({path: '/report/graphReportChart', query: {"id": id}})
             }
         }
     }
