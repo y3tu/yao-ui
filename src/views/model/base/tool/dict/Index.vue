@@ -177,7 +177,7 @@
                 this.findPage();
             },
             findPageInit() {
-                this.pageUrl = 'support/dict/dictPage';
+                this.pageUrl = 'base/dict/dictPage';
                 return true;
             },
             subDelete(id) {

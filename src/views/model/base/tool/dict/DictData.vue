@@ -135,7 +135,7 @@
             },
             findPageInit() {
                 if (this.$isNotEmpty(this.dictId)) {
-                    this.pageUrl = 'support/dict/dictDataPage';
+                    this.pageUrl = 'base/dict/dictDataPage';
                     this.page.entity.dictId = this.dictId;
                     return true;
                 }

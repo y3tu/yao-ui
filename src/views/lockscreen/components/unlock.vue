@@ -55,8 +55,11 @@
         },
         computed: {
             avatar() {
-                let avatar = this.$store.state.account.user.avatar;
-                return require(`@/assets/avatar/${avatar}`)
+                if (this.$store.state.account.user.avatar.trim().startsWith('http')) {
+                    return this.$store.state.account.user.avatar;
+                } else {
+                    return require(`@/assets/avatar/${this.$store.state.account.user.avatar}`)
+                }
             }
         },
         methods: {

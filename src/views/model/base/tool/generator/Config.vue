@@ -18,7 +18,7 @@
                                 size="mini"
                                 style="float: right; padding: 6px 9px;margin-right: 9px"
                                 type="primary">
-                            <router-link :to="'/support/generator/preview?tableName=' + tableName+'&dsId='+dsId">
+                            <router-link :to="'/tool/generator/preview?tableName=' + tableName+'&dsId='+dsId">
                                 预览
                             </router-link>
                         </el-button>

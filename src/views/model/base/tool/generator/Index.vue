@@ -41,14 +41,14 @@
                     <el-row :gutter="3">
                         <el-col :span="8">
                             <el-button type="primary" size="mini" round>
-                                <router-link :to="'/support/generator/preview?tableName=' + scope.row.name+'&dsId='+dsId">
+                                <router-link :to="'/tool/generator/preview?tableName=' + scope.row.name+'&dsId='+dsId">
                                     预览<i class="el-icon-view el-icon--right"></i>
                                 </router-link>
                             </el-button>
                         </el-col>
                         <el-col :span="8">
                             <el-button type="warning" size="mini" round>
-                                <router-link :to="'/support/generator/config?tableName=' + scope.row.name+'&dsId='+dsId">
+                                <router-link :to="'/tool/generator/config?tableName=' + scope.row.name+'&dsId='+dsId">
                                     编辑<i class="el-icon-edit el-icon--right"></i>
                                 </router-link>
                             </el-button>
@@ -166,7 +166,7 @@
                     tableName: tableName,
                     dsId: dsId
                 };
-                this.$download('support/common/generator/genZip', obj, '代码.zip');
+                this.$download('base/generator/genZip', obj, '代码.zip');
                 this.$message('正在处理，请稍等！');
             }
 

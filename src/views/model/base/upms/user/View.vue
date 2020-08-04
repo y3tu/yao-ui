@@ -104,7 +104,11 @@
             },
             avatar() {
                 if (this.user.avatar) {
-                    return require(`@/assets/avatar/${this.user.avatar}`)
+                    if (this.user.avatar.trim().startsWith('http')) {
+                        return this.user.avatar;
+                    } else {
+                        return require(`@/assets/avatar/${this.user.avatar}`)
+                    }
                 } else {
                     return require('@/assets/avatar/default.jpg')
                 }

@@ -127,7 +127,7 @@
                         this.buttonLoading = true;
                         if (!this.dataSource.id) {
                             // create
-                            this.$post('support/common/dataSource/create', {...this.dataSource}).then(() => {
+                            this.$post('base/dataSource/create', {...this.dataSource}).then(() => {
                                 this.buttonLoading = false;
                                 this.isVisible = false;
                                 this.$message({
@@ -141,7 +141,7 @@
                         }else {
                             // update
                             this.dataSource.createTime = this.dataSource.modifyTime  = null;
-                            this.$put('support/common/dataSource/update', {...this.dataSource}).then(() => {
+                            this.$put('base/dataSource/update', {...this.dataSource}).then(() => {
                                 this.buttonLoading = false;
                                 this.isVisible = false;
                                 this.$message({

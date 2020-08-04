@@ -180,7 +180,7 @@
                 this.findPage();
             },
             findPageInit() {
-                this.pageUrl = 'log/log/page';
+                this.pageUrl = 'base/log/page';
                 this.handlerParams();
                 return true;
             },
@@ -199,7 +199,7 @@
             },
             exportExcel() {
                 this.handlerParams();
-                this.$download('log/log/export', this.page, `log${new Date().getTime()}.xlsx`);
+                this.$download('base/log/export', this.page, `log${new Date().getTime()}.xlsx`);
                 this.$message('正在处理，请稍等！');
             },
             tableRowClassName({row, rowIndex}) {

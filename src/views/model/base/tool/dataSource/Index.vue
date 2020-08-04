@@ -122,7 +122,7 @@
                 this.findPage();
             },
             findPageInit() {
-                this.pageUrl = 'support/common/dataSource/page';
+                this.pageUrl = 'base/dataSource/page';
                 return true;
             },
             search() {
@@ -164,7 +164,7 @@
                 })
             },
             delete(ids) {
-                this.$delete(`support/common/dataSource/delete/${ids}`).then(() => {
+                this.$delete(`base/dataSource/delete/${ids}`).then(() => {
                     this.$message({
                         message: this.$t('tips.deleteSuccess'),
                         type: 'success'
@@ -188,7 +188,7 @@
             },
             //测试连接
             test(row) {
-                this.$get('support/common/dataSource/testConnect/' + row.id).then(res => {
+                this.$get('base/dataSource/testConnect/' + row.id).then(res => {
                     this.$message({
                         message: '连接成功！',
                         type: 'success'
