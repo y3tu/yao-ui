@@ -54,12 +54,12 @@
                     <span>{{ scope.row.actionType }}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="服务名" prop="serverName" align="center" min-width="130px">
+            <el-table-column label="服务名" prop="serverName" align="center" min-width="140px">
                 <template slot-scope="scope">
                     <span>{{ scope.row.serverName }}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="操作IP地址" prop="ip" align="center" min-width="120px">
+            <el-table-column label="操作IP地址" prop="ip" align="center" min-width="140px">
                 <template slot-scope="scope">
                     <span>{{ scope.row.ip }}</span>
                 </template>
