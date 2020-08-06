@@ -5,11 +5,11 @@
                 <div class="textBox">
                     <div class="readBox" style="font-size: 16px; font-family: microsoft yahei" v-html="bookContent.content">
                     </div>
+                    <el-backtop target=".readBody .readMain .readWrap" :bottom="60"></el-backtop>
                 </div>
             </div>
         </div>
     </div>
-
 </template>
 
 <script>

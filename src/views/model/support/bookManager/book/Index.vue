@@ -102,15 +102,10 @@
                         <el-form-item label="是否收费">
                             <span>{{ props.row.isVip===0?'免费':'收费' }}</span>
                         </el-form-item>
-                        <el-form-item label="预览">
-                            <el-button
-                                    icon="el-icon-view"
-                                    size="mini"
-                                    type="primary">
+                        <el-form-item label="预览最新章节">
                                 <router-link :to="'/book/front?bookId=' + props.row.id+'&bookIndexId='+props.row.lastIndexId">
-                                    预览最新章节
+                                    <el-button type="success" icon="el-icon-view" circle></el-button>
                                 </router-link>
-                            </el-button>
                         </el-form-item>
                     </el-form>
                 </template>
