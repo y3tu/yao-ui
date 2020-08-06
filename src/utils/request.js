@@ -115,7 +115,7 @@ service.interceptors.response.use(response => {
             return Promise.reject(error)
         }
 
-        if(error.response.data instanceof Blob){
+        if (error.response.data instanceof Blob) {
             return Promise.reject(error)
         }
 
@@ -322,15 +322,19 @@ const request = {
         });
         return imageUrl;
     },
-    upload(url, params,config) {
+    upload(url, file, config) {
+        let data = new FormData()
+        data.append('file', file)
         let _config = {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
         };
         Object.assign(_config, config);
-        return service.post(url, params, _config);
+        return service.post(url, data, _config);
     }
+
+
 };
 
 function tansParams(params) {

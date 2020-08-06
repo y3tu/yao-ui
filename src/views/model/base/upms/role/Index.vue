@@ -213,7 +213,8 @@
                 this.$refs.form.clearValidate();
                 this.role = {...row};
                 if (this.role.resourceIds) {
-                    this.$refs.permsTree.setCheckedKeys(this.role.resourceIds.split(','));
+                    let checkedKeys = this.role.resourceIds.split(',');
+                    this.$refs.permsTree.setCheckedKeys(checkedKeys);
                 } else {
                     this.$refs.permsTree.setCheckedKeys([])
                 }

@@ -1,6 +1,8 @@
 <template>
     <div class="app-container">
-        <div class="filter-container">
+        <div class="head-container">
+
+            <label class="el-form-item-label">缓存名称</label>
             <el-input clearable v-model="cacheName" placeholder="请输入缓存名" style="width:200px" class="filter-item" @keyup.enter.native="search"/>
             <el-button class="filter-item" size="mini" type="success" icon="el-icon-search" @click="search">搜索</el-button>
             <el-button class="filter-item" size="mini" type="warning" icon="el-icon-reset" @click="resetCacheStats">重置缓存统计数据</el-button>

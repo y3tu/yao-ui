@@ -102,6 +102,16 @@
                         <el-form-item label="是否收费">
                             <span>{{ props.row.isVip===0?'免费':'收费' }}</span>
                         </el-form-item>
+                        <el-form-item label="预览">
+                            <el-button
+                                    icon="el-icon-view"
+                                    size="mini"
+                                    type="primary">
+                                <router-link :to="'/book/front?bookId=' + props.row.id+'&bookIndexId='+props.row.lastIndexId">
+                                    预览最新章节
+                                </router-link>
+                            </el-button>
+                        </el-form-item>
                     </el-form>
                 </template>
             </el-table-column>
@@ -137,14 +147,16 @@
             <el-table-column prop="crawlIsStop" label="正在获取书籍内容" :formatter="crawlIsStopFormatter"/>
             <el-table-column fixed="right"
                              v-has-permission="['book:update','book:delete']"
-                             label="操作" width="250px" align="center">
+                             label="操作" width="300px" align="center">
                 <template slot-scope="scope">
                     <udOperation
                             :data="scope.row"
                             :permission="permission">
-                        <el-button slot="right"
-                                   v-has-permission="permission.edit"
-                                   size="mini" type="primary" icon="el-icon-refresh" @click="resetCrawlIsStop(scope.row)"/>
+                            <el-button
+                                    slot="right"
+                                    v-has-permission="permission.edit"
+                                    size="mini" type="primary" icon="el-icon-refresh" @click="resetCrawlIsStop(scope.row)"/>
+
                     </udOperation>
                 </template>
             </el-table-column>
@@ -155,7 +167,7 @@
 </template>
 
 <script>
-    import crudBook,{resetCrawlIsStop} from './Api.js'
+    import crudBook, {resetCrawlIsStop} from './Api.js'
     import CRUD, {presenter, header, form, crud} from '@crud/crud'
     import rrOperation from '@crud/RR.operation'
     import crudOperation from '@crud/CRUD.operation'
@@ -232,8 +244,8 @@
                 else if (cellValue === 1)
                     return '已停止';
             },
-            resetCrawlIsStop(data){
-                resetCrawlIsStop(data.id).then(res=>{
+            resetCrawlIsStop(data) {
+                resetCrawlIsStop(data.id).then(res => {
                     this.$notify({
                         title: '重置成功！',
                         type: 'success',
@@ -242,8 +254,7 @@
 
                     this.crud.refresh();
                 })
-            }
-
+            },
         }
     }
 </script>

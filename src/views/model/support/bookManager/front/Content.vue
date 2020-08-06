@@ -4,7 +4,6 @@
             <div class="readWrap">
                 <div class="textBox">
                     <div class="readBox" style="font-size: 16px; font-family: microsoft yahei" v-html="bookContent.content">
-
                     </div>
                 </div>
             </div>
@@ -20,8 +19,10 @@
     export default {
         name: 'bookHome',
         created() {
+            let bookId = this.$route.query.bookId;
+            let bookIndexId = this.$route.query.bookIndexId;
             this.$nextTick(() => {
-                getBookContent("1286154585219665920", "1286154589208449024").then(res => {
+                getBookContent(bookId, bookIndexId).then(res => {
                     if (res) {
                         let data = res.data;
                         this.preBookIndexId = data.preBookIndexId;

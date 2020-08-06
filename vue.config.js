@@ -64,6 +64,9 @@ module.exports = {
                 options.compilerOptions.preserveWhitespace = true;
                 return options
             }).end()
+
+        //移除prefetch
+        config.plugins.delete('prefetch')
     }
 };
 
