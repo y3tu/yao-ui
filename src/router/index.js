@@ -10,6 +10,9 @@ import 'nprogress/nprogress.css'
 import {isEmpty, isNotEmpty} from "@/utils/my-validate";
 import {Message} from "element-ui";
 
+import extraRouter from './extraRouter'
+
+
 Vue.use(Router);
 
 const constRouter = [
@@ -86,12 +89,20 @@ const constRouter = [
     }
 ];
 
+//加入额外路由
+constRouter.push(...extraRouter);
+
 const router = new Router({
     scrollBehavior: () => ({y: 0}),
     routes: constRouter
 });
 
 const whiteList = ['/login'];
+
+//把额外路由加入白名单
+extraRouter.forEach(router => {
+    whiteList.push(router.path);
+});
 
 // 导航守卫，渲染动态路由
 router.beforeEach((to, from, next) => {
@@ -165,7 +176,7 @@ function go(to, next, asyncRouter) {
 function filterAsyncRouter(routes) {
     const aRouter = [];
     routes.forEach(route => {
-        const {path, component, componentName, resourceName, icon, type, parentId, hidden, cache,iframe} = route.data;
+        const {path, component, componentName, resourceName, icon, type, parentId, hidden, cache, iframe} = route.data;
         const {children} = route;
         if (type === -1) {
             //顶级菜单
@@ -177,9 +188,9 @@ function filterAsyncRouter(routes) {
                 path: path,
                 component: () => {
                     let componentPath = '';
-                    if (component === 'Layout'||isEmpty(component)) {
+                    if (component === 'Layout' || isEmpty(component)) {
                         return import('@/views/layout')
-                    } else if (component === 'Iframe'||iframe===true) {
+                    } else if (component === 'Iframe' || iframe === true) {
                         return import('@/views/layout/Iframe')
                     } else {
                         componentPath = component;

@@ -44,6 +44,9 @@ import 'echarts/map/js/china.js'
 // 挂载全局
 Vue.prototype.$echarts = echarts;
 
+import '@/components/Dashboard/Widgets/libs' // chart libs
+
+
 
 Vue.use(Element, {
     i18n: (key, value) => i18n.t(key, value)
