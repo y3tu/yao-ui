@@ -43,7 +43,8 @@
     "spectre.css": "^0.5.8",
     "vue-wechat-title": "^2.0.5",
     "vue-resource": "^1.5.1",
-    "vue-echarts": "^4.0.2"
+    "vue-echarts": "^4.0.2",
+    "vuedraggable": "^2.23.2"
   },
   "devDependencies": {
     "@babel/polyfill": "^7.4.3",
