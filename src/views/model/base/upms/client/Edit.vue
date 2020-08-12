@@ -54,7 +54,7 @@
   </el-dialog>
 </template>
 <script>
-import { isIntegerGreaterThanZero, validURL } from '@/utils/my-validate'
+import { isIntegerGreaterThanZero, isURL } from '@/utils/validate'
 
 export default {
   name: 'ClientEdit',
@@ -101,7 +101,7 @@ export default {
           { required: true, message: this.$t('rules.require'), trigger: 'blur' }
         ],
         webServerRedirectUri: { validator: (rule, value, callback) => {
-          if (value !== '' && value != null && !validURL(value)) {
+          if (value !== '' && value != null && !isURL(value)) {
             callback(new Error(this.$t('rules.invalidURL')))
           } else {
             callback()
@@ -153,7 +153,7 @@ export default {
         return this.dialogVisible
       },
       set() {
-        this.close()
+        this.close();
         this.reset()
       }
     }

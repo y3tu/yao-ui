@@ -3,11 +3,11 @@ import Router from 'vue-router'
 import Layout from '@/views/layout'
 import db from '@/utils/localstorage'
 import Config from '@/settings'
-import request from '@/utils/request'
+import request from '@/plugin/axios'
 import store from '@/store/index'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
-import {isEmpty, isNotEmpty} from "@/utils/my-validate";
+import {isEmpty, isNotEmpty} from "@/utils/validate";
 import {Message} from "element-ui";
 
 import extraRouter from './extraRouter'

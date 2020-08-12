@@ -1,4 +1,4 @@
-import request from '@/utils/request'
+import request from '@/plugin/axios'
 
 /**
  * 获取数据源中的所有表信息

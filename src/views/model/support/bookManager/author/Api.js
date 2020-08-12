@@ -1,4 +1,4 @@
-import request from '@/utils/request'
+import request from '@/plugin/axios'
 
 export function page(data) {
     return request.putData('support/book/author/page', data);

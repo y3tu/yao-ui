@@ -11,3 +11,7 @@ export function getRefreshToken() {
 export function getExpireTime() {
     return db.get('EXPIRE_TIME', 0)
 }
+
+export function getUser() {
+    return db.get('USER', 0)
+}

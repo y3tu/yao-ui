@@ -139,7 +139,6 @@
 <script>
     import {createDict, updateDict, deleteDict} from './Api.js'
     import page from '@/mixins/page'
-    import {copyObj} from '@/utils'
 
     import dictData from './DictData'
     import dictSql from './DictSql'
@@ -215,7 +214,7 @@
             doEdit(row) {
                 this.dialog = true;
                 this.isAdd = false;
-                this.form = copyObj(row);
+                this.form = this.$deepClone(row);
             },
             doAdd() {
                 this.isAdd = true;

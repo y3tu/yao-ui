@@ -12,7 +12,7 @@
 
 
 <script>
-    import request from '@/utils/request'
+    import request from '@/plugin/axios'
 
     import {mapGetters} from 'vuex'
     import mavonEditor from 'mavon-editor'

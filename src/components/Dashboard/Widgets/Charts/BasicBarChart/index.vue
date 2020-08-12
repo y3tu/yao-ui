@@ -281,7 +281,7 @@
                     color: this.val.seriesColors,
                     tooltip: {
                         show: this.val.showToolTip,
-                        trigger: 'axis', // 可选值为 axis | item
+                        trigger: 'axis', // 可选值为 axios | item
                         axisPointer: {
                             type: 'shadow' // 默认为直线，可选为 line | shadow
                         }

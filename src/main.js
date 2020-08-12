@@ -1,69 +1,33 @@
 import Vue from 'vue'
 
-import 'normalize.css/normalize.css'
-import Element from 'element-ui'
-import './styles/element-variables.scss'
-
-import '@/styles/index.scss' //全局css
-
+//主页
 import App from './App'
+//store状态
 import store from './store'
+//路由
 import router from './router'
-
-import i18n from './lang' //国际化
-import './icons' //图标
-import './utils/error-log' //错误日志
-import request from '@/utils/request'
-import {isEmpty,isNotEmpty} from "./utils/my-validate"
-
+//ElementUI
+import 'normalize.css/normalize.css'
+import ElementUI from 'element-ui'
+import '@/styles/element-variables.scss'
+import '@/styles/index.scss' //全局css
+//国际化
+import i18n from '@/lang'
+//图标
+import './icons'
+// 核心插件
+import plugin from '@/plugin'
+// filter
 import * as filters from './filters'
 
-//背景粒子效果
-import VueParticlesBg from "particles-bg-vue";
-Vue.use(VueParticlesBg);
-
-import {hasPermission, hasNoPermission, hasAnyPermission} from './utils/permissionDirect'
-// 数据字典
-import dict from './components/Dict'
-
-const Plugins = [
-    hasPermission,
-    hasNoPermission,
-    hasAnyPermission,
-    dict
-];
-
-Plugins.map((plugin) => {
-    Vue.use(plugin)
-});
+// 核心插件
+Vue.use(plugin);
 
 
-import echarts from 'echarts'
-import 'echarts/lib/chart/map.js'
-import 'echarts/map/js/china.js'
-// 挂载全局
-Vue.prototype.$echarts = echarts;
-
-import '@/components/Dashboard/Widgets/libs' // chart libs
-
-
-
-Vue.use(Element, {
+// 国际化
+Vue.use(ElementUI, {
     i18n: (key, value) => i18n.t(key, value)
 });
-
-Vue.prototype.$post = request.post;
-Vue.prototype.$get = request.get;
-Vue.prototype.$put = request.put;
-Vue.prototype.$delete = request.delete;
-Vue.prototype.$page = request.page;
-Vue.prototype.$download = request.download;
-Vue.prototype.$upload = request.upload;
-Vue.prototype.$login = request.login;
-Vue.prototype.$isEmpty = isEmpty;
-Vue.prototype.$isNotEmpty = isNotEmpty;
-
-Vue.config.productionTip = false;
 
 //注册filter
 Object.keys(filters).forEach(key => {

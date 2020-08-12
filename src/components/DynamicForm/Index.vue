@@ -2,20 +2,33 @@
     <div class="container">
         <div class="left-board">
             <el-scrollbar class="left-scrollbar">
-                <el-tabs v-model="activeTabName" :stretch="true">
-                    <el-tab-pane label="常用组件" name="common">
-                        <div class="components-list">
-                            <draggable
-                                    class="components-draggable"
-                                    :list="commonComponents"
-                                    :group="{ name: 'componentsGroup', pull: 'clone', put: false }"
-                                    :clone="cloneComponent"
-                                    draggable=".components-item"
-                                    :sort="false"
-                                    @end="onEnd"/>
+                <div class="components-list">
+                    <div v-for="(item, listIndex) in leftComponents" :key="listIndex">
+                        <div class="components-title">
+                            <svg-icon icon-class="component" />
+                            {{ item.title }}
                         </div>
-                    </el-tab-pane>
-                </el-tabs>
+                        <draggable
+                                class="components-draggable"
+                                :list="item.list"
+                                :group="{ name: 'componentsGroup', pull: 'clone', put: false }"
+                                :clone="cloneComponent"
+                                draggable=".components-item"
+                                :sort="false"
+                                @end="onEnd">
+                            <div
+                                    v-for="(element, index) in item.list"
+                                    :key="index"
+                                    class="components-item"
+                                    @click="addComponent(element)">
+                                <div class="components-body">
+                                    <svg-icon :icon-class="element.__config__.tagIcon" />
+                                    {{ element.__config__.label }}
+                                </div>
+                            </div>
+                        </draggable>
+                    </div>
+                </div>
             </el-scrollbar>
         </div>
     </div>
@@ -45,7 +58,20 @@
                 layoutComponents,
                 commonComponents,
                 customMadeComponents,
-                activeTabName: "common",
+                leftComponents: [
+                    {
+                        title: '输入型组件',
+                        list: inputComponents
+                    },
+                    {
+                        title: '选择型组件',
+                        list: selectComponents
+                    },
+                    {
+                        title: '布局型组件',
+                        list: layoutComponents
+                    }
+                ]
             }
         }
     }

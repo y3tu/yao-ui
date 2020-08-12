@@ -102,7 +102,6 @@
 <script>
     import page from '@/mixins/page'
     import {createDictData, updateDictData, deleteDictData} from './Api'
-    import {copyObj} from '@/utils'
 
     export default {
 
@@ -159,7 +158,7 @@
                 this.dialog = true;
                 this.isAdd = false;
                 this.form.dictId = this.dictId;
-                this.form = copyObj(row);
+                this.form = this.$deepClone(row);
                 this.form.status = this.form.status+"";
             },
             doAdd() {

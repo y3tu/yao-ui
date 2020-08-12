@@ -4,6 +4,8 @@ import account from './modules/account'
 import setting from './modules/setting'
 import tagsView from './modules/tagsView'
 import api from './modules/api'
+import log from './modules/log'
+
 import getters from './getters'
 
 
@@ -14,7 +16,8 @@ const store = new Vuex.Store({
         account,
         setting,
         tagsView,
-        api
+        api,
+        log
     },
     getters
 });
