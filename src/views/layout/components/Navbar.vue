@@ -51,7 +51,7 @@
     import Breadcrumb from '@/components/Breadcrumb'
     import Hamburger from '@/components/Hamburger'
     import LangSelect from '@/components/LangSelect'
-    import db from '@/utils/localstorage'
+    import util from '@/utils'
     import Screenfull from '@/components/Screenfull'
     import Search from '@/components/HeaderSearch'
     import lockScreen from "@/views/lockscreen/lockscreen.vue";
@@ -95,7 +95,7 @@
                 this.clean()
             },
             clean() {
-                db.clear()
+                util.db.clear();
                 location.reload()
             },
             deleteCache() {
@@ -104,8 +104,8 @@
                     cancelButtonText: this.$t('common.cancel'),
                     type: 'warning'
                 }).then(() => {
-                    db.remove('USER_ROUTER')
-                    db.remove('PERMISSIONS')
+                    util.db.remove('USER_ROUTER')
+                    util.db.remove('PERMISSIONS')
                     location.reload()
                 }).catch(() => {
                     // do nothing

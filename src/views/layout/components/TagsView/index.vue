@@ -35,7 +35,7 @@
 
 <script>
     import ScrollPane from './ScrollPane'
-    import {generateTitle} from '@/utils/i18n'
+    import {generateTitle} from '@/utils/util.i18n'
     import path from 'path'
 
     export default {
@@ -75,7 +75,7 @@
             this.addTags()
         },
         methods: {
-            generateTitle, // generateTitle by vue-i18n
+            generateTitle,
             isActive(route) {
                 return route.path === this.$route.path
             },
@@ -208,6 +208,7 @@
         background: #fff;
         border-bottom: 1px solid #d8dce5;
         box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .12), 0 0 3px 0 rgba(0, 0, 0, .04);
+
         .tags-view-wrapper {
             .tags-view-item {
                 display: inline-block;
@@ -222,16 +223,20 @@
                 font-size: 12px;
                 margin-left: 5px;
                 margin-top: 4px;
+
                 &:first-of-type {
                     margin-left: 15px;
                 }
+
                 &:last-of-type {
                     margin-right: 15px;
                 }
+
                 &.active {
                     background-color: #42b983;
                     color: #fff;
                     border-color: #42b983;
+
                     &::before {
                         content: '';
                         background: #fff;
@@ -245,6 +250,7 @@
                 }
             }
         }
+
         .contextmenu {
             margin: 0;
             background: #fff;
@@ -257,10 +263,12 @@
             font-weight: 400;
             color: #333;
             box-shadow: 2px 2px 3px 0 rgba(0, 0, 0, .3);
+
             li {
                 margin: 0;
                 padding: 7px 16px;
                 cursor: pointer;
+
                 &:hover {
                     background: #eee;
                 }
@@ -281,11 +289,13 @@
                 text-align: center;
                 transition: all .3s cubic-bezier(.645, .045, .355, 1);
                 transform-origin: 100% 50%;
+
                 &:before {
                     transform: scale(.6);
                     display: inline-block;
                     vertical-align: -3px;
                 }
+
                 &:hover {
                     background-color: #b4bccc;
                     color: #fff;

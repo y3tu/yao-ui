@@ -48,7 +48,7 @@
 
 
     import {mapGetters} from "vuex";
-    import {getToken} from '@/utils/auth'
+    import util from '@/utils'
 
 
     const hthz = [
@@ -91,7 +91,7 @@
                 hthz,
                 al,
                 lm,
-                headers: {'Authorization': 'bearer ' + getToken()},
+                headers: {'Authorization': 'bearer ' + util.auth.getToken()},
                 imageUrl: ''
             }
         },

@@ -8,7 +8,7 @@
 
 <script>
 import unlock from './unlock.vue';
-import db from '@/utils/localstorage'
+import util from '@/utils'
 
 export default {
     components: {
@@ -26,7 +26,7 @@ export default {
             lockScreenBack.style.zIndex = -1;
             lockScreenBack.style.boxShadow = '0 0 0 0 #667aa6 inset';
             this.$router.push({
-                name: db.get('last_page_name') // 解锁之后跳转到锁屏之前的页面
+                name: util.db.get('last_page_name') // 解锁之后跳转到锁屏之前的页面
             });
         }
     },

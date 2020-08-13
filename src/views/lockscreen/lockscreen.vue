@@ -7,7 +7,7 @@
 </template>
 
 <script>
-    import db from '@/utils/localstorage'
+    import util from '@/utils'
 
     const setLockBackSize = () => {
         let x = document.body.clientWidth;
@@ -31,14 +31,14 @@
                 lockScreenBack.style.boxShadow =
                     "0 0 0 " + this.lockScreenSize + "px #667aa6 inset";
                 this.showUnlock = true;
-                db.save("last_page_name", this.$route.name); // 本地存储锁屏之前打开的页面以便解锁后打开
+                util.db.save("last_page_name", this.$route.name); // 本地存储锁屏之前打开的页面以便解锁后打开
                 setTimeout(() => {
                     lockScreenBack.style.transition = "all 0s";
                     this.$router.push({
                         name: "locking"
                     });
                 }, 800);
-                db.save("locking", "1");
+                util.db.save("locking", "1");
             }
         },
         mounted() {

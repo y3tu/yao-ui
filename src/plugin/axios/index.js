@@ -2,7 +2,7 @@ import axios from 'axios'
 import {Message} from 'element-ui'
 import {authorizationValue} from '@/settings'
 import store from '@/store/index'
-import {getToken, getRefreshToken, getExpireTime} from '@/utils/auth'
+import util from '@/utils'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 
@@ -40,15 +40,15 @@ service.interceptors.request.use(
     config => {
         let _config = config;
         try {
-            const expireTime = getExpireTime();
+            const expireTime = util.auth.getExpireTime();
             if (expireTime) {
                 const left = expireTime - new Date().getTime();
-                const refreshToken = getRefreshToken();
+                const refreshToken = util.auth.getRefreshToken();
                 if (left < checkRegion && refreshToken) {
                     _config = queryRefreshToken(_config, refreshToken)
                 } else {
-                    if (getToken()) {
-                        _config.headers['Authorization'] = 'bearer ' + getToken()
+                    if (util.auth.getToken()) {
+                        _config.headers['Authorization'] = 'bearer ' + util.auth.getToken()
                     }
                 }
             }

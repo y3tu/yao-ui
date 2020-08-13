@@ -54,7 +54,7 @@
   </el-dialog>
 </template>
 <script>
-import { isIntegerGreaterThanZero, isURL } from '@/utils/utilValidate'
+import util from '@/utils'
 
 export default {
   name: 'ClientEdit',
@@ -101,7 +101,7 @@ export default {
           { required: true, message: this.$t('rules.require'), trigger: 'blur' }
         ],
         webServerRedirectUri: { validator: (rule, value, callback) => {
-          if (value !== '' && value != null && !isURL(value)) {
+          if (value !== '' && value != null && !util.validate.isURL(value)) {
             callback(new Error(this.$t('rules.invalidURL')))
           } else {
             callback()
@@ -114,7 +114,7 @@ export default {
         accessTokenValidity: [
           { required: true, message: this.$t('rules.require'), trigger: 'blur' },
           { validator: (rule, value, callback) => {
-            if (!isIntegerGreaterThanZero(value)) {
+            if (!validate.isIntegerGreaterThanZero(value)) {
               callback(new Error(this.$t('rules.invalidInteger')))
             } else if (value.toString().length > 11) {
               callback(new Error(this.$t('rules.noMoreThan11')))

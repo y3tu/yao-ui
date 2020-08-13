@@ -1,4 +1,4 @@
-const utilValidate = {
+const validate = {
     /**
      * 判断是否为空
      */
@@ -18,7 +18,7 @@ const utilValidate = {
      * 判断是否不为空
      */
     isNotEmpty(val) {
-        return !isEmpty(val);
+        return !validate.isEmpty(val);
     },
 
 
@@ -97,5 +97,5 @@ const utilValidate = {
     }
 }
 
-export default utilValidate
+export default validate
 

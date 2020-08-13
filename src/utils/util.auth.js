@@ -1,4 +1,4 @@
-import {util} from '@/utils'
+import util from '@/utils'
 
 const auth = {
     getToken() {
@@ -16,6 +16,6 @@ const auth = {
     getUser() {
         return util.db.get('USER', 0)
     }
-}
+};
 
 export default auth

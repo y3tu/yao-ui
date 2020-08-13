@@ -94,8 +94,7 @@
 <script>
     import crudPicture from './Api.js'
     import {mapGetters} from 'vuex'
-    import {getToken} from '@/utils/auth'
-    import clipboard from '@/utils/clipboard'
+    import util from '@/utils'
     import CRUD, {presenter, header, form, crud} from '@crud/crud'
     import rrOperation from '@crud/RR.operation'
     import crudOperation from '@crud/CRUD.operation'
@@ -131,7 +130,7 @@
                 },
                 dialog: false,
                 syncLoading: false,
-                headers: {'Authorization': 'bearer ' + getToken()},
+                headers: {'Authorization': 'bearer ' + util.auth.getToken()},
                 dialogImageUrl: '',
                 dialogVisible: false,
                 fileList: [],
@@ -196,7 +195,7 @@
                 })
             },
             handleClipboard(text, event) {
-                clipboard(text, event)
+                util.clipboard.handleClipboard(text, event)
             }
         }
     }

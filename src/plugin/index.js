@@ -17,7 +17,7 @@ import pluginLog from '@/plugin/log'
 
 
 //常用方法
-import {util} from "@/utils"
+import util from "@/utils"
 
 
 export default {
@@ -43,5 +43,9 @@ export default {
         Vue.prototype.$page = request.page;
         Vue.prototype.$login = request.login;
         Vue.prototype.$get = request.get;
+        Vue.prototype.$put = request.put;
+        Vue.prototype.$download = request.download;
+        Vue.prototype.$delete = request.delete;
+
     }
 }

@@ -193,8 +193,7 @@
 <script>
     import LangSelect from '@/components/LangSelect'
     import {socialLoginUrl} from '@/settings'
-    import {randomNum} from '@/utils'
-    import db from '@/utils/localstorage'
+    import util from '@/utils'
     import axios from 'axios'
 
     export default {
@@ -211,7 +210,7 @@
                 showDialog: false,
                 redirect: undefined,
                 otherQuery: {},
-                randomId: randomNum(24, 16),
+                randomId: util.randomNum(24, 16),
                 page: {
                     width: window.screen.width * 0.5,
                     height: window.screen.height * 0.5
@@ -262,7 +261,7 @@
             }
         },
         mounted() {
-            db.clear();
+            util.db.clear();
             this.getCodeImage();
         },
         methods: {

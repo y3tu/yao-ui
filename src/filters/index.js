@@ -1,12 +1,9 @@
-// import parseTime, formatTime and set to filter
-export {parseTime, formatTime} from '@/utils'
+import util from '@/utils'
 
-/**
- * Show plural label if time is plural number
- * @param {number} time
- * @param {string} label
- * @return {string}
- */
+export function parseTime(time,cFormat) {
+    return util.date.parseTime(time,cFormat);
+}
+
 function pluralize(time, label) {
     if (time === 1) {
         return time + label
@@ -14,9 +11,6 @@ function pluralize(time, label) {
     return time + label + 's'
 }
 
-/**
- * @param {number} time
- */
 export function timeAgo(time) {
     const between = Date.now() / 1000 - Number(time);
     if (between < 3600) {
@@ -28,12 +22,7 @@ export function timeAgo(time) {
     }
 }
 
-/**
- * Number formatting
- * like 10000 => 10k
- * @param {number} num
- * @param {number} digits
- */
+
 export function numberFormatter(num, digits) {
     const si = [
         {value: 1E18, symbol: 'E'},

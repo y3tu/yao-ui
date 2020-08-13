@@ -109,7 +109,7 @@
 
 <script>
     import {mapGetters} from 'vuex'
-    import {getToken} from '@/utils/auth'
+    import util from '@/utils'
     import crudFile, { download, downloadBatch} from './Api'
     import CRUD, {presenter, header, form, crud} from '@crud/crud'
     import rrOperation from '@crud/RR.operation'
@@ -128,7 +128,7 @@
             return {
                 delAllLoading: false,
                 loading: false,
-                headers: {'Authorization': 'bearer ' + getToken()},
+                headers: {'Authorization': 'bearer ' + util.auth.getToken()},
                 permission: {
                     edit: ['storage:update'],
                     del: ['storage:delete']

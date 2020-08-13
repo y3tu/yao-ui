@@ -1,9 +1,10 @@
 import cookies from './util.cookies'
-import db from 'util.db'
+import db from './util.db'
 import auth from './util.auth'
-import validate from 'util.validate'
+import validate from './util.validate'
 import date from './util.date'
-import log from 'util.log'
+import log from './util.log'
+import clipboard from "./util.clipboard";
 
 const util = {
     cookies,
@@ -11,9 +12,11 @@ const util = {
     auth,
     validate,
     date,
-    log
-}
+    log,
+    clipboard
+};
 
+export default util
 
 util.getQueryObject = function (url) {
     url = url == null ? window.location.href : url;
@@ -28,7 +31,7 @@ util.getQueryObject = function (url) {
         return rs
     });
     return obj
-}
+};
 
 util.byteLength = function (str) {
     // returns the byte length of an utf8 string
@@ -40,7 +43,7 @@ util.byteLength = function (str) {
         if (code >= 0xDC00 && code <= 0xDFFF) i--
     }
     return s
-}
+};
 
 util.cleanArray = function (actual) {
     const newArray = [];
@@ -50,7 +53,7 @@ util.cleanArray = function (actual) {
         }
     }
     return newArray
-}
+};
 
 
 export function param(json) {
@@ -258,13 +261,13 @@ util.randomNum = function (len, radix) {
         }
     }
     return uuid.join('') + new Date().getTime()
-}
+};
 
 /**
  * 深拷贝对象
  */
 util.deepClone = function (obj) {
-    const _toString = Object.prototype.toString
+    const _toString = Object.prototype.toString;
 
     // null, undefined, non-object, function
     if (!obj || typeof obj !== 'object') {
@@ -283,7 +286,7 @@ util.deepClone = function (obj) {
 
     // RegExp
     if (_toString.call(obj) === '[object RegExp]') {
-        const flags = []
+        const flags = [];
         if (obj.global) {
             flags.push('g')
         }
@@ -297,14 +300,14 @@ util.deepClone = function (obj) {
         return new RegExp(obj.source, flags.join(''))
     }
 
-    const result = Array.isArray(obj) ? [] : obj.constructor ? new obj.constructor() : {}
+    const result = Array.isArray(obj) ? [] : obj.constructor ? new obj.constructor() : {};
 
     for (const key in obj) {
         result[key] = deepClone(obj[key])
     }
 
     return result
-}
+};
 
 // 下载文件
 util.downloadFile = function (obj, name, suffix) {
@@ -317,6 +320,21 @@ util.downloadFile = function (obj, name, suffix) {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link)
-}
+};
 
-export default util
+
+/**
+ * @description 打开新页面
+ * @param {String} url 地址
+ */
+util.open = function (url) {
+    let a = document.createElement('a');
+    a.setAttribute('href', url);
+    a.setAttribute('target', '_blank');
+    a.setAttribute('id', 'd2admin-link-temp');
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(document.getElementById('d2admin-link-temp'))
+};
+
+

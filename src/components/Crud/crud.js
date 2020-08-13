@@ -1,4 +1,4 @@
-import {parseTime, downloadFile} from '@/utils/index'
+import util from '@/utils'
 import Vue from 'vue'
 
 /**
@@ -646,7 +646,9 @@ function presenter(crud) {
             this.crud = this.$crud['defalut'] || cruds[0]
         },
         methods: {
-            parseTime
+            parseTime(time,cFormat){
+                return util.date.parseTime(time,cFormat)
+            }
         },
         created() {
             for (const k in this.$crud) {

@@ -75,7 +75,7 @@
 <script>
     import crudQiNiu from './Api'
     import {mapGetters} from 'vuex'
-    import {getToken} from '@/utils/auth'
+    import util from '@/utils'
     import eForm from './Form'
     import CRUD, {presenter, header, crud} from '@crud/crud'
     import rrOperation from '@crud/RR.operation'
@@ -97,7 +97,7 @@
                 title: '文件', dialog: false,
                 icon: 'el-icon-refresh',
                 url: '',
-                headers: {'Authorization': 'bearer ' + getToken()},
+                headers: {'Authorization': 'bearer ' + util.auth.getToken()},
                 dialogImageUrl: '', dialogVisible: false, fileList: [], files: [], newWin: null
             }
         },

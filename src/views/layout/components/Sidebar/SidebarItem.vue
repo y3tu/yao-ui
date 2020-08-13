@@ -29,8 +29,8 @@
 
 <script>
     import path from 'path'
-    import {generateTitle} from '@/utils/i18n'
-    import {isExternal} from '@/utils/utilValidate'
+    import {generateTitle} from '@/utils/util.i18n'
+    import util from '@/utils'
     import Item from './Item'
     import AppLink from './Link'
     import FixiOSBug from './FixiOSBug'
@@ -86,16 +86,16 @@
                 return false
             },
             resolvePath(routePath) {
-                if (isExternal(routePath)) {
+                if (util.validate.isExternal(routePath)) {
                     return routePath
                 }
-                if (isExternal(this.basePath)) {
+                if (util.validate.isExternal(this.basePath)) {
                     return this.basePath
                 }
                 return path.resolve(this.basePath, routePath)
             },
 
-            generateTitle
+            generateTitle,
         }
     }
 </script>

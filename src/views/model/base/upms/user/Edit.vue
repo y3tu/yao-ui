@@ -65,7 +65,7 @@
     </el-dialog>
 </template>
 <script>
-    import {isMobile} from '@/utils/utilValidate'
+    import util from '@/utils'
     import Treeselect from '@riophae/vue-treeselect'
     import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 
@@ -123,7 +123,7 @@
                         {required: true, message: this.$t('rules.require'), trigger: 'blur'},
                         {
                             validator: (rule, value, callback) => {
-                                if (value !== '' && !validMobile(value)) {
+                                if (value !== '' && !util.validate.isMobile(value)) {
                                     callback(this.$t('rules.mobile'))
                                 }
                                 if (!this.user.userId) {

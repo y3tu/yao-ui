@@ -35,7 +35,7 @@
 </template>
 
 <script>
-    import db from '@/utils/localstorage'
+    import util from '@/utils'
 
     export default {
         name: "Unlock",
@@ -67,11 +67,11 @@
                 this.avatarLeft = "0px";
                 this.inputLeft = "400px";
                 this.password = "";
-                db.save("locking", "0");
+                util.db.save("locking", "0");
                 this.$emit("on-unlock");
             },
             logout() {
-                db.clear();
+                util.db.clear();
                 location.reload();
             },
             handleClickAvatar() {

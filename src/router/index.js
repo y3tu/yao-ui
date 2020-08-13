@@ -1,13 +1,12 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Layout from '@/views/layout'
-import db from '@/utils/localstorage'
 import Config from '@/settings'
 import request from '@/plugin/axios'
 import store from '@/store/index'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
-import {isEmpty, isNotEmpty} from "@/utils/utilValidate";
+import util from "@/utils";
 import {Message} from "element-ui";
 
 import extraRouter from './extraRouter'
@@ -112,31 +111,31 @@ router.beforeEach((to, from, next) => {
     }
 
     NProgress.start();
-    if (db.get('locking') === '1' && to.name !== 'locking') {
+    if (util.db.get('locking') === '1' && to.name !== 'locking') {
         // 判断当前是否是锁定状态
         next('/locking');
         return;
-    } else if (db.get('locking') === '0' && to.name === 'locking') {
+    } else if (util.db.get('locking') === '0' && to.name === 'locking') {
         next(false);
     }
     if (whiteList.indexOf(to.path) !== -1) {
         //白名单直接放行
         next()
     } else {
-        const token = db.get('ACCESS_TOKEN');
-        const user = db.get('USER');
-        const userRouter = db.get('USER_ROUTER');
+        const token = util.db.get('ACCESS_TOKEN');
+        const user = util.db.get('USER');
+        const userRouter = util.db.get('USER_ROUTER');
         if (token.length && user) {
-            if (isEmpty(userRouter)) {
+            if (util.validate.isEmpty(userRouter)) {
                 request.get(`base/resource/getUserRouter/${user.username}`).then((res) => {
                     const permissions = res.data.permissions;
                     store.commit('account/setPermissions', permissions);
                     let asyncRouter = res.data.routes;
-                    if (isEmpty(asyncRouter)) {
+                    if (util.validate.isEmpty(asyncRouter)) {
                         Message.error("没有获取到用户的路由信息");
                         return;
                     }
-                    db.save('USER_ROUTER', asyncRouter);
+                    util.db.save('USER_ROUTER', asyncRouter);
                     go(to, next, asyncRouter)
                 })
             } else if (store.state.account.routes.length === 0) {
@@ -180,7 +179,7 @@ function filterAsyncRouter(routes) {
         const {children} = route;
         if (type === -1) {
             //顶级菜单
-            if (isNotEmpty(children)) {
+            if (util.validate.isNotEmpty(children)) {
                 aRouter.push(filterAsyncRouter(children));
             }
         } else {
@@ -188,7 +187,7 @@ function filterAsyncRouter(routes) {
                 path: path,
                 component: () => {
                     let componentPath = '';
-                    if (component === 'Layout' || isEmpty(component)) {
+                    if (component === 'Layout' || util.validate.isEmpty(component)) {
                         return import('@/views/layout')
                     } else if (component === 'Iframe' || iframe === true) {
                         return import('@/views/layout/Iframe')
@@ -197,7 +196,7 @@ function filterAsyncRouter(routes) {
                         return import(`@/views/${componentPath}.vue`)
                     }
                 },
-                name: isEmpty(componentName) ? resourceName : componentName,
+                name: util.validate.isEmpty(componentName) ? resourceName : componentName,
                 meta: {
                     icon: icon,
                     title: resourceName,
@@ -208,8 +207,8 @@ function filterAsyncRouter(routes) {
                 hidden: hidden,
                 icon: icon,
                 parentId: parentId,
-                children: isEmpty(children) ? [] : filterAsyncRouter(children),
-                redirect: isEmpty(children) ? '' : 'noRedirect'
+                children: util.validate.isEmpty(children) ? [] : filterAsyncRouter(children),
+                redirect: util.validate.isEmpty(children) ? '' : 'noRedirect'
             };
             aRouter.push(oRouter)
         }

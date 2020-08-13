@@ -124,7 +124,7 @@
                 @current-change="pageChange"/>
 
         <el-dialog :visible.sync="exceptionDialog" :fullscreen="isFullScreen" title="异常信息" append-to-body width="70%">
-            <Java :value="exceptionDetail" height="400px"/>
+            <code-edit :value="exceptionDetail" codeType="text/x-java" height="400px"/>
             <div slot="footer">
                 <el-button icon="el-icon-full-screen" @click="toggleFull">全屏开/关</el-button>
             </div>
@@ -134,14 +134,14 @@
 </template>
 
 <script>
-    import Java from '@/components/CodeEdit/index'
+    import codeEdit from '@/components/CodeEdit/index'
 
     import pageMixins from '@/mixins/page'
 
     export default {
         name: 'log',
         mixins: [pageMixins],
-        components: {Java},
+        components: {codeEdit},
         filters: {
             statusFilter(status) {
                 const map = {

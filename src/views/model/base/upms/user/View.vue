@@ -78,6 +78,7 @@
     </el-dialog>
 </template>
 <script>
+
     export default {
         name: 'UserView',
         props: {

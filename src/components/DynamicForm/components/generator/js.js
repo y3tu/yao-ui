@@ -1,5 +1,4 @@
-import {isArray} from '@/utils/utilValidate'
-import {deepClone} from '@/utils'
+import util from '@/utils'
 import {exportDefault, titleCase} from '../../util'
 import ruleTrigger from './ruleTrigger'
 
@@ -20,7 +19,7 @@ const inheritAttrs = {
  * @param {String} type 生成类型，文件或弹窗等
  */
 export function makeUpJs(formConfig, type) {
-    confGlobal = formConfig = deepClone(formConfig)
+    confGlobal = formConfig = util.deepClone(formConfig)
     const dataList = []
     const ruleList = []
     const optionsList = []
@@ -147,12 +146,12 @@ function buildRules(scheme, ruleList) {
     const rules = []
     if (ruleTrigger[config.tag]) {
         if (config.required) {
-            const type = isArray(config.defaultValue) ? 'type: \'array\',' : ''
-            let message = isArray(config.defaultValue) ? `请至少选择一个${config.label}` : scheme.placeholder
+            const type = util.validate.isArray(config.defaultValue) ? 'type: \'array\',' : ''
+            let message = util.validate.isArray(config.defaultValue) ? `请至少选择一个${config.label}` : scheme.placeholder
             if (message === undefined) message = `${config.label}不能为空`
             rules.push(`{ required: true, ${type} message: '${message}', trigger: '${ruleTrigger[config.tag]}' }`)
         }
-        if (config.regList && isArray(config.regList)) {
+        if (config.regList && util.validate.isArray(config.regList)) {
             config.regList.forEach(item => {
                 if (item.pattern) {
                     rules.push(

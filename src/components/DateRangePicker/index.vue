@@ -1,6 +1,6 @@
 <script>
 import { DatePicker, DatePickerOptions } from 'element-ui'
-import { calendarShortcuts } from '@/utils/shortcuts'
+import { calendarShortcuts } from '@/utils/util.date.js'
 
 export default {
   name: 'DateRangePicker',
