@@ -54,7 +54,7 @@
   </el-dialog>
 </template>
 <script>
-import { isIntegerGreaterThanZero, isURL } from '@/utils/validate'
+import { isIntegerGreaterThanZero, isURL } from '@/utils/utilValidate'
 
 export default {
   name: 'ClientEdit',

@@ -17,8 +17,7 @@ import pluginLog from '@/plugin/log'
 
 
 //常用方法
-import {isEmpty,isNotEmpty} from "@/utils/validate"
-import {deepClone} from "@/utils"
+import {util} from "@/utils"
 
 
 export default {
@@ -38,9 +37,9 @@ export default {
         Vue.use(pluginLog);
         // 挂载全局
         Vue.prototype.$echarts = echarts;
-        Vue.prototype.$deepClone = deepClone;
-        Vue.prototype.$isEmpty = isEmpty;
-        Vue.prototype.$isNotEmpty = isNotEmpty;
+        Vue.prototype.$deepClone = util.deepClone;
+        Vue.prototype.$isEmpty = util.validate.isEmpty;
+        Vue.prototype.$isNotEmpty = util.validate.isNotEmpty;
         Vue.prototype.$page = request.page;
         Vue.prototype.$login = request.login;
         Vue.prototype.$get = request.get;

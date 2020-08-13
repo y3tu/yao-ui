@@ -42,8 +42,7 @@
         inputComponents,
         selectComponents,
         layoutComponents,
-        commonComponents,
-        customMadeComponents,
+
     } from "./components/generator/config";
 
     export default {
@@ -56,8 +55,7 @@
                 inputComponents,
                 selectComponents,
                 layoutComponents,
-                commonComponents,
-                customMadeComponents,
+
                 leftComponents: [
                     {
                         title: '输入型组件',
@@ -73,6 +71,18 @@
                     }
                 ]
             }
+        },
+        methods:{
+
+            cloneComponent(origin) {
+                const clone = this.$deepClone(origin)
+                const config = clone.__config__
+                config.span = this.formConf.span // 生成代码时，会根据span做精简判断
+                this.createIdAndKey(clone)
+                clone.placeholder !== undefined && (clone.placeholder += config.label)
+                tempActiveData = clone
+                return tempActiveData
+            },
         }
     }
 </script>

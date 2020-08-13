@@ -67,7 +67,7 @@
 <script>
 
     import echarts from 'echarts'
-    import { parseTime } from '@/utils'
+    import  util from '@/utils'
     import countTo from 'vue-count-to'
     import resize from '@/components/Charts/mixins/resize'
 
@@ -128,7 +128,7 @@
                     const tenVisitCount = [];
                     const dateArr = [];
                     for (let i = 10; i >= 0; i--) {
-                        const time = parseTime(new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * i), '{m}-{d}');
+                        const time = util.date.parseTime(new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * i), '{m}-{d}');
                         let contain = false;
                         for (const o of data.lastTenVisitCount) {
                             if (o.days === time) {
@@ -143,7 +143,7 @@
                     }
                     const tenUserVisitCount = [];
                     for (let i = 10; i >= 0; i--) {
-                        const time = parseTime(new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * i), '{m}-{d}');
+                        const time = util.date.parseTime(new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * i), '{m}-{d}');
                         let contain = false;
                         for (const o of data.lastTenUserVisitCount) {
                             if (o.days === time) {

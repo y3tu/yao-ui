@@ -1,101 +1,21 @@
-/**
- * Created by PanJiaChen on 16/11/18.
- */
+import cookies from './util.cookies'
+import db from 'util.db'
+import auth from './util.auth'
+import validate from 'util.validate'
+import date from './util.date'
+import log from 'util.log'
 
-/**
- * Parse the time to string
- * @param {(Object|string|number)} time
- * @param {string} cFormat
- * @returns {string}
- */
-export function parseTime(time, cFormat) {
-    if (arguments.length === 0) {
-        return null
-    }
-    const format = cFormat || '{y}-{m}-{d} {h}:{i}:{s}';
-    let date;
-    if (typeof time === 'object') {
-        date = time
-    } else {
-        if ((typeof time === 'string') && (/^[0-9]+$/.test(time))) {
-            time = parseInt(time)
-        }
-        if ((typeof time === 'number') && (time.toString().length === 10)) {
-            time = time * 1000
-        }
-        date = new Date(time)
-    }
-    const formatObj = {
-        y: date.getFullYear(),
-        m: date.getMonth() + 1,
-        d: date.getDate(),
-        h: date.getHours(),
-        i: date.getMinutes(),
-        s: date.getSeconds(),
-        a: date.getDay()
-    };
-    const time_str = format.replace(/{(y|m|d|h|i|s|a)+}/g, (result, key) => {
-        let value = formatObj[key];
-        // Note: getDay() returns 0 on Sunday
-        if (key === 'a') {
-            return ['日', '一', '二', '三', '四', '五', '六'][value]
-        }
-        if (result.length > 0 && value < 10) {
-            value = '0' + value
-        }
-        return value || 0
-    });
-    return time_str
+const util = {
+    cookies,
+    db,
+    auth,
+    validate,
+    date,
+    log
 }
 
-/**
- * @param {number} time
- * @param {string} option
- * @returns {string}
- */
-export function formatTime(time, option) {
-    if (('' + time).length === 10) {
-        time = parseInt(time) * 1000
-    } else {
-        time = +time
-    }
-    const d = new Date(time);
-    const now = Date.now();
 
-    const diff = (now - d) / 1000;
-
-    if (diff < 30) {
-        return '刚刚'
-    } else if (diff < 3600) {
-        // less 1 hour
-        return Math.ceil(diff / 60) + '分钟前'
-    } else if (diff < 3600 * 24) {
-        return Math.ceil(diff / 3600) + '小时前'
-    } else if (diff < 3600 * 24 * 2) {
-        return '1天前'
-    }
-    if (option) {
-        return parseTime(time, option)
-    } else {
-        return (
-            d.getMonth() +
-            1 +
-            '月' +
-            d.getDate() +
-            '日' +
-            d.getHours() +
-            '时' +
-            d.getMinutes() +
-            '分'
-        )
-    }
-}
-
-/**
- * @param {string} url
- * @returns {Object}
- */
-export function getQueryObject(url) {
+util.getQueryObject = function (url) {
     url = url == null ? window.location.href : url;
     const search = url.substring(url.lastIndexOf('?') + 1);
     const obj = {};
@@ -110,14 +30,10 @@ export function getQueryObject(url) {
     return obj
 }
 
-/**
- * @param {string} input value
- * @returns {number} output value
- */
-export function byteLength(str) {
+util.byteLength = function (str) {
     // returns the byte length of an utf8 string
     let s = str.length;
-    for (var i = str.length - 1; i >= 0; i--) {
+    for (let i = str.length - 1; i >= 0; i--) {
         const code = str.charCodeAt(i);
         if (code > 0x7f && code <= 0x7ff) s++;
         else if (code > 0x7ff && code <= 0xffff) s += 2;
@@ -126,11 +42,7 @@ export function byteLength(str) {
     return s
 }
 
-/**
- * @param {Array} actual
- * @returns {Array}
- */
-export function cleanArray(actual) {
+util.cleanArray = function (actual) {
     const newArray = [];
     for (let i = 0; i < actual.length; i++) {
         if (actual[i]) {
@@ -140,10 +52,7 @@ export function cleanArray(actual) {
     return newArray
 }
 
-/**
- * @param {Object} json
- * @returns {Array}
- */
+
 export function param(json) {
     if (!json) return '';
     return cleanArray(
@@ -154,10 +63,6 @@ export function param(json) {
     ).join('&')
 }
 
-/**
- * @param {string} url
- * @returns {Object}
- */
 export function param2Obj(url) {
     const search = url.split('?')[1];
     if (!search) {
@@ -174,22 +79,14 @@ export function param2Obj(url) {
     )
 }
 
-/**
- * @param {string} val
- * @returns {string}
- */
+
 export function html2Text(val) {
     const div = document.createElement('div');
     div.innerHTML = val;
     return div.textContent || div.innerText
 }
 
-/**
- * Merges two objects, giving the last one precedence
- * @param {Object} target
- * @param {(Object|Array)} source
- * @returns {Object}
- */
+
 export function objectMerge(target, source) {
     if (typeof target !== 'object') {
         target = {}
@@ -208,10 +105,7 @@ export function objectMerge(target, source) {
     return target
 }
 
-/**
- * @param {HTMLElement} element
- * @param {string} className
- */
+
 export function toggleClass(element, className) {
     if (!element || !className) {
         return
@@ -232,13 +126,7 @@ export function toggleClass(element, className) {
  * @param {string} type
  * @returns {Date}
  */
-export function getTime(type) {
-    if (type === 'start') {
-        return new Date().getTime() - 3600 * 1000 * 24 * 90
-    } else {
-        return new Date(new Date().toDateString())
-    }
-}
+
 
 /**
  * @param {Function} func
@@ -339,7 +227,12 @@ export function getFileType(filename) {
     }
 }
 
-export function randomNum(len, radix) {
+/**
+ *  获取随机数
+ * @param len
+ * @param radix
+ */
+util.randomNum = function (len, radix) {
     const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('');
     const uuid = [];
     radix = radix || chars.length;
@@ -370,7 +263,7 @@ export function randomNum(len, radix) {
 /**
  * 深拷贝对象
  */
-export function deepClone(obj) {
+util.deepClone = function (obj) {
     const _toString = Object.prototype.toString
 
     // null, undefined, non-object, function
@@ -391,9 +284,15 @@ export function deepClone(obj) {
     // RegExp
     if (_toString.call(obj) === '[object RegExp]') {
         const flags = []
-        if (obj.global) { flags.push('g') }
-        if (obj.multiline) { flags.push('m') }
-        if (obj.ignoreCase) { flags.push('i') }
+        if (obj.global) {
+            flags.push('g')
+        }
+        if (obj.multiline) {
+            flags.push('m')
+        }
+        if (obj.ignoreCase) {
+            flags.push('i')
+        }
 
         return new RegExp(obj.source, flags.join(''))
     }
@@ -408,7 +307,7 @@ export function deepClone(obj) {
 }
 
 // 下载文件
-export function downloadFile(obj, name, suffix) {
+util.downloadFile = function (obj, name, suffix) {
     const url = window.URL.createObjectURL(new Blob([obj]));
     const link = document.createElement('a');
     link.style.display = 'none';
@@ -419,3 +318,5 @@ export function downloadFile(obj, name, suffix) {
     link.click();
     document.body.removeChild(link)
 }
+
+export default util

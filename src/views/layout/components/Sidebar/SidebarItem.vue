@@ -30,7 +30,7 @@
 <script>
     import path from 'path'
     import {generateTitle} from '@/utils/i18n'
-    import {isExternal} from '@/utils/validate'
+    import {isExternal} from '@/utils/utilValidate'
     import Item from './Item'
     import AppLink from './Link'
     import FixiOSBug from './FixiOSBug'

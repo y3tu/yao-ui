@@ -65,7 +65,7 @@
     </el-dialog>
 </template>
 <script>
-    import {isMobile} from '@/utils/validate'
+    import {isMobile} from '@/utils/utilValidate'
     import Treeselect from '@riophae/vue-treeselect'
     import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 

@@ -7,7 +7,7 @@ import request from '@/plugin/axios'
 import store from '@/store/index'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
-import {isEmpty, isNotEmpty} from "@/utils/validate";
+import {isEmpty, isNotEmpty} from "@/utils/utilValidate";
 import {Message} from "element-ui";
 
 import extraRouter from './extraRouter'
