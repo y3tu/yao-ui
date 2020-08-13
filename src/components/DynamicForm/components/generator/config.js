@@ -10,7 +10,7 @@ export const formConf = {
   disabled: false,
   span: 24,
   formBtns: true
-}
+};
 
 // 输入型组件 【左面板】
 export const inputComponents = [

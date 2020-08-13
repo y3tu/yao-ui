@@ -303,7 +303,7 @@ util.deepClone = function (obj) {
     const result = Array.isArray(obj) ? [] : obj.constructor ? new obj.constructor() : {};
 
     for (const key in obj) {
-        result[key] = deepClone(obj[key])
+        result[key] = util.deepClone(obj[key])
     }
 
     return result
@@ -315,7 +315,7 @@ util.downloadFile = function (obj, name, suffix) {
     const link = document.createElement('a');
     link.style.display = 'none';
     link.href = url;
-    const fileName = parseTime(new Date()) + '-' + name + '.' + suffix;
+    const fileName = util.date.parseTime(new Date()) + '-' + name + '.' + suffix;
     link.setAttribute('download', fileName);
     document.body.appendChild(link);
     link.click();
