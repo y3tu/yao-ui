@@ -1,6 +1,8 @@
 <template>
     <div class="json-editor">
-        <textarea ref="textarea"/>
+        <label>
+            <textarea ref="textarea"/>
+        </label>
     </div>
 </template>
 
@@ -13,9 +15,23 @@
 
     import 'codemirror/addon/lint/lint.css'
     import 'codemirror/theme/rubyblue.css'
-    import 'codemirror/mode/javascript/javascript'
-    import 'codemirror/addon/lint/lint'
-    import 'codemirror/addon/hint/sql-hint'
+
+
+    import 'codemirror/mode/javascript/javascript.js'
+    import 'codemirror/mode/css/css.js'
+    import 'codemirror/mode/xml/xml.js'
+    import 'codemirror/mode/shell/shell.js'
+    import 'codemirror/mode/sql/sql.js'
+
+    //代码补全提示
+    import 'codemirror/addon/hint/anyword-hint.js';
+    import 'codemirror/addon/hint/css-hint.js';
+    import 'codemirror/addon/hint/html-hint.js';
+    import 'codemirror/addon/hint/javascript-hint.js';
+    import 'codemirror/addon/hint/show-hint.css';
+    import 'codemirror/addon/hint/show-hint.js';
+    import 'codemirror/addon/hint/sql-hint.js';
+    import 'codemirror/addon/hint/xml-hint.js';
 
 
     export default {
