@@ -9,7 +9,6 @@ import VueParticlesBg from "particles-bg-vue";
 import echarts from 'echarts'
 import 'echarts/lib/chart/map.js'
 import 'echarts/map/js/china.js'
-import '@/components/Dashboard/Widgets/libs' // chart libs
 
 // 功能插件
 import pluginError from '@/plugin/error'
