@@ -20,4 +20,12 @@ export function download(data,fileName) {
   return request.download('support/online/dynamicForm/export',data,fileName);
 }
 
+export function getByCode(code) {
+  return request.get(`support/online/dynamicForm/getByCode/${code}`)
+}
+
+export function saveJson(data) {
+  return request.postData('support/online/dynamicForm/saveJson',data);
+}
+
 export default { add, edit, del, download}

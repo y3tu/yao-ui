@@ -69,6 +69,7 @@
                           <el-button v-if="preview" type="text" size="medium" icon="el-icon-view" @click="handlePreview">预览</el-button>
                           <el-button v-if="generateJson" type="text" size="medium" icon="el-icon-tickets" @click="handleGenerateJson">生成Json</el-button>
                           <el-button v-if="generateCode" type="text" size="medium" icon="el-icon-document" @click="handleGenerateCode">生成代码</el-button>
+                          <el-button v-if="save" type="text" size="medium" icon="el-icon-save" @click="handleSave">保存</el-button>
                         </el-header>
                         <el-main :class="{'widget-empty': widgetForm.list.length === 0}">
                              <widget-form v-if="!resetJson" ref="widgetForm" :data="widgetForm" :select.sync="widgetFormSelect"/>
@@ -117,7 +118,7 @@
                             width="800px"
                             form>
                         <el-alert type="info" title="JSON格式如下，直接复制生成的json覆盖此处代码点击确定即可"/>
-                        <code-edit v-model="jsonEg" height="400" codeType="text/x-json"/>
+                        <code-edit v-model="json" height="400" codeType="text/x-json"/>
                     </custom-dialog>
 
                     <custom-dialog
@@ -188,19 +189,23 @@
             },
             generateCode: {
                 type: Boolean,
-                default: true
+                default: false
             },
             generateJson: {
                 type: Boolean,
-                default: true
+                default: false
             },
             upload: {
                 type: Boolean,
-                default: true
+                default: false
             },
             clearable: {
                 type: Boolean,
                 default: true
+            },
+            save:{
+                type: Boolean,
+                default: false
             },
             basicFields: {
                 type: Array,
@@ -209,6 +214,10 @@
             advanceFields: {
                 type: Array,
                 default: () => ['blank', 'imgupload', 'editor', 'cascader']
+            },
+            json:{
+                type: String,
+                default:'',
             },
             layoutFields: {
                 type: Array,
@@ -258,7 +267,6 @@
                 },
 
                 widgetModels: {},
-                jsonEg: '',
                 jsonCopyValue: '',
                 jsonTemplate: '',
                 jsonClipboard: null,
@@ -266,6 +274,10 @@
                 htmlTemplate: '',
                 codeActiveName: 'vue',
             }
+        },
+        created() {
+            this.$nextTick(() => {
+            })
         },
         methods: {
             handleConfigSelect(value) {
@@ -317,7 +329,7 @@
             },
             handleUploadJson() {
                 try {
-                    this.setJSON(JSON.parse(this.jsonEg));
+                    this.setJSON(JSON.parse(this.json));
                     this.uploadVisible = false
                 } catch (e) {
                     this.$message.error(e.message);
@@ -339,6 +351,10 @@
             handleDataChange(field, value, data) {
                 console.log(field, value, data)
             },
+            handleSave(){
+                this.jsonTemplate = JSON.stringify(this.widgetForm,null,4);
+                this.$emit('saveJson', this.jsonTemplate);
+            },
             setJSON(json) {
                 this.widgetForm = json;
                 if (json.list.length > 0) {
@@ -353,6 +369,14 @@
                     console.log(this.$refs.widgetForm)
                 }
             },
+            json:{
+                handler(newName, oldName) {
+                    if(this.$isNotEmpty(newName)){
+                        this.setJSON(JSON.parse(newName));
+                    }
+                },
+                immediate: true,
+            }
         }
     }
 

@@ -54,7 +54,7 @@
                     <span>{{ scope.row.actionType }}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="服务名" prop="serverName" align="center" min-width="140px">
+            <el-table-column label="服务名" prop="serverName" align="center" min-width="150px">
                 <template slot-scope="scope">
                     <span>{{ scope.row.serverName }}</span>
                 </template>
