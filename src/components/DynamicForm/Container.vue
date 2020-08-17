@@ -128,7 +128,7 @@
                             form>
                         <code-edit v-model="jsonTemplate" height="400" codeType="text/x-json"/>
                         <template slot="action">
-                          <el-button type="primary" class="json-btn" :data-clipboard-text="jsonCopyValue">复制数据</el-button>
+                            <el-button type="primary" class="json-btn" :data-clipboard-text="jsonCopyValue">复制数据</el-button>
                         </template>
                     </custom-dialog>
 
@@ -298,7 +298,7 @@
             },
             handleGenerateJson() {
                 this.jsonVisible = true;
-                this.jsonTemplate = JSON.stringify(this.widgetForm);
+                this.jsonTemplate = JSON.stringify(this.widgetForm,null,4);
                 if (!this.jsonClipboard) {
                     this.jsonClipboard = new Clipboard('.json-btn');
                     this.jsonClipboard.on('success', (e) => {
@@ -345,7 +345,6 @@
                     this.widgetFormSelect = json.list[0]
                 }
             },
-
         },
         watch: {
             widgetForm: {

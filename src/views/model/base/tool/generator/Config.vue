@@ -82,15 +82,6 @@
                                     </el-select>
                                 </template>
                             </el-table-column>
-                            <el-table-column label="日期注解">
-                                <template slot-scope="scope">
-                                    <el-select v-model="scope.row.dateAnnotation" filterable class="edit-input" clearable size="mini"
-                                               placeholder="请选择">
-                                        <el-option label="自动创建时间" value="CreationTimestamp"/>
-                                        <el-option label="自动更新时间" value="UpdateTimestamp"/>
-                                    </el-select>
-                                </template>
-                            </el-table-column>
                             <el-table-column label="关联字典">
                                 <template slot-scope="scope">
                                     <el-select v-model="scope.row.dictName" filterable class="edit-input" clearable size="mini" placeholder="请选择">

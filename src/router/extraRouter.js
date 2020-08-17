@@ -1,7 +1,7 @@
 const extraRouter=[
     {
         name: 'dynamicForm',
-        path: '/dynamicForm',
+        path: '/dynamicFormContainer',
         component: () => import('@/components/DynamicForm/Container'),
         hidden: true
     },

@@ -45,6 +45,8 @@ export default {
         Vue.prototype.$put = request.put;
         Vue.prototype.$download = request.download;
         Vue.prototype.$delete = request.delete;
+        Vue.prototype.$post = request.post;
+
 
     }
 }
