@@ -13,7 +13,7 @@
     "doc:build": "vuepress build docs"
   },
   "dependencies": {
-    "axios": "^0.18.1",
+    "axios": "^0.21.1",
     "clipboard": "1.7.1",
     "codemirror": "^5.38.0",
     "dayjs": "^1.8.12",
